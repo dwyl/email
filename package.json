@@ -1,0 +1,25 @@
+{
+  "name": "sendemail-gmail",
+  "version": "1.0.0",
+  "description": "send email from your node.js app via gmail",
+  "main": "index.js",
+  "scripts": {
+    "test": "tape"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nelsonic/sendemail-gmail.git"
+  },
+  "keywords": [
+    "send",
+    "email",
+    "gmail",
+    "googlemail"
+  ],
+  "author": "@nelsonic <contact.nelsonic+sendemail@gmail.com>",
+  "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/nelsonic/sendemail-gmail/issues"
+  },
+  "homepage": "https://github.com/nelsonic/sendemail-gmail#readme"
+}
