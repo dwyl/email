@@ -7,8 +7,8 @@
     "coverage": "./node_modules/.bin/istanbul cover ./node_modules/tape/bin/tape ./test/*.test.js && ./node_modules/.bin/istanbul check-coverage --statements 100 --functions 100 --lines 100 --branches 100",
     "jshint": "./node_modules/jshint/bin/jshint -c .jshintrc --exclude-path .gitignore .",
     "spec": "node ./node_modules/tape/bin/tape ./test/*.test.js | node_modules/tap-spec/bin/cmd.js",
-    "test": "PORT=8000 ./node_modules/.bin/istanbul cover ./node_modules/tape/bin/tape ./test/*.test.js",
-    "start": "PORT=8000 node_modules/.bin/nodemon ./server.js"
+    "test": "PORT=3000 ./node_modules/.bin/istanbul cover ./node_modules/tape/bin/tape ./test/*.test.js",
+    "start": "PORT=3000 node_modules/.bin/nodemon ./server.js"
   },
   "repository": {
     "type": "git",

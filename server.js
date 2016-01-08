@@ -84,6 +84,9 @@ server.register(plugins, function (err) {
 });
 
 server.start(function(err){ // boots your server
+  console.log(' - - - - - - - - - - - -  Hapi Server Version: '+server.version);
+  // console.log(err)
+  // console.log(' - - - - - - - - - - - - - - - - - -');
   assert(!err, "FAILED TO Start Server", err);
 	console.log('Now Visit: http://localhost:'+server.info.port);
 });
