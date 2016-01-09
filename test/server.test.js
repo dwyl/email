@@ -75,12 +75,12 @@ test(file+'MOCK Google OAuth2 Flow /googleauth?code=mockcode', function(t) {
   });
 });
 
-test(file+'Visit /calendar using JWT Cookie', function(t) {
+test(file+'Visit /sendemail using JWT Cookie', function(t) {
   console.log(' - - - - - - - - - - - - - - - - - - cookie:');
   console.log(COOKIE);
   var options = {
     method: "GET",
-    url: "/calendar",
+    url: "/sendemail",
     headers: { cookie: COOKIE }
   };
   server.inject(options, function(response) {
@@ -92,11 +92,11 @@ test(file+'Visit /calendar using JWT Cookie', function(t) {
   });
 });
 
-test(file+'Visit /calendar with INVALID JWT Cookie', function(t) {
+test(file+'Visit /sendemail with INVALID JWT Cookie', function(t) {
   var token = JWT.sign({ id: 321, "name": "Charlie" }, process.env.JWT_SECRET);
   var options = {
     method: "GET",
-    url: "/calendar",
+    url: "/sendemail",
     headers: { cookie: "token=" + token }
   };
   server.inject(options, function(response) {

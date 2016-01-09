@@ -64,14 +64,14 @@ server.register(plugins, function (err) {
       oauth2Client.setCredentials(request.auth.credentials.tokens);
       var email  = request.auth.credentials.emails[0].value;
       var base64EncodedEmail = btoa(
-            "Content-Type:  text/plain; charset=\"UTF-8\"\n" +
+            "Content-Type:  text/html; charset=\"UTF-8\"\n" +
             "Content-length: 5000\n" +
             "Content-Transfer-Encoding: message/rfc2822\n" +
             "to: dwyl.test@gmail.com\n" +
             "from: \"test\ <"+ email +">\n" +
-            "subject: Hello world!\n\n" +
+            "subject: HTML in Email\n\n" +
 
-            "This message was sent by Node.js!"
+            "This message was sent by <b>Node.js</b>!"
               ).replace(/\+/g, '-').replace(/\//g, '_');
       var params = { userId: 'me', auth: oauth2Client, resource: {} };
       // see: http://stackoverflow.com/questions/30590988/failed-sending-mail-through-google-api-with-javascript
@@ -84,14 +84,6 @@ server.register(plugins, function (err) {
         // handle err and response
         reply('<pre><code>'+JSON.stringify(response, null, 2)+'</code></pre>');
       });
-      // gcal.calendarList.list({ auth: oauth2Client }, function(err, response) {
-      //   console.log(' - - - - - - - - - - - - - - - - - - calendar api err:');
-      //   console.log(err)
-      //   console.log(' - - - - - - - - - - - - - - - - - - calendar api response:');
-      //   console.log(response);
-      //   // handle err and response
-      //   reply('<pre><code>'+JSON.stringify(response, null, 2)+'</code></pre>');
-      // });
     }
   }
 

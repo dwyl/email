@@ -22,6 +22,8 @@ see: https://github.com/dwyl/sendemail#checklist-everything-you-need-to-get-star
 + Track emails sent
 + Track open rates
 
+
+
 ## How?
 
 #### *Required* Environment Variables
@@ -30,7 +32,6 @@ see: https://github.com/dwyl/sendemail#checklist-everything-you-need-to-get-star
 
 > If you need a quick primer on Google OAuth see:  
 https://github.com/dwyl/hapi-auth-google
-
 
 
 Running this app or its' tests on your local machine will require
@@ -62,6 +63,7 @@ https://console.developers.google.com
 you need to enable:
 + Google+ API
 + Gmail API
++ Contacts API
 
 ## Troubleshooting
 
@@ -69,5 +71,13 @@ Used the following to get this working:
 
 + http://stackoverflow.com/questions/30590988/failed-sending-mail-through-google-api-with-javascript
 
+## Base64 Encoding ?
 
-Converting the message object to Base64 "btoa" method
+Messages sent via the GMail API have to be *encoded* as a **Base64 String**
+In the browser this is done using the `btoa` method.
+*However* as we [*discovered*](http://stackoverflow.com/questions/30590988/failed-sending-mail-through-google-api-with-javascript)
+this method is not available in Node so we went searching ...
+
+https://www.npmjs.com/search?q=btoa has a 51 results.
+We ended up using https://www.npmjs.com/package/btoa
+because it *appears* to serve our needs. So far so good. 
