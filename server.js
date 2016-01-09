@@ -61,38 +61,15 @@ server.register(plugins, function (err) {
     path: '/sendemail',
     config: { auth : 'jwt' },
     handler: function(request, reply) {
-
-      console.log('- - - - -> '+ request.auth.credentials.emails[0].value);
 			sendEmail(request, function(err, response){
 				console.log(' - - - - - - - - - - - - - - - - - - GMAIL api err:');
         console.log(err)
         console.log(' - - - - - - - - - - - - - - - - - - GMAIL api response:');
         console.log(response);
-        // handle err and response
         reply('<pre><code>'+JSON.stringify(response, null, 2)+'</code></pre>');
 			});
-      // oauth2Client.setCredentials(request.auth.credentials.tokens);
-      // var email  = request.auth.credentials.emails[0].value;
-      // var base64EncodedEmail = btoa(
-      //       "Content-Type:  text/html; charset=\"UTF-8\"\n" +
-      //       "Content-length: 5000\n" +
-      //       "Content-Transfer-Encoding: message/rfc2822\n" +
-      //       "to: ines.teles@gmail.com\n" +
-      //       // "from: \"test\ <"+ email +">\n" +
-			// 			 "from: ines.teles@gmail.com \n" +
-      //       "subject: Tell Me when you get this!!\n\n" +
-			//
-      //       "This message was sent by <b>Node.js</b>!"
-      //         ).replace(/\+/g, '-').replace(/\//g, '_');
-      // var params = { userId: 'me', auth: oauth2Client, resource: {} };
-      // // see: http://stackoverflow.com/questions/30590988/failed-sending-mail-through-google-api-with-javascript
-      // params.resource.raw = base64EncodedEmail;
-      // gmail.users.messages.send(params, function(err, response) {
-      // });
     }
   }
-
-
   ]);
 
 });
