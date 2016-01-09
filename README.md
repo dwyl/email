@@ -50,3 +50,24 @@ GOOGLE_CLIENT_SECRET=YourSecretHere
 
 If you want to *contribute* to this project,
 contact us for our "*Test*" Google OAuth Credentials.
+
+## Google App Setup
+
+### Scopes (*OAuth Permissions*)
+
+> https://developers.google.com/gmail/api/auth/scopes
+
+When you are setting up your Project in the Google Developer console
+https://console.developers.google.com
+you need to enable:
++ Google+ API
++ Gmail API
+
+## Troubleshooting
+
+Used the following to get this working:
+
++ http://stackoverflow.com/questions/30590988/failed-sending-mail-through-google-api-with-javascript
+
+
+Converting the message object to Base64 "btoa" method

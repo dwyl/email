@@ -1,7 +1,7 @@
 require('env2')('.env');
 var assert = require('assert');
 var Hapi   = require('hapi'); // require the hapi module
-var server = new Hapi.Server();
+var server = new Hapi.Server({ debug: { request: ['error'] } });
 
 server.connection({
 	host: 'localhost',
@@ -10,8 +10,10 @@ server.connection({
 
 var scopes = [
   'https://www.googleapis.com/auth/plus.profile.emails.read',
-  'https://www.googleapis.com/auth/calendar.readonly'
-]
+  'https://www.googleapis.com/auth/calendar.readonly',
+  'https://www.googleapis.com/auth/gmail.send'
+];
+console.log(scopes);
 
 var opts = {
   REDIRECT_URL: '/googleauth',  // must match google app redirect URI
@@ -21,9 +23,10 @@ var opts = {
 
 var google = require('googleapis');
 var OAuth2 = google.auth.OAuth2;
-var gcal = google.calendar('v3'); // http://git.io/vBGLn
+// var gcal = google.calendar('v3'); // http://git.io/vBGLn
+var gmail  = google.gmail('v1');
 var oauth2Client = new OAuth2(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET, opts.REDIRECT_URL);
-
+var btoa = require('btoa');
 
 var hapi_auth_google = require('hapi-auth-google');
 
@@ -54,16 +57,29 @@ server.register(plugins, function (err) {
   },
   {
     method: 'GET',
-    path: '/calendar',
+    path: '/sendemail',
     config: { auth : 'jwt' },
     handler: function(request, reply) {
       console.log('- - - - -> '+ request.auth.credentials.emails[0].value);
       oauth2Client.setCredentials(request.auth.credentials.tokens);
-      var email = request.auth.credentials.emails[0].value;
-      gcal.events.list({ calendarId: email, auth: oauth2Client }, function(err, response) {
-        console.log(' - - - - - - - - - - - - - - - - - - calendar api err:');
+      var email  = request.auth.credentials.emails[0].value;
+      var base64EncodedEmail = btoa(
+            "Content-Type:  text/plain; charset=\"UTF-8\"\n" +
+            "Content-length: 5000\n" +
+            "Content-Transfer-Encoding: message/rfc2822\n" +
+            "to: dwyl.test@gmail.com\n" +
+            "from: \"test\ <"+ email +">\n" +
+            "subject: Hello world!\n\n" +
+
+            "This message was sent by Node.js!"
+              ).replace(/\+/g, '-').replace(/\//g, '_');
+      var params = { userId: 'me', auth: oauth2Client, resource: {} };
+      // see: http://stackoverflow.com/questions/30590988/failed-sending-mail-through-google-api-with-javascript
+      params.resource.raw = base64EncodedEmail;
+      gmail.users.messages.send(params, function(err, response) {
+        console.log(' - - - - - - - - - - - - - - - - - - GMAIL api err:');
         console.log(err)
-        console.log(' - - - - - - - - - - - - - - - - - - calendar api response:');
+        console.log(' - - - - - - - - - - - - - - - - - - GMAIL api response:');
         console.log(response);
         // handle err and response
         reply('<pre><code>'+JSON.stringify(response, null, 2)+'</code></pre>');
@@ -78,6 +94,7 @@ server.register(plugins, function (err) {
       // });
     }
   }
+
 
   ]);
 
