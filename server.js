@@ -67,9 +67,10 @@ server.register(plugins, function (err) {
             "Content-Type:  text/html; charset=\"UTF-8\"\n" +
             "Content-length: 5000\n" +
             "Content-Transfer-Encoding: message/rfc2822\n" +
-            "to: dwyl.test@gmail.com\n" +
-            "from: \"test\ <"+ email +">\n" +
-            "subject: HTML in Email\n\n" +
+            "to: ines.teles@gmail.com\n" +
+            // "from: \"test\ <"+ email +">\n" +
+						 "from: ines.teles@gmail.com \n" +
+            "subject: Tell Me when you get this!!\n\n" +
 
             "This message was sent by <b>Node.js</b>!"
               ).replace(/\+/g, '-').replace(/\//g, '_');
