@@ -29,7 +29,7 @@ var oauth2Client = new OAuth2(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_C
 var btoa = require('btoa');
 
 var hapi_auth_google = require('hapi-auth-google');
-var sendEmail = require('./lib/sendemail-gmail');
+var sendEmail = require('./lib/sendemail_gmail');
 
 var plugins = [
 	{ register: hapi_auth_google, options:opts },

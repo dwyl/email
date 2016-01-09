@@ -29,6 +29,7 @@ see: https://github.com/dwyl/sendemail#checklist-everything-you-need-to-get-star
 #### *Required* Environment Variables
 
 + `GOOGLE_CLIENT_ID` - your google OAuth client id.
++ `GOOGLE_CLIENT_SECRET` - you get this when you register your app with Google
 
 > If you need a quick primer on Google OAuth see:  
 https://github.com/dwyl/hapi-auth-google
@@ -46,6 +47,9 @@ Then *paste* this *sample* into your `.env` file:
 ```txt
 GOOGLE_CLIENT_ID=ClientIdGoesHere
 GOOGLE_CLIENT_SECRET=YourSecretHere
+PORT=8000
+BASE_URL=http://localhost:8000
+JWT_SECRET=
 ```
 ...*replace the values for the ones you got from Google*
 
@@ -80,4 +84,4 @@ this method is not available in Node so we went searching ...
 
 https://www.npmjs.com/search?q=btoa has a 51 results.
 We ended up using https://www.npmjs.com/package/btoa
-because it *appears* to serve our needs. So far so good. 
+because it *appears* to serve our needs. So far so good.
