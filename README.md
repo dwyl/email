@@ -49,7 +49,7 @@ GOOGLE_CLIENT_ID=ClientIdGoesHere
 GOOGLE_CLIENT_SECRET=YourSecretHere
 PORT=8000
 BASE_URL=http://localhost:8000
-JWT_SECRET=
+JWT_SECRET=WhatEverYouWant
 ```
 ...*replace the values for the ones you got from Google*
 
