@@ -3,7 +3,7 @@ var redisClient = require('redis-connection')(); // instantiate redis-connection
 var dir  = __dirname.split('/')[__dirname.split('/').length-1];
 var file = dir + __filename.replace(__dirname, '') + " > ";
 var JWT  = require('jsonwebtoken');
-var server = require('../server.js');
+var server = require('../example/server.js');
 
 test(file + 'test the response on / is a link to Google Auth', function(t){
   var options = {

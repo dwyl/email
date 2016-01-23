@@ -71,9 +71,14 @@ server.register(plugins, function (err) {
 			});
     }
   },
-	// {
-	//
-	// }
+	{
+		method: '*',
+		path: '/compose',
+		config: { auth: 'jwt' },
+		handler: function(request, reply){
+			reply('done');
+		}
+	}
   ]);
 
 });

@@ -32,7 +32,6 @@
     "hapi": "^11.1.2",
     "hapi-auth-google": "^1.0.6",
     "hapi-auth-jwt2": "^5.2.1",
-    "hoek": "^3.0.4",
     "jsonwebtoken": "^5.4.1",
     "redis-connection": "^4.0.1"
   },
