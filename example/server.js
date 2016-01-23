@@ -1,8 +1,8 @@
 require('env2')('.env');
 var assert = require('assert');
 var Hapi   = require('hapi'); // require the hapi module
-var server = new Hapi.Server({ debug: { request: ['error'] } });
-
+// var server = new Hapi.Server({ debug: { request: ['error'] } }); // debug!
+var server = new Hapi.Server();
 server.connection({
 	host: 'localhost',
 	port: Number(process.env.PORT) // defined by environment variable or .env file
@@ -29,7 +29,7 @@ var oauth2Client = new OAuth2(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_C
 var btoa = require('btoa');
 
 var hapi_auth_google = require('hapi-auth-google');
-var sendEmail = require('./lib/sendemail_gmail');
+var sendEmail = require('../lib/sendemail_gmail');
 
 var plugins = [
 	{ register: hapi_auth_google, options:opts },
@@ -44,6 +44,7 @@ server.register(plugins, function (err) {
     validateFunc: require('./lib/hapi_auth_jwt2_validate.js'),
     verifyOptions: { ignoreExpiration: true }
   });
+
 
   server.route([{
     method: 'GET',
@@ -69,7 +70,10 @@ server.register(plugins, function (err) {
         reply('<pre><code>'+JSON.stringify(response, null, 2)+'</code></pre>');
 			});
     }
-  }
+  },
+	// {
+	//
+	// }
   ]);
 
 });

@@ -15,7 +15,7 @@ module.exports = function validate (decoded, request, callback) {
     }
     else { // unable to find session in redis ... reply is null
       console.log(rediserror);
-      return callback(rediserror, false);
+      return callback(rediserror);
     }
   });
 };
