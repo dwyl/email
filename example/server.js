@@ -57,7 +57,6 @@ server.register(plugins, function (err) {
 		layout: 'layout',
 	});
 
-
   server.route([{
     method: 'GET',
     path: '/',
@@ -96,10 +95,9 @@ server.register(plugins, function (err) {
 		}
 	}
   ]);
-
 });
 
-server.start(function(err){ // boots your server
+server.start(function(err) { // boots your server
   console.log(' - - - - - - - - - - - -  Hapi Server Version: '+server.version);
   // console.log(err)
   // console.log(' - - - - - - - - - - - - - - - - - -');

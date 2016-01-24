@@ -1,8 +1,3 @@
-// var path = require('path');
-// var env = path.resolve(__dirname + '/../.env'); // our .env file in development
-// console.log('>> ', env);
-// require('env2')(env);
-
 var test = require('tape');
 var nock = require('nock');
 var nock_options = {allowUnmocked: true};
@@ -10,7 +5,6 @@ var nock_options = {allowUnmocked: true};
 var redisClient = require('redis-connection')(); // instantiate redis-connection
 var dir  = __dirname.split('/')[__dirname.split('/').length-1];
 var file = dir + __filename.replace(__dirname, '') + " > ";
-// var JWT  = require('jsonwebtoken');
 var server = require('../example/server.js');
 
 test(file+'MOCK Google OAuth2 Flow /googleauth?code=mockcode', function(t) {
@@ -29,7 +23,6 @@ test(file+'MOCK Google OAuth2 Flow /googleauth?code=mockcode', function(t) {
             .get('/plus/v1/people/me')
             .reply(200, sample_profile);
 
-
   var options = {
     method: "GET",
     url: "/googleauth?code=mockcode"
@@ -41,11 +34,7 @@ test(file+'MOCK Google OAuth2 Flow /googleauth?code=mockcode', function(t) {
     // console.log(' - - - - - - - - - - - - - - - - - - cookie:');
     // console.log(response.headers);
     COOKIE = response.headers['set-cookie'][0]; //.split('=')[1];
-    // console.log(COOKIE);
-    // console.log(' - - - - - - - - - - - - - - - - - - decoded:');
-    // console.log(JWT.decode(COOKIE.replace('token=', '')));
     redisClient.end();   // ensure redis connection is closed!
-
     server.stop(t.end);
   });
 });

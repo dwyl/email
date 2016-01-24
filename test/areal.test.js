@@ -16,7 +16,6 @@ var env = path.resolve(__dirname + '/../.env'); // our .env file in development
 require('env2')(env);
 // Open RedisCloud Connection
 var redisClient = require('redis-connection')('subscriber');
-// Fetch the Stringified Token
 
 test(file+'GET REAL (TEST) OAuth2 Token & Profile', function(t) {
   redisClient.get('TEST_PROFILE', function (err, reply) {
