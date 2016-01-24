@@ -26,13 +26,17 @@ test(file+'sendEmail Using VALID Google OAuth Profile', function(t) {
   redisClient.get('TEST_PROFILE', function (err, reply) {
     // process.env.VALID_PROFILE = reply;
     TEST_PROFILE = JSON.parse(reply);
-    console.log(' - - - - - - - - - TEST_PROFILE: ')
+    // console.log(' - - - - - - - - - TEST_PROFILE: ')
     // console.log(JSON.stringify(TEST_PROFILE, null, 2));
-    console.log(JSON.stringify(TEST_PROFILE.tokens, null, 2));
+    // console.log(JSON.stringify(TEST_PROFILE.tokens, null, 2));
+    var date = new Date().toUTCString();
     var options = {
       auth: {
         credentials: TEST_PROFILE
-      }
+      },
+      to: 'contact.nelsonic+test@gmail.com',
+      subject: 'Do You Read Me? > ' + date,
+      message: 'Hello World!'
     };
     sendEmail(options, function(err, response){
       // t.equal(err['code'], 400, 'sendEmail Fails with expired OAuth Token')
