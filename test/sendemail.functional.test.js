@@ -1,4 +1,5 @@
 var test         = require('tape');
+var sendEmail    = require('../lib/sendemail_gmail');
 var dir          = __dirname.split('/')[__dirname.split('/').length-1];
 var file         = dir + __filename.replace(__dirname, '') + " > ";
 var path         = require('path');
@@ -8,7 +9,44 @@ var redisClient  = require('redis-connection')(); // instantiate redis-connectio
 var fs           = require('fs');
 var TEST_PROFILE = JSON.parse(fs.readFileSync('./test/fixtures/sample_auth_credentials.json', 'utf8'));
 // console.log('TEST_PROFILE:', TEST_PROFILE);
-var REAL_PROFILE;
+
+test(file+'Attempt to sendEmail Using (Expired) TEST Google OAuth Profile', function(t) {
+  var options = {
+    auth: {
+      credentials: TEST_PROFILE
+    }
+  };
+  sendEmail(options, function(err, response){
+    t.equal(err['code'], 400, 'sendEmail Fails with expired OAuth Token')
+    t.end()
+  });
+});
+
+test(file+'sendEmail Using VALID Google OAuth Profile', function(t) {
+  redisClient.get('TEST_PROFILE', function (err, reply) {
+    // process.env.VALID_PROFILE = reply;
+    TEST_PROFILE = JSON.parse(reply);
+    console.log(' - - - - - - - - - TEST_PROFILE: ')
+    // console.log(JSON.stringify(TEST_PROFILE, null, 2));
+    console.log(JSON.stringify(TEST_PROFILE.tokens, null, 2));
+    var options = {
+      auth: {
+        credentials: TEST_PROFILE
+      }
+    };
+    sendEmail(options, function(err, response){
+      // t.equal(err['code'], 400, 'sendEmail Fails with expired OAuth Token')
+      // console.log(' - - - - - - - - - - - - - - - - - - GMAIL api err:');
+      // console.log(err)
+      // console.log(' - - - - - - - - - - - - - - - - - - GMAIL api response:');
+      // console.log(response);
+      t.equal(response.labelIds[0], 'SENT', 'Email SENT!')
+      t.equal(err, null, 'No Error');
+      t.end()
+    });
+  });
+});
+
 
 
 test(file+'Shutdown Redis Connection', function(t) {

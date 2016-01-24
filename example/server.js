@@ -70,7 +70,7 @@ server.register(plugins, function (err) {
     }
   },
   {
-    method: 'POST',
+    method: '*',
     path: '/sendemail',
     config: { auth : 'jwt' },
     handler: function(request, reply) {
