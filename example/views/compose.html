@@ -1,26 +1,19 @@
+
 <h1>Compose Your Email:</h1>
 
 <form id="gform" method="POST" class="pure-form pure-form-stacked"
- action="https://script.google.com/macros/s/AKfycbzzIKBI0Po6T0yugY_lusnad6hG1DbQ882LSbTER8m_s9e-CRA/exec">
+ action="/sendemail">
    <!-- change the form action to your script url -->
 
    <fieldset class="pure-group">
-     <label for="to">To: </label>
+     <label for="to">Recipient(s): </label>
      <input id="to" name="to" placeholder="{{to}}" />
    </fieldset>
 
    <fieldset class="pure-group">
      <label for="message">Message: </label>
-     <textarea id="message" name="message" rows="10"
+     <textarea id="message" name="message" rows="10" cols="80" autofocus
      placeholder="Tell us what's on your mind..."></textarea>
-   </fieldset>
-
-   <fieldset class="pure-group">
-     <label for="email"><em>Your</em> Email Address:</label>
-     <input id="email" name="email" type="email" value=""
-     required placeholder="your.name@email.com"/>
-     <span id="email-invalid" style="visibility:hidden">
-       Must be a valid email address</span>
    </fieldset>
 
    <fieldset class="pure-group">
