@@ -11,7 +11,7 @@ module.exports = function validate (decoded, request, callback) {
       profile = JSON.parse(redisreply);
       console.log(' - - - - - - - REDIS reply - - - - - - - ');
       console.log( JSON.stringify(profile, null, 2) );
-      return callback(rediserror, true, profile);
+      return callback(rediserror, true, profile); // profile is acccessible as request.auth.credentials
     }
     else { // unable to find session in redis ... reply is null
       console.log(rediserror);
