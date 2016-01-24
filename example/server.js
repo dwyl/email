@@ -1,8 +1,9 @@
 require('env2')('.env');
 var assert = require('assert');
+var path   = require('path');
 var Hapi   = require('hapi'); // require the hapi module
-// var server = new Hapi.Server({ debug: { request: ['error'] } }); // debug!
-var server = new Hapi.Server();
+var server = new Hapi.Server({ debug: { request: ['error'] } }); // debug!
+// var server = new Hapi.Server();
 server.connection({
 	host: 'localhost',
 	port: Number(process.env.PORT) // defined by environment variable or .env file
@@ -33,7 +34,8 @@ var sendEmail = require('../lib/sendemail_gmail');
 
 var plugins = [
 	{ register: hapi_auth_google, options:opts },
-	require('hapi-auth-jwt2')
+	require('hapi-auth-jwt2'),
+	require('vision')
 ];
 server.register(plugins, function (err) {
   // handle the error if the plugin failed to load:
@@ -44,6 +46,19 @@ server.register(plugins, function (err) {
     validateFunc: require('./lib/hapi_auth_jwt2_validate.js'),
     verifyOptions: { ignoreExpiration: true }
   });
+	var views =  path.resolve(__dirname + '/views/');
+	console.log('>>>>>> views:', views);
+	server.views({
+		engines: {
+			html: require('handlebars')
+		},
+		relativeTo: views,
+		path: '.',
+		layout: 'layout',
+		// layoutPath: 'layout',
+		// helpersPath: 'helpers',
+		// partialsPath: 'partials'
+	});
 
 
   server.route([{
@@ -74,10 +89,10 @@ server.register(plugins, function (err) {
 	{
 		method: '*',
 		path: '/compose',
-		config: { auth: 'jwt' },
+		config: { auth: false },
 		handler: function(request, reply){
 			console.log(request.payload);
-			reply('hello');
+			reply.view('compose');
 		}
 	}
   ]);

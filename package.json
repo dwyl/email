@@ -37,6 +37,7 @@
     "redis-connection": "^4.0.1"
   },
   "devDependencies": {
+    "handlebars": "^4.0.5",
     "istanbul": "^0.4.0",
     "nock": "^3.3.0",
     "nodemon": "^1.8.1",

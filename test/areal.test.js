@@ -14,7 +14,7 @@ var env = path.resolve(__dirname + '/../.env'); // our .env file in development
 // console.log('>> ', env);
 require('env2')(env);
 // Open RedisCloud Connection
-var redisClient = require('redis-connection')();
+var redisClient = require('redis-connection')('subscriber');
 // Fetch the Stringified Token
 
 test(file+'GET REAL (TEST) OAuth2 Token & Profile', function(t) {
@@ -75,10 +75,10 @@ test(file+'POST basic data to /compose email', function(t) {
 });
 
 
-// test(file+'Shutdown Redis Connection', function(t) {
-//   redisClient.end();   // ensure redis con closed! - \\
-//   t.equal(redisClient.connected, false, "✓ Connection to Redis Closed");
-//   server.stop(function(){
-//     t.end()
-//   });
-// });
+test(file+'Shutdown Redis Connection', function(t) {
+  redisClient.end();   // ensure redis con closed! - \\
+  t.equal(redisClient.connected, false, "✓ Connection to Redis Closed");
+  server.stop(function(){
+    t.end()
+  });
+});
