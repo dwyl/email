@@ -35,7 +35,7 @@ test(file+'Ensure the server does not 500 when /googleauth?code=badcode', functi
   server.inject(options, function(response) {
     t.equal(response.statusCode, 200, "Server is working.");
     t.ok(response.payload.indexOf('something went wrong') > -1,
-          'Got: '+response.payload + ' (As Expected)');
+          'Got: '+response.payload + ' (Mock!)');
     server.stop(function(){ });
     t.end();
   });
@@ -75,7 +75,7 @@ test(file+'MOCK Google OAuth2 Flow /googleauth?code=mockcode', function(t) {
     COOKIE = response.headers['set-cookie'][0]; //.split('=')[1];
     // console.log(COOKIE);
     // console.log(' - - - - - - - - - - - - - - - - - - decoded:');
-    // console.log(JWT.decode(COOKIE));
+    // console.log(JWT.decode(COOKIE.replace('token=', '')));
     server.stop(t.end);
   });
 });
@@ -91,6 +91,23 @@ test(file+'Visit /sendemail with INVALID JWT Cookie', function(t) {
   server.inject(options, function(response) {
     // console.log(' - - - - - - - - - - - - - - - - - - result:');
     // console.log(response.result);
+    t.equal(response.statusCode, 401, "Auth Blocked by bad Cookie JWT");
+    // setTimeout(function(){ server.stop(t.end); }, 100);
+    server.stop(function(){
+      t.end()
+    });
+  });
+});
+
+test(file+'Attempt to POST /sendemail using Mock OAuth Token', function(t) {
+  var options = {
+    method: "POST",
+    url: "/sendemail",
+    headers: { cookie: COOKIE }
+  };
+  server.inject(options, function(response) {
+    console.log(' - - - - - - - - - - - - - - - - - - result:');
+    console.log(response.result);
     t.equal(response.statusCode, 401, "Auth Blocked by bad Cookie JWT");
     // setTimeout(function(){ server.stop(t.end); }, 100);
     server.stop(function(){
