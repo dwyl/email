@@ -110,27 +110,6 @@ test(file+'Visit /sendemail with INVALID JWT Cookie', function(t) {
   });
 });
 
-test(file+'POST basic data to /compose email', function(t) {
-  console.log(' - - - - - - - - - - - - - - - - - - cookie:');
-  console.log(COOKIE);
-  var options = {
-    method: "POST",
-    url: "/compose",
-    headers: { cookie: COOKIE },
-    payload: {
-      "to" : "nelson@dwyl.io",
-      "message" : "its time!"
-    }
-  };
-  server.inject(options, function(response) {
-    console.log(response.result);
-    t.equal(response.statusCode, 200, "Successfully showing /calendar page");
-    // setTimeout(function(){ server.stop(t.end); }, 100);
-    server.stop(function(){
-      t.end()
-    });
-  });
-});
 
 test(file+'Shutdown Redis Connection', function(t) {
   redisClient.end();   // ensure redis con closed! - \\
