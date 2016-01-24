@@ -76,7 +76,8 @@ server.register(plugins, function (err) {
 		path: '/compose',
 		config: { auth: 'jwt' },
 		handler: function(request, reply){
-			reply('done');
+			console.log(request.payload);
+			reply('hello');
 		}
 	}
   ]);
