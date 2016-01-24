@@ -17,7 +17,7 @@ test(file + 'test the response on / is a link to Google Auth', function(t){
   };
 
   server.inject(options, function(response) {
-    console.log(response.result);
+    // console.log(response.result);
     t.equal(response.result.indexOf('sign-in-with-google.png') > -1, true, 'Displays link');
     setTimeout(function(){
       // redisClient.end();   // ensure redis con closed! - \\
@@ -70,8 +70,8 @@ test(file+'MOCK Google OAuth2 Flow /googleauth?code=mockcode', function(t) {
     t.equal(response.statusCode, 200, "Profile retrieved (Mock)");
     var expected = 'Logged in Using Google!';
     t.ok(response.payload.indexOf(expected) > -1, "Got: " + expected + " (as expected)");
-    console.log(' - - - - - - - - - - - - - - - - - - cookie:');
-    console.log(response.headers);
+    // console.log(' - - - - - - - - - - - - - - - - - - cookie:');
+    // console.log(response.headers);
     COOKIE = response.headers['set-cookie'][0]; //.split('=')[1];
     // console.log(COOKIE);
     // console.log(' - - - - - - - - - - - - - - - - - - decoded:');
@@ -84,27 +84,24 @@ test(file+'MOCK Google OAuth2 Flow /googleauth?code=mockcode', function(t) {
 test(file+'Visit /sendemail with INVALID JWT Cookie', function(t) {
   var token = JWT.sign({ id: 321, "name": "Charlie" }, process.env.JWT_SECRET);
   var options = {
-    method: "GET",
+    method: "POST",
     url: "/sendemail",
     headers: { cookie: "token=" + token }
   };
   server.inject(options, function(response) {
-    console.log(' - - - - - - - - - - - - - - - - - - result:');
-    console.log(response.result);
+    // console.log(' - - - - - - - - - - - - - - - - - - result:');
+    // console.log(response.result);
     t.equal(response.statusCode, 401, "Auth Blocked by bad Cookie JWT");
     // setTimeout(function(){ server.stop(t.end); }, 100);
     server.stop(function(){
-      redisClient.end();
       t.end()
     });
   });
 });
 
 
-// test(file+'Shutdown Redis Connection', function(t) {
-//   redisClient.end();   // ensure redis con closed! - \\
-//   t.equal(redisClient.connected, false, "✓ Connection to Redis Closed");
-//   // server.stop(function(){
-//     t.end()
-//   // });
-// });
+test(file+'Shutdown Redis Connection', function(t) {
+  redisClient.end();   // ensure redis connection is closed!
+  t.equal(redisClient.connected, false, "✓ Connection to Redis Closed");
+  t.end()
+});

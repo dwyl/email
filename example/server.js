@@ -2,8 +2,8 @@ require('env2')('.env');
 var assert = require('assert');
 var path   = require('path');
 var Hapi   = require('hapi'); // require the hapi module
-var server = new Hapi.Server({ debug: { request: ['error'] } }); // debug!
-// var server = new Hapi.Server();
+// var server = new Hapi.Server({ debug: { request: ['error'] } }); // debug!
+var server = new Hapi.Server();
 server.connection({
 	host: 'localhost',
 	port: Number(process.env.PORT) // defined by environment variable or .env file
@@ -47,7 +47,7 @@ server.register(plugins, function (err) {
     verifyOptions: { ignoreExpiration: true }
   });
 	var views =  path.resolve(__dirname + '/views/');
-	console.log('>>>>>> views:', views);
+	console.log('views path:', views);
 	server.views({
 		engines: {
 			html: require('handlebars')
@@ -55,9 +55,6 @@ server.register(plugins, function (err) {
 		relativeTo: views,
 		path: '.',
 		layout: 'layout',
-		// layoutPath: 'layout',
-		// helpersPath: 'helpers',
-		// partialsPath: 'partials'
 	});
 
 
@@ -73,10 +70,13 @@ server.register(plugins, function (err) {
     }
   },
   {
-    method: '*',
+    method: 'POST',
     path: '/sendemail',
     config: { auth : 'jwt' },
     handler: function(request, reply) {
+			console.log('server.js:80 - - - - - - - - - - - - - - - - - - request.payload:');
+			console.log(request.payload)
+
 			sendEmail(request, function(err, response){
 				console.log(' - - - - - - - - - - - - - - - - - - GMAIL api err:');
         console.log(err)

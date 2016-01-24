@@ -21,14 +21,14 @@ test(file+'GET REAL (TEST) OAuth2 Token & Profile', function(t) {
   redisClient.get('TEST_PROFILE', function (err, reply) {
     process.env.VALID_PROFILE = reply;
     TEST_PROFILE = JSON.parse(reply);
-    console.log(' - - - - - - - - - TEST_PROFILE: ')
-    console.log(JSON.stringify(TEST_PROFILE, null, 2));
+    // console.log(' - - - - - - - - - TEST_PROFILE: ')
+    // console.log(JSON.stringify(TEST_PROFILE, null, 2));
   });
   redisClient.get('TEST_JWT', function (err, reply) {
     process.env.VALID_PROFILE = reply;
     TEST_JWT = 'token=' + reply;
-    console.log(' - - - - - - - - - TEST_JWT: ')
-    console.log(TEST_JWT);
+    // console.log(' - - - - - - - - - TEST_JWT: ')
+    // console.log(TEST_JWT);
     t.end();
   });
 });
@@ -39,12 +39,12 @@ test(file+'POST /sendemail email', function(t) {
     url: "/sendemail",
     headers: { cookie:  TEST_JWT },
     payload: {
-      "to" : "nelson@dwyl.io",
+      "to" : "contact.nelsonic@gmail.com",
       "message" : "its time!"
     }
   };
   server.inject(options, function(response) {
-    console.log(response.result);
+    // console.log(response.result);
     t.equal(response.statusCode, 200, "Successfully SENT Email via GMAIL!");
     // setTimeout(function(){ server.stop(t.end); }, 100);
     server.stop(function(){
@@ -65,7 +65,7 @@ test(file+'POST basic data to /compose email', function(t) {
     }
   };
   server.inject(options, function(response) {
-    console.log(response.result);
+    // console.log(response.result);
     t.equal(response.statusCode, 200, "Successfully Sent an Email!");
     // setTimeout(function(){ server.stop(t.end); }, 100);
     server.stop(function(){

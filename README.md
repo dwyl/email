@@ -1,6 +1,6 @@
-# Send Email > Gmail
+# Send Email using <img height="40" alt="login with github" src="https://cloud.githubusercontent.com/assets/194400/12875883/cf23af1c-cdeb-11e5-8e57-dcda33fd3abb.png">
 
-Send email from any Node.js app using Google (Gmail)
+Send email from a Hapi.js app using Google Mail (Gmail)
 
 ## Why?
 
@@ -18,13 +18,14 @@ see: https://github.com/dwyl/sendemail#checklist-everything-you-need-to-get-star
 ## What?
 
 + Send *any type* of email using Gmail
-+ Authenticate using OAuth.
++ Authenticate using OAuth2.
 + Track emails sent
 + Track open rates
 
 
-
 ## How?
+
+> While this module does not *require* `Hapi.js` the *example* 
 
 #### *Required* Environment Variables
 

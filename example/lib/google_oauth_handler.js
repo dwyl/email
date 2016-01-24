@@ -2,11 +2,11 @@ var redisClient = require('redis-connection')(); // instantiate redis-connection
 var JWT = require('jsonwebtoken'); // session stored as a JWT cookie
 
 module.exports = function custom_handler(req, reply, tokens, profile) {
-  console.log(tokens, profile);
+  // console.log(tokens, profile);
   if(profile) {
     profile.tokens = tokens; // save the OAuth Token for later
-    console.log('custome_handler says: ')
-    console.log(JSON.stringify(profile,null,2));
+    // console.log('custom_handler says: ')
+    // console.log(JSON.stringify(profile,null,2));
     // extract the relevant data from Profile to store in JWT object
     var session = {
       fistname : profile.name.givenName, // the person's first name e.g: Anita
