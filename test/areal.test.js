@@ -4,6 +4,7 @@ var file   = dir + __filename.replace(__dirname, '') + " > ";
 var JWT    = require('jsonwebtoken');
 var server = require('../example/server.js');
 var TEST_JWT, TEST_PROFILE;
+var date   = new Date().toUTCString(); // used in tests
 // instead of mocking/stubbing out the whole of the Google API
 // we only mock the authentication steps in mock.test.js
 // but then we use a VALID OAuth2 Token for the remainig tests!
@@ -40,7 +41,8 @@ test(file+'POST /sendemail email', function(t) {
     headers: { cookie:  TEST_JWT },
     payload: {
       "to" : "contact.nelsonic@gmail.com",
-      "message" : "its time!"
+      "message" : "its time!",
+      "subject" : "realTest 1 > " + date
     }
   };
   server.inject(options, function(response) {
@@ -54,13 +56,13 @@ test(file+'POST /sendemail email', function(t) {
 });
 
 test(file+'POST basic data to /compose email', function(t) {
-
   var options = {
     method: "POST",
     url: "/compose",
     headers: { cookie: TEST_JWT },
     payload: {
       "to" : "contact.nelsonic@gmail.com",
+      "subject" : "aReal Test on " + date,
       "message" : "Totes a Test!"
     }
   };

@@ -9,11 +9,17 @@ var redisClient  = require('redis-connection')(); // instantiate redis-connectio
 var fs           = require('fs');
 var TEST_PROFILE = JSON.parse(fs.readFileSync('./test/fixtures/sample_auth_credentials.json', 'utf8'));
 // console.log('TEST_PROFILE:', TEST_PROFILE);
+var date = new Date().toUTCString();
 
 test(file+'Attempt to sendEmail Using (Expired) TEST Google OAuth Profile', function(t) {
   var options = {
     auth: {
       credentials: TEST_PROFILE
+    },
+    payload: {
+      to: 'contact.nelsonic+test@gmail.com',
+      subject: 'Do You Read Me? > ' + date,
+      message: 'Hello World!'
     }
   };
   sendEmail(options, function(err, response){
@@ -29,21 +35,22 @@ test(file+'sendEmail Using VALID Google OAuth Profile', function(t) {
     // console.log(' - - - - - - - - - TEST_PROFILE: ')
     // console.log(JSON.stringify(TEST_PROFILE, null, 2));
     // console.log(JSON.stringify(TEST_PROFILE.tokens, null, 2));
-    var date = new Date().toUTCString();
     var options = {
       auth: {
         credentials: TEST_PROFILE
       },
-      to: 'contact.nelsonic+test@gmail.com',
-      subject: 'Do You Read Me? > ' + date,
-      message: 'Hello World!'
+      payload: {
+        to: 'contact.nelsonic+test@gmail.com',
+        subject: 'Do You Read Me? > ' + date,
+        message: 'Hello World!'
+      }
     };
     sendEmail(options, function(err, response){
       // t.equal(err['code'], 400, 'sendEmail Fails with expired OAuth Token')
-      // console.log(' - - - - - - - - - - - - - - - - - - GMAIL api err:');
-      // console.log(err)
-      // console.log(' - - - - - - - - - - - - - - - - - - GMAIL api response:');
-      // console.log(response);
+      console.log(' - - - - - - - - - - - - - - - - - - GMAIL api err:');
+      console.log(err)
+      console.log(' - - - - - - - - - - - - - - - - - - GMAIL api response:');
+      console.log(response);
       t.equal(response.labelIds[0], 'SENT', 'Email SENT!')
       t.equal(err, null, 'No Error');
       t.end()

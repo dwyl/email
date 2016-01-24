@@ -4,6 +4,9 @@ var env = path.resolve(__dirname + '/../.env'); // our .env file in development
 require('env2')(env);
 
 var test = require('tape');
+var nock = require('nock');
+var nock_options = {allowUnmocked: true};
+
 var redisClient = require('redis-connection')(); // instantiate redis-connection
 var dir  = __dirname.split('/')[__dirname.split('/').length-1];
 var file = dir + __filename.replace(__dirname, '') + " > ";
@@ -43,50 +46,17 @@ test(file+'Ensure the server does not 500 when /googleauth?code=badcode', functi
 
 var COOKIE; // we get this in the response in the next test:
 
-test(file+'MOCK Google OAuth2 Flow /googleauth?code=mockcode', function(t) {
-  // google oauth2 token request url:
-  var fs = require('fs');
-  var token_fixture = fs.readFileSync('./test/fixtures/sample-auth-token.json');
-  var nock = require('nock');
-  var scope = nock('https://accounts.google.com')
-            .persist() // https://github.com/pgte/nock#persist
-            .post('/o/oauth2/token')
-            .reply(200, token_fixture);
-
-  // see: http://git.io/v4nTR for google plus api url
-  // https://www.googleapis.com/plus/v1/people/{userId}
-  var sample_profile = fs.readFileSync('./test/fixtures/sample-profile.json');
-  var nock = require('nock');
-  var scope = nock('https://www.googleapis.com')
-            .get('/plus/v1/people/me')
-            .reply(200, sample_profile);
-
-
-  var options = {
-    method: "GET",
-    url: "/googleauth?code=mockcode"
-  };
-  server.inject(options, function(response) {
-    t.equal(response.statusCode, 200, "Profile retrieved (Mock)");
-    var expected = 'Logged in Using Google!';
-    t.ok(response.payload.indexOf(expected) > -1, "Got: " + expected + " (as expected)");
-    // console.log(' - - - - - - - - - - - - - - - - - - cookie:');
-    // console.log(response.headers);
-    COOKIE = response.headers['set-cookie'][0]; //.split('=')[1];
-    // console.log(COOKIE);
-    // console.log(' - - - - - - - - - - - - - - - - - - decoded:');
-    // console.log(JWT.decode(COOKIE.replace('token=', '')));
-    server.stop(t.end);
-  });
-});
-
-
 test(file+'Visit /sendemail with INVALID JWT Cookie', function(t) {
   var token = JWT.sign({ id: 321, "name": "Charlie" }, process.env.JWT_SECRET);
   var options = {
     method: "POST",
     url: "/sendemail",
-    headers: { cookie: "token=" + token }
+    headers: { cookie: "token=" + token },
+    payload: {
+      "to" : "contact.nelsonic@gmail.com",
+      "message" : "this will not get sent...",
+      "subject" : "Mock Test "
+    }
   };
   server.inject(options, function(response) {
     // console.log(' - - - - - - - - - - - - - - - - - - result:');
@@ -103,7 +73,12 @@ test(file+'Attempt to POST /sendemail using Mock OAuth Token', function(t) {
   var options = {
     method: "POST",
     url: "/sendemail",
-    headers: { cookie: COOKIE }
+    headers: { cookie: COOKIE },
+    payload: {
+      "to" : "contact.nelsonic+sendemail.test@gmail.com",
+      "message" : "this will not get sent...",
+      "subject" : "Mock Test "
+    }
   };
   server.inject(options, function(response) {
     console.log(' - - - - - - - - - - - - - - - - - - result:');
@@ -117,8 +92,8 @@ test(file+'Attempt to POST /sendemail using Mock OAuth Token', function(t) {
 });
 
 
-test(file+'Shutdown Redis Connection', function(t) {
-  redisClient.end();   // ensure redis connection is closed!
-  t.equal(redisClient.connected, false, "✓ Connection to Redis Closed");
-  t.end()
-});
+// test(file+'Shutdown Redis Connection', function(t) {
+//   redisClient.end();   // ensure redis connection is closed!
+//   t.equal(redisClient.connected, false, "✓ Connection to Redis Closed");
+//   t.end()
+// });
