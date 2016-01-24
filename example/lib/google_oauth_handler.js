@@ -5,7 +5,9 @@ module.exports = function custom_handler(req, reply, tokens, profile) {
   console.log(tokens, profile);
   if(profile) {
     profile.tokens = tokens; // save the OAuth Token for later
+    console.log('custome_handler says: ')
     console.log(JSON.stringify(profile,null,2));
+    redisClient.set('VALID_PROFILE', JSON.stringify(profile));
     // extract the relevant data from Profile to store in JWT object
     var session = {
       fistname : profile.name.givenName, // the person's first name e.g: Anita
