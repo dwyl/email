@@ -37,8 +37,9 @@ test(file+'sendEmail Using VALID Google OAuth Profile', function(t) {
       },
       payload: {
         to: 'contact.nelsonic+test@gmail.com',
+        name: 'Alex',
         subject: 'Do You Read Me? > ' + date,
-        message: 'Hello World!'
+        message: 'Hello {{name}}, How are you?!'
       }
     };
     sendEmail(options, function(err, response){
