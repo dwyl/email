@@ -1,10 +1,15 @@
 {
   "name": "sendemail-gmail",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "send email from your node.js app via gmail",
-  "main": "index.js",
+  "main": "lib/sendemail_gmail.js",
   "scripts": {
-    "test": "tape"
+    "coverage": "./node_modules/.bin/istanbul cover ./node_modules/tape/bin/tape ./test/*.test.js && ./node_modules/.bin/istanbul check-coverage --statements 100 --functions 100 --lines 100 --branches 100",
+    "jshint": "./node_modules/jshint/bin/jshint -c .jshintrc --exclude-path .gitignore .",
+    "spec": "node ./node_modules/tape/bin/tape ./test/*.test.js | node_modules/tap-spec/bin/cmd.js",
+    "test": "PORT=8000 ./node_modules/.bin/istanbul cover ./node_modules/tape/bin/tape ./test/sendemail.functional.test.js",
+    "real": "PORT=8000 ./node_modules/.bin/istanbul cover ./node_modules/tape/bin/tape ./test/areal.test.js",
+    "start": "PORT=8000 node_modules/.bin/nodemon ./example/server.js"
   },
   "repository": {
     "type": "git",
@@ -21,5 +26,23 @@
   "bugs": {
     "url": "https://github.com/nelsonic/sendemail-gmail/issues"
   },
-  "homepage": "https://github.com/nelsonic/sendemail-gmail#readme"
+  "homepage": "https://github.com/nelsonic/sendemail-gmail#readme",
+  "dependencies": {
+    "btoa": "^1.1.2",
+    "env2": "^2.0.4",
+    "googleapis": "^2.1.6"
+  },
+  "devDependencies": {
+    "hapi": "^13.0.0",
+    "hapi-auth-google": "^1.0.6",
+    "hapi-auth-jwt2": "^5.2.1",
+    "handlebars": "^4.0.5",
+    "istanbul": "^0.4.0",
+    "jsonwebtoken": "^5.4.1",
+    "nock": "^3.3.0",
+    "nodemon": "^1.8.1",
+    "redis-connection": "^4.0.1",
+    "tape": "^4.2.2",
+    "vision": "^4.0.1"
+  }
 }
