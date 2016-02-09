@@ -77,9 +77,8 @@ test(file+'POST basic data to /compose email', function(t) {
 
 
 test(file+'Shutdown Redis Connection', function(t) {
-  redisClient.end();   // ensure redis con closed! - \\
-  t.equal(redisClient.connected, false, "✓ Connection to Redis Closed");
-  server.stop(function(){
-    t.end()
-  });
+  // require('redis-connection').kill('DEFAULT');
+  redisClient.end();
+  // t.equal(redisClient.connected, false, "✓ Connection to Redis Closed");
+  server.stop(t.end);
 });

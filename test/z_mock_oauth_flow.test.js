@@ -2,7 +2,7 @@ var test = require('tape');
 var nock = require('nock');
 var nock_options = {allowUnmocked: true};
 
-var redisClient = require('redis-connection')(); // instantiate redis-connection
+// var redisClient = require('redis-connection')(); // instantiate redis-connection
 var dir  = __dirname.split('/')[__dirname.split('/').length-1];
 var file = dir + __filename.replace(__dirname, '') + " > ";
 var server = require('../example/server.js');
@@ -34,7 +34,8 @@ test(file+'MOCK Google OAuth2 Flow /googleauth?code=mockcode', function(t) {
     // console.log(' - - - - - - - - - - - - - - - - - - cookie:');
     // console.log(response.headers);
     COOKIE = response.headers['set-cookie'][0]; //.split('=')[1];
-    redisClient.end();   // ensure redis connection is closed!
+    // redisClient.end();   // ensure redis connection is closed!
+    require('redis-connection').killall();
     server.stop(t.end);
   });
 });
