@@ -1,6 +1,6 @@
 {
   "name": "sendemail-gmail",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "send email from your node.js app via gmail",
   "main": "lib/sendemail_gmail.js",
   "scripts": {
@@ -29,8 +29,8 @@
   "homepage": "https://github.com/nelsonic/sendemail-gmail#readme",
   "dependencies": {
     "btoa": "^1.1.2",
-    "env2": "^2.0.4",
-    "googleapis": "^2.1.6"
+    "env2": "^2.0.6",
+    "googleapis": "^3.1.0"
   },
   "devDependencies": {
     "hapi": "^13.0.0",
