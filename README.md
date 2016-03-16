@@ -2,6 +2,13 @@
 
 Send email from a Hapi.js app using Google Mail (Gmail)
 
+[![Build Status](https://travis-ci.org/dwyl/sendemail-gmail.svg?branch=master)](https://travis-ci.org/dwyl/sendemail-gmail)
+[![codecov.io](https://codecov.io/github/dwyl/sendemail-gmail/coverage.svg?branch=master)](https://codecov.io/github/dwyl/sendemail-gmail?branch=master)
+[![Code Climate](https://codeclimate.com/github/dwyl/sendemail-gmail/badges/gpa.svg)](https://codeclimate.com/github/dwyl/sendemail-gmail)
+[![Dependency Status](https://david-dm.org/dwyl/sendemail-gmail.svg)](https://david-dm.org/dwyl/sendemail-gmail)
+[![devDependency Status](https://david-dm.org/dwyl/sendemail-gmail/dev-status.svg)](https://david-dm.org/dwyl/sendemail-gmail#info=devDependencies)
+
+
 ## Why?
 
 We have been using Mandrill for sending email @dwyl
@@ -25,7 +32,7 @@ see: https://github.com/dwyl/sendemail#checklist-everything-you-need-to-get-star
 
 ## How?
 
-> While this module does not *require* `Hapi.js` the *example* 
+> While this module does not *require* `Hapi.js` the *example*
 
 #### *Required* Environment Variables
 
