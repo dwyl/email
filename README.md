@@ -11,14 +11,14 @@ Send email from a Hapi.js app using Google Mail (Gmail)
 
 ## Why?
 
-We have been using Mandrill for sending email @dwyl
+We have been using ~~Mandrill~~ AWS Simple Email Service (*SES*) for sending email @dwyl
 and we made a node module for this: https://github.com/dwyl/sendemail
 
 However we have had requests from *clients* to send email via Gmail.
 And have implemented this:
 https://github.com/dwyl/html-form-send-email-via-google-script-without-server
 
-*However* ... the amount of *setup* required to use Mandrill is quite
+*However* ... the amount of *setup* required to use ~~Mandrill~~ SES can be quite
 *daunting* to beginners.
 see: https://github.com/dwyl/sendemail#checklist-everything-you-need-to-get-started-in-5-minutes
 
