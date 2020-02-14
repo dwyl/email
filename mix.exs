@@ -4,13 +4,16 @@ defmodule App.MixProject do
   def project do
     [
       app: :app,
-      version: "0.1.0",
-      elixir: "~> 1.5",
+      version: "1.0.0",
+      elixir: "~> 1.9",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: [coveralls: :test, "coveralls.detail": :test,
+                   "coveralls.post": :test, "coveralls.html": :test],
     ]
   end
 
@@ -42,7 +45,17 @@ defmodule App.MixProject do
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"}
+      {:plug_cowboy, "~> 2.0"},
+
+      # Invoke Lambda
+      {:ex_aws, "~> 2.1.0"},
+      {:ex_aws_lambda, "~> 2.0"},
+      {:poison, "~> 3.0"},
+      {:hackney, "~> 1.9"},
+
+      # Test Code Coverage:
+      {:excoveralls, "~> 0.12.2", only: :test},
+
     ]
   end
 
