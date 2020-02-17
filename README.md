@@ -1,25 +1,35 @@
-# `email`
+# `email` 💌
 
-[![Build Status](https://travis-ci.org/dwyl/sendemail-gmail.svg?branch=master)](https://travis-ci.org/dwyl/sendemail-gmail)
-[![codecov.io](https://codecov.io/github/dwyl/sendemail-gmail/coverage.svg?branch=master)](https://codecov.io/github/dwyl/sendemail-gmail?branch=master)
-[![Code Climate](https://codeclimate.com/github/dwyl/sendemail-gmail/badges/gpa.svg)](https://codeclimate.com/github/dwyl/sendemail-gmail)
-[![Dependency Status](https://david-dm.org/dwyl/sendemail-gmail.svg)](https://david-dm.org/dwyl/sendemail-gmail)
-[![devDependency Status](https://david-dm.org/dwyl/sendemail-gmail/dev-status.svg)](https://david-dm.org/dwyl/sendemail-gmail#info=devDependencies)
+[![Build Status](https://img.shields.io/travis/dwyl/email/master.svg?style=flat-square)](https://travis-ci.org/dwyl/email)
+[![codecov.io](https://img.shields.io/codecov/c/github/dwyl/email/master.svg?style=flat-square)](http://codecov.io/github/dwyl/email?branch=master)
+[![HitCount](http://hits.dwyl.com/dwyl/email.svg)](http://hits.dwyl.com/dwyl/email)
+
+## Why? 🤷‍
+
+We needed a way to keep track of email in our App.
+This is our quest to do that.
 
 
-## Why?
+
+## What? 💭
+
+An email dashboard for our App.
 
 
 
-## What?
 
+## Who? 👤
+
+Right now we are building this App _just_ for our own (_internal_) use. <br />
+As with ***everything*** we do,
+it's **Open Source** so others can learn from it.
 
 
 ## How?
 
 
 
-#### *Required* Environment Variables
+### _Required_ Environment Variables
 
 Running this app or its' tests on your local machine will require
 that you set a few
@@ -43,6 +53,9 @@ To start your Phoenix server:
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+
+
+
 
 
 
