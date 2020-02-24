@@ -145,7 +145,7 @@ Add the following line in that scope:
 resources "/sent", SentController
 ```
 
-
+e.g: [/lib/app_web/router.ex#L20](https://github.com/dwyl/email/blob/db1abd0cc075d27b7cd2bfc37019fc33dd5d0585/lib/app_web/router.ex#L20)
 
 
 ### 4. Run the Migrations
@@ -156,6 +156,22 @@ In your terminal run the migrations command:
 ```sh
 mix ecto.migrate
 ```
+
+You should expect to see outpout similar to the following:
+
+```
+23:15:48.568 [info]  == Running 20200224224024 App.Repo.Migrations.CreateSent.change/0 forward
+
+23:15:48.569 [info]  create table sent
+
+23:15:48.574 [info]  create index sent_person_id_index
+
+23:15:48.575 [info]  create index sent_status_id_index
+
+23:15:48.576 [info]  == Migrated 20200224224024 in 0.0s
+```
+
+#### Entity Relationship Diagram (ERD)
 
 
 
