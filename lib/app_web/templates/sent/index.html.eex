@@ -1,0 +1,30 @@
+<h1>Listing Sent</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Message</th>
+      <th>Request</th>
+      <th>Template</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for sent <- @sent do %>
+    <tr>
+      <td><%= sent.message_id %></td>
+      <td><%= sent.request_id %></td>
+      <td><%= sent.template %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.sent_path(@conn, :show, sent) %></span>
+        <span><%= link "Edit", to: Routes.sent_path(@conn, :edit, sent) %></span>
+        <span><%= link "Delete", to: Routes.sent_path(@conn, :delete, sent), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Sent", to: Routes.sent_path(@conn, :new) %></span>

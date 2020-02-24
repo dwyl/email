@@ -1,0 +1,23 @@
+<h1>Show Sent</h1>
+
+<ul>
+
+  <li>
+    <strong>Message:</strong>
+    <%= @sent.message_id %>
+  </li>
+
+  <li>
+    <strong>Request:</strong>
+    <%= @sent.request_id %>
+  </li>
+
+  <li>
+    <strong>Template:</strong>
+    <%= @sent.template %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.sent_path(@conn, :edit, @sent) %></span>
+<span><%= link "Back", to: Routes.sent_path(@conn, :index) %></span>

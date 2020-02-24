@@ -65,6 +65,35 @@ we need to create the **`sent`** schema:
 mix phx.gen.html Ctx Sent sent message_id:string person_id:references:people request_id:string status_id:references:status template:string
 ```
 
+When you run this command in your terminal,
+you should see the following output:
+
+```
+* creating lib/app_web/controllers/sent_controller.ex
+* creating lib/app_web/templates/sent/edit.html.eex
+* creating lib/app_web/templates/sent/form.html.eex
+* creating lib/app_web/templates/sent/index.html.eex
+* creating lib/app_web/templates/sent/new.html.eex
+* creating lib/app_web/templates/sent/show.html.eex
+* creating lib/app_web/views/sent_view.ex
+* creating test/app_web/controllers/sent_controller_test.exs
+* creating lib/app/ctx/sent.ex
+* creating priv/repo/migrations/20200224224024_create_sent.exs
+* creating lib/app/ctx.ex
+* injecting lib/app/ctx.ex
+* creating test/app/ctx_test.exs
+* injecting test/app/ctx_test.exs
+
+Add the resource to your browser scope in lib/app_web/router.ex:
+
+    resources "/sent", SentController
+
+Remember to update your repository by running migrations:
+
+$ mix ecto.migrate
+```
+
+We will follow these instructions in the next step! 
 
 
 In case you are wondering what the **`message_id`** and **`request_id`** fields
