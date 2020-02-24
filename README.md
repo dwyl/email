@@ -27,8 +27,24 @@ it's **Open Source** so others can learn from it.
 
 ## How?
 
-### 0. Create a New Phoenix App
 
+
+
+### Deploy the Lambda Function
+
+# TODO: FINISH https://github.com/dwyl/aws-ses-lambda/pull/4 !!
+
+
+
+
+<br /> <br />
+
+### Want to _Understand How_ we Made This? 🤷‍
+
+If you want to _recreate_ the **`email`** app from scratch,
+follow all the steps outlined here:
+
+### 0. Create a New Phoenix App 🆕
 
 In your terminal, run the following mix command:
 
@@ -40,6 +56,11 @@ That will create a few files.
 e.g: [github.com/dwyl/email/commit/1c999be](https://github.com/dwyl/email/commit/1c999be3fff75e42fcb6e62e1f2a152764ce3b74)
 
 Follow the instructions in the terminal to download all the dependencies.
+
+At this point the **`email`** App is just a basic Phoenix App.
+It should be familiar to you if you have followed any of Phoenix tutorials,
+e.g: https://github.com/dwyl/phoenix-chat-example
+or https://github.com/dwyl/phoenix-todo-list-tutorial
 
 
 
