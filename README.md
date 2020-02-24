@@ -173,8 +173,9 @@ You should expect to see outpout similar to the following:
 
 #### Entity Relationship Diagram (ERD)
 
+ERD after creating the **`sent`** table:
 
-
+![erd-with-sent-table](https://user-images.githubusercontent.com/194400/75200073-b6944700-575c-11ea-97c9-a7b495395a05.png)
 
 
 ### _Required_ Environment Variables
