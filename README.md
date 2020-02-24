@@ -27,12 +27,28 @@ it's **Open Source** so others can learn from it.
 
 ## How?
 
+### 0. Create a New Phoenix App
 
-### 1. Copy over the Migration Files from the MVP
+
+In your terminal, run the following mix command:
+
+```elixir
+mix phx.new app
+```
+
+That will create a few files.
+e.g: [github.com/dwyl/email/commit/1c999be](https://github.com/dwyl/email/commit/1c999be3fff75e42fcb6e62e1f2a152764ce3b74)
+
+Follow the instructions in the terminal to download all the dependencies.
+
+
+
+
+### 1. Copy over the Migration Files from the MVP 📋
 
 In order to speed up our development of the **`email`** App,
-we are _only_ going to create _one_ schema/table. (_see: step 2_)
-
+we are _only_ going to create _one_ schema/table; **`sent`** (_see: step 2_).
+Since our app will refer to email addresses,
 
 See: [github.com/dwyl/email/commit/bcafb2f](https://github.com/dwyl/email/commit/bcafb2fbd92782b1e166305428c5211690374b2e)
 
@@ -66,7 +82,8 @@ mix phx.gen.html Ctx Sent sent message_id:string person_id:references:people req
 ```
 
 When you run this command in your terminal,
-you should see the following output:
+you should see the following output
+showing all the files that were created:
 
 ```
 * creating lib/app_web/controllers/sent_controller.ex
@@ -93,19 +110,31 @@ Remember to update your repository by running migrations:
 $ mix ecto.migrate
 ```
 
-We will follow these instructions in the next step!
+We will follow these instructions in the next steps!
 
+#### Why So Many Files?
+
+We are not going to do anything with the
+
+
+
+#### What are the `message_id` and `request_id` fields for?
 
 In case you are wondering what the **`message_id`** and **`request_id`** fields
 in the **`sent`** schema are for.
 The **`message_id`** is,
 as you would expect,
 the _Globally Unique_ ID (GUID)
-of the message in the AWS SES system.
-All SNS notifications will reference this.
+for the message in the AWS SES system.
+We need to keep track of this ID because
+all SNS notifications will reference it.
+So if we receive a "delivered" or "bounce" SNS notification,
+we need to match it up to the original **`message_id`**
+so that our data reflects the **`status`** of the message.
 
 The [`aws-ses-lambda`](https://github.com/dwyl/aws-ses-lambda) function
 returns a response in the following form:
+
 ```js
 {
   MessageId: '010201707927184a-e45eb814-3721-43cb-ac70-f527a9907055-000000',
@@ -119,6 +148,7 @@ Or when invoked from Elixir
 see:
 [github.com/dwyl/elixir-invoke-lambda-example](https://github.com/dwyl/elixir-invoke-lambda-example)
 the response is:
+
 ```elixir
 {:ok,
  %{
@@ -128,6 +158,9 @@ the response is:
    }
  }}
 ```
+
+We are storing `MessageId` as `message_id`
+and `RequestId` as `request_id`.
 
 
 ### 3. Add the SentController Resources to `router.ex`
@@ -153,7 +186,7 @@ e.g: [/lib/app_web/router.ex#L20](https://github.com/dwyl/email/blob/db1abd0cc07
 
 In your terminal run the migrations command:
 
-```sh
+```elixir
 mix ecto.migrate
 ```
 
@@ -176,6 +209,36 @@ You should expect to see outpout similar to the following:
 ERD after creating the **`sent`** table:
 
 ![erd-with-sent-table](https://user-images.githubusercontent.com/194400/75200073-b6944700-575c-11ea-97c9-a7b495395a05.png)
+
+
+### Checkpoint: Run the App!
+
+Just to get an idea for what the `/sent` page _currently_ looks like,
+let's run the Phoenix App and view it in an browser:
+In your terminal run:
+
+```elixir
+mix phx.server
+```
+
+Now visit
+
+
+
+
+
+
+
+
+### 5.
+
+
+
+
+
+
+<br />
+<br />
 
 
 ### _Required_ Environment Variables
