@@ -93,7 +93,7 @@ Remember to update your repository by running migrations:
 $ mix ecto.migrate
 ```
 
-We will follow these instructions in the next step! 
+We will follow these instructions in the next step!
 
 
 In case you are wondering what the **`message_id`** and **`request_id`** fields
@@ -130,8 +130,32 @@ the response is:
 ```
 
 
+### 3. Add the SentController Resources to `router.ex`
+
+Open the
+`lib/app_web/router.ex`
+file
+and locate the section that starts with
+```elixir
+scope "/", AppWeb do
+```
+Add the following line in that scope:
+
+```elixir
+resources "/sent", SentController
+```
 
 
+
+
+### 4. Run the Migrations
+
+
+In your terminal run the migrations command:
+
+```sh
+mix ecto.migrate
+```
 
 
 

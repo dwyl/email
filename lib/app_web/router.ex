@@ -17,6 +17,7 @@ defmodule AppWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+    resources "/sent", SentController
   end
 
   # Other scopes may use custom stacks.
