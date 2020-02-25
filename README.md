@@ -380,12 +380,12 @@ This is how software development should work!
 With that checkpoint completed, let's move on to the _fun_ part!
 
 
-### 5. Parse and Insert SNS Notification Data
+### 5. Insert SNS Notification Data
 
 The _magic_ of our **`email`** dashboard
 is knowing the _status_ of each individual message
 and the _aggregate_ statistics for _all_ messages.
-Luckily AWS has our back here.
+Luckily AWS has already figured out the infrastructure part.
 
 If you are unfamiliar with Amazon Simple Notification Service
 ([SNS](https://aws.amazon.com/sns/)),
@@ -396,13 +396,29 @@ we have sent using AWS Simple Email Service (SES).
 
 We _could_ configure AWS SNS
 to send all SES related notifications
-directly to our **`email`** (_Phoenix_) App,
+_directly_ to our **`email`** (_Phoenix_) App,
 however that has a potential downside:
 [DDOS](https://en.wikipedia.org/wiki/Denial-of-service_attack)
 
 When we create an API endpoint
 that allows inbound POST HTTP requests,
 we need to consider _how_ it can (_will_) be _abused_.
+
+SNS notifications are quite simple.
+> TODO: insert link to sample SNS message.
+
+In order to _check_ that a
+payload is _genuine_ we need to
+retrieve a signing certificate from AWS
+and cryptographically check if the **`Signature`** is valid.
+This requires a GET HTTP Request to fetch the certificate
+which takes around **200ms** for the round trip.
+
+
+
+
+
+
 
 
 
