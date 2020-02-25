@@ -27,6 +27,9 @@ it's **Open Source** so others can learn from it.
 
 ## How?
 
+If you just want to _run_ the **`email`** App,
+simply **`git clone`** this project:
+
 
 
 
@@ -42,7 +45,14 @@ it's **Open Source** so others can learn from it.
 ### Want to _Understand How_ we Made This? 🤷‍
 
 If you want to _recreate_ the **`email`** app from scratch,
-follow all the steps outlined here:
+follow all the steps outlined here.
+
+If you are adding the **`email`** functionality
+to an _existing_ App,
+you can **skip** to **step 2**.
+If you are creating an **`email`**
+functionality and dashboard from scratch,
+follow steps 0 and 1.
 
 ### 0. Create a New Phoenix App 🆕
 
@@ -57,32 +67,39 @@ e.g: [github.com/dwyl/email/commit/1c999be](https://github.com/dwyl/email/commit
 
 Follow the instructions in the terminal to download all the dependencies.
 
-At this point the **`email`** App is just a basic Phoenix App.
-It should be familiar to you if you have followed any of Phoenix tutorials,
+At this point the **`email`** App
+is just a basic "hello world" Phoenix App. <br />
+It should be familiar to you
+if you have followed any of the Phoenix tutorials, <br />
 e.g: https://github.com/dwyl/phoenix-chat-example
 or https://github.com/dwyl/phoenix-todo-list-tutorial
 
 
 
-
-### 1. Copy over the Migration Files from the MVP 📋
+### 1. Copy the Migration Files from the MVP 📋
 
 In order to speed up our development of the **`email`** App,
 we are _only_ going to create _one_ schema/table; **`sent`** (_see: step 2_).
 Since our app will refer to email addresses,
+we need a **`people`** schema which
 
 See: [github.com/dwyl/email/commit/bcafb2f](https://github.com/dwyl/email/commit/bcafb2fbd92782b1e166305428c5211690374b2e)
 
-#### _Why_ reuse migrations?
+
+#### _Why reuse_ migrations?
 
 Our objective is to be able to run the **`email`** App in several ways:
+
 1. **Independently** from any "main" App.
 So the **`email`** dashboard can be 100% anonymised
 and we just display _aggregate_ stats for all email being sent/received.
+
 2. **Inside** the "main" App.
 If we don't want to have to deploy _separate_ Apps,
 we can simply include the **`email`** functionality within a "main" App.
-3. **Umbrella App** where the **`email`** App is run as a "child" to the "main".
+
+3. **Umbrella App** where the **`email`** App
+is run as a "child" to the "main" app.
 
 By reusing the **migration** files from our "main" App,
 (_the files need to have the **exact same name** and contents_),
@@ -93,7 +110,7 @@ in the **`migrations`** table; so no change will be required.
 However
 
 
-### 2. Create the `sent` Schema/Table
+### 2. Create the `sent` Schema/Table 📤
 
 In order to store the data on the emails that have been sent,
 we need to create the **`sent`** schema:
@@ -135,13 +152,33 @@ We will follow these instructions in the next steps!
 
 #### Why So Many Files?
 
-We are not going to do anything with the
+When using `mix phx.gen.html` to create a set of phoenix resources,
+the files for the migration, context, controller, views, templates
+and tests are generated.
+This is a _good_ thing because Phoenix does all the work for us
+and we don't have to think about any of the "boilerplate" code.
+It can feel like a lot of code
+especially if you are new to Phoenix,
+but don't get hung up on it.
+Right now we are only interested in the _migration_ file:
+[`/priv/repo/migrations/20200224224024_create_sent.exs`](https://github.com/dwyl/email/blob/master/priv/repo/migrations/20200224224024_create_sent.exs)
+
+
+Feel free to read through the other files created in step 2:
+[github.com/dwyl/email/commit/b8d4b06](https://github.com/dwyl/email/commit/b8d4b062f2bd358d35395e0dafd252f2bb3d5be8)
+The code is fairly straightforward,
+but if there is ***anything*** you **_don't_ understand**,
+[***please ask!***](https://github.com/dwyl/email/issues)
+
+We are not doing much with these files in the next few steps,
+but we will return to them later when work on the dashboard!
 
 
 
 #### What are the `message_id` and `request_id` fields for?
 
-In case you are wondering what the **`message_id`** and **`request_id`** fields
+In case you are wondering what the
+**`message_id`** and **`request_id`** fields
 in the **`sent`** schema are for.
 The **`message_id`** is,
 as you would expect,
@@ -158,9 +195,9 @@ returns a response in the following form:
 
 ```js
 {
-  MessageId: '010201707927184a-e45eb814-3721-43cb-ac70-f527a9907055-000000',
+  MessageId: '010201703dd218c7-ae82fd07-9c08-4215-a4a9-4b723b98d8f3-000000',
   ResponseMetadata: {
-    RequestId: 'd876bd28-4962-4eea-b7c4-17703b113279'
+    RequestId: 'def1b013-331e-4d10-848e-6f0dbd709434'
   }
 }
 ```
@@ -235,17 +272,103 @@ ERD after creating the **`sent`** table:
 ### Checkpoint: Run the App!
 
 Just to get an idea for what the `/sent` page _currently_ looks like,
-let's run the Phoenix App and view it in an browser:
+let's run the Phoenix App and view it in an browser.
 In your terminal run:
 
 ```elixir
 mix phx.server
 ```
 
-Now visit
+Now visit http://localhost:4000/sent
+in your browser. You should expect to see:
+
+![visit-sent-in-browser](https://user-images.githubusercontent.com/194400/75242300-b8432680-57bf-11ea-80ae-d84a1195e69c.png)
+
+Click on the "New sent" link to create a new **`sent`** record.
+You should see a form similar to this:
+
+![new-sent](https://user-images.githubusercontent.com/194400/75242477-16700980-57c0-11ea-83c9-66c3d2a1c307.png)
+
+Input some test data and click "**Save**".
+That should take you to http://localhost:4000/sent/1
+with the message "**Sent created successfully**":
 
 
+![created-successfully](https://user-images.githubusercontent.com/194400/75242487-1bcd5400-57c0-11ea-82c1-9aacb04fa1d3.png)
 
+_Obviously_ we are not going to create
+the **`sent`** records _manually_ like this.
+(_in fact we will be disabling this form later on_)
+For now we just want to know that record creation is working.
+
+If you return to the http://localhost:4000/sent (index) route,
+you should see:
+
+![sent-showing-one-record](https://user-images.githubusercontent.com/194400/75242625-62bb4980-57c0-11ea-9865-7bd81dc230ee.png)
+
+This is our test entry and confirms that it's working!
+
+#### Run the Tests!
+
+For good measure, let's run the tests:
+
+```elixir
+mix test
+```
+
+You should expect to see output similar to the following:
+
+```sh
+11:23:09.268 [info]  Already up
+...................
+
+Finished in 0.2 seconds
+19 tests, 0 failures
+
+Randomized with seed 448418
+```
+
+19 tests, 0 failures.
+
+#### Coverage!
+
+Follow the
+[instructions to add code coverage](https://github.com/dwyl/phoenix-chat-example#15-what-is-not-tested). <br />
+Then run:
+
+```sh
+mix coveralls
+```
+
+You should expect to see:
+
+```sh
+Finished in 0.2 seconds
+19 tests, 0 failures
+
+Randomized with seed 938602
+----------------
+COV    FILE                                        LINES RELEVANT   MISSED
+100.0% lib/app.ex                                      9        0        0
+100.0% lib/app/ctx.ex                                104        6        0
+100.0% lib/app/ctx/sent.ex                            21        2        0
+100.0% lib/app/repo.ex                                 5        0        0
+100.0% lib/app_web/channels/user_socket.ex            33        0        0
+100.0% lib/app_web/controllers/page_controller.        7        1        0
+100.0% lib/app_web/controllers/sent_controller.       62       19        0
+100.0% lib/app_web/endpoint.ex                        47        0        0
+100.0% lib/app_web/gettext.ex                         24        0        0
+100.0% lib/app_web/views/error_view.ex                16        1        0
+100.0% lib/app_web/views/layout_view.ex                3        0        0
+100.0% lib/app_web/views/page_view.ex                  3        0        0
+100.0% lib/app_web/views/sent_view.ex                  3        0        0
+[TOTAL] 100.0%
+----------------
+```
+
+We think it's _awesome_ that Phoenix creates tests
+for all the functions generated by the `mix gen.html`. <br />
+This is how software development should work!
 
 
 
