@@ -35,14 +35,38 @@ it's **Open Source** so others can learn from it.
 If you just want to _run_ the **`email`** App,
 simply **`git clone`** this project:
 
+```
+git clone git@github.com:dwyl/email.git && cd email
+```
 
+Install the dependencies:
+
+```sh
+mix deps.get
+cd assets && npm install && cd ..
+```
 
 
 ### Deploy the Lambda Function
 
-# TODO: FINISH [SNS Parser PR](https://github.com/dwyl/aws-ses-lambda/pull/4) !!
+In our case the `aws-ses-lambda` function
+is deployed _automatically_.
+For anyone else following along,
+please follow the instructions in
+https://github.com/dwyl/aws-ses-lambda
+to deploy the Lambda function.
 
 
+Provided you have created the SNS Topic,
+subscribed to SES notifications on the topic
+and made it the trigger for Lambda function,
+you should be all set.
+
+If you get stuck
+getting this running
+or have any questions/suggestions,
+please open an
+[issue](https://github.com/dwyl/email/issues)
 
 
 <br /> <br />
@@ -404,31 +428,19 @@ When we create an API endpoint
 that allows inbound POST HTTP requests,
 we need to consider _how_ it can (_will_) be _abused_.
 
-SNS notifications are quite simple.
-> TODO: insert link to sample SNS message.
-
-In order to _check_ that a
+In order to _check_ that an SNS
 payload is _genuine_ we need to
 retrieve a signing certificate from AWS
 and cryptographically check if the **`Signature`** is valid.
 This requires a GET HTTP Request to fetch the certificate
 which takes around **200ms** for the round trip.
 
-
-
-
-
-
-
-
-
-our endpoint for
-
-
-
-But rather than _subscribing_ directly to the notifications
-in our
-we are
+So rather than _subscribing_ directly to the notifications
+in our **`email`** (_Phoenix_) App,
+which would open us to DDOS attacks,
+because of the additional HTTP Request,
+we are doing the SNS parsing in our Lambda function
+and securely sending the parsed data back to the Phoenix app.
 
 
 
