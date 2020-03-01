@@ -5,7 +5,7 @@ defmodule App.MixProject do
     [
       app: :app,
       version: "1.0.0",
-      elixir: "~> 1.10.2",
+      elixir: "~> 1.10",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
