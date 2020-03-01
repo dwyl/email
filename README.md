@@ -22,6 +22,21 @@ and be more data-driven in our communications.
 
 An **`email` analytics dashboard** for our App.
 
+```
+The main App does not do anything with Email as that is is not it's core function.
+It delegates all email sending and monitoring activity to the aws-ses-lambda.
+
+┌─────┐ send  ┌────────────────┐
+| App | ----->| aws-ses-lambda |┐ the Lambda function Sends email
+└─────┘ email └────────────────┘| and handles SNS notifications
+  ┌───────┐    SNS Notification | for bounce events.
+  | Email | <───────────────────┘
+  | Stats |
+  └───────┘  The Email Stats App aggregates and visualises email stats.
+             This allows us to be more data-driven in our communications.
+             And understand exactly who is engaged with the app.
+```
+
 
 ## Who? 👤
 
