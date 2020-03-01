@@ -35,6 +35,9 @@ It delegates all email sending and monitoring activity to the aws-ses-lambda.
   └───────┘  The Email Stats App aggregates and visualises email stats.
              This allows us to be more data-driven in our communications.
              And understand exactly who is engaged with the app.
+
+This is not a full on "Microservices Architecture" it's just an attempt to
+make email sending/monitoring separate so our App can focus on core features.
 ```
 
 
