@@ -8,36 +8,50 @@
 
 ## Why? 🤷‍
 
-We needed a way to keep track of **`email`** in our App.
-To know precise stats for deliverability, click-through and bounce rates
-in real-time so that we can monitor the "health" of our
-[feedback loop](https://en.wikipedia.org/wiki/Feedback).
-This is our quest to do that.
+We needed a way to keep track of **`email`** in our App. <br />
+We want to know precise stats for deliverability,
+click-through and bounce rates for the emails we send
+in real-time. This allows us to monitor the "health" of our
+[feedback loop](https://en.wikipedia.org/wiki/Feedback)
+and be more data-driven in our communications.
 
 
 
 ## What? 💭
 
-An **`email` analytics dashboard**
-and supporting parsing function for our App.
+An **`email` analytics dashboard** for our App.
+
 
 ## Who? 👤
 
 Right now we are building this App
-_just_ for our own (_internal_) use
+for our own (_internal_) use
 [`@dwyl`](https://github.com/dwyl/app/issues/267). <br />
 As with ***everything*** we do,
-it's **Open Source** so others can learn from it.
+it's **Open Source** and **_extensively_ documented**
+so others can _learn_ from it.
+
+If you find this interesting or useful,
+please ⭐️the repository on GitHub!
+If you have any feedback/questions,
+please [open an issue](https://github.com/dwyl/email/issues)
+
 
 
 ## How?
 
-If you just want to _run_ the **`email`** App,
-simply **`git clone`** this project:
+
+To _run_ the **`email`** App, follow these instructions:
+
+### Get the Code
+
+**`git clone`** this project from GitHub:
 
 ```
 git clone git@github.com:dwyl/email.git && cd email
 ```
+
+### Dependencies
 
 Install the dependencies:
 
@@ -45,6 +59,21 @@ Install the dependencies:
 mix deps.get
 cd assets && npm install && cd ..
 ```
+
+### Environment Variables
+
+Ensure you have the environment variables defined
+for the Phoenix App, specifically the
+`DATABASE_URL` and `SECRET_KEY_BASE`
+
+In our case we are reusing the `SECRET_KEY_BASE`
+to verify JWTs.
+That means that the `SECRET_KEY_BASE`
+of the Phoenix App needs to be exported
+as the `JWT_SECRET` in the Lambda function.
+
+
+
 
 
 ### Deploy the Lambda Function
@@ -70,7 +99,7 @@ These steps are all described in detail in:
 If you get stuck
 getting this running
 or have any questions/suggestions,
-please [open an issue](https://github.com/dwyl/email/issues).
+please [open an issue](https://github.com/dwyl/aws-ses-lambda/issues).
 
 
 
@@ -448,6 +477,27 @@ which would open us to DDOS attacks,
 because of the additional HTTP Request,
 we are doing the SNS parsing in our Lambda function
 and securely sending the parsed data back to the Phoenix app.
+
+#### 5.1 Create the Test for _Ingesting_ SNS Data from Lambda
+
+We are going to create an `upsert_sent/1` function
+in the `/lib/app/ctx.ex` file
+that will handle any notification data
+received from the Lambda function.
+The point of an
+[`UPSERT`](https://wiki.postgresql.org/wiki/UPSERT) function
+is to **`insert`** or **`update`** a record.
+In our case we need to do _three_ things:
+
+
+
+
+
+
+We are going invoke the `create_sent/1` function
+in `lib/app/ctx.ex` to insert data into the `sent` table.
+
+
 
 
 
