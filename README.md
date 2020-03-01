@@ -50,23 +50,30 @@ cd assets && npm install && cd ..
 ### Deploy the Lambda Function
 
 In our case the `aws-ses-lambda` function
-is deployed _automatically_.
+is deployed _automatically_
+by **Travis-CI** (_continuous delivery_).
 For anyone else following along,
-please follow the instructions in
+please read the instructions in
 https://github.com/dwyl/aws-ses-lambda
-to deploy the Lambda function.
+to deploy the Lambda function;
+there are quite a few steps but they work!
 
-
-Provided you have created the SNS Topic,
-subscribed to SES notifications on the topic
-and made it the trigger for Lambda function,
+Provided you have:<br />
+**a.** created the SNS Topic, <br />
+**b.** subscribed to SES notifications on the topic <br />
+**c.** made it the trigger for Lambda function,<br />
+**d.** defined all the necessary environment varialbes for the Lambda,<br />
 you should be all set.
+These steps are all described in detail in:
+[`SETUP.md`](https://github.com/dwyl/aws-ses-lambda/blob/master/SETUP.md)
 
 If you get stuck
 getting this running
 or have any questions/suggestions,
-please open an
-[issue](https://github.com/dwyl/email/issues)
+please [open an issue](https://github.com/dwyl/email/issues).
+
+
+
 
 
 <br /> <br />
