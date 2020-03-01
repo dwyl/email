@@ -11,7 +11,8 @@
 We needed a way to keep track of **`email`** in our App. <br />
 We want to know precise stats for deliverability,
 click-through and bounce rates for the emails we send
-in real-time. This allows us to monitor the "health" of our
+in real-time. <br />
+This allows us to monitor the "health" of our
 [feedback loop](https://en.wikipedia.org/wiki/Feedback)
 and be more data-driven in our communications.
 
@@ -24,7 +25,7 @@ An **`email` analytics dashboard** for our App.
 
 ## Who? 👤
 
-Right now we are building this App
+We are building this App
 for our own (_internal_) use
 [`@dwyl`](https://github.com/dwyl/app/issues/267). <br />
 As with ***everything*** we do,
@@ -32,7 +33,7 @@ it's **Open Source** and **_extensively_ documented**
 so others can _learn_ from it.
 
 If you find this interesting or useful,
-please ⭐️the repository on GitHub!
+please ⭐️the repository on GitHub! <br />
 If you have any feedback/questions,
 please [open an issue](https://github.com/dwyl/email/issues)
 
@@ -114,7 +115,7 @@ follow all the steps outlined here.
 
 If you are adding the **`email`** functionality
 to an _existing_ App,
-you can **skip** to **step 2**.
+you can **skip** to **step 2**. <br />
 If you are creating an **`email`**
 functionality and dashboard from scratch,
 follow steps 0 and 1.
@@ -459,7 +460,6 @@ to send all SES related notifications
 _directly_ to our **`email`** (_Phoenix_) App,
 however that has a potential downside:
 [DDOS](https://en.wikipedia.org/wiki/Denial-of-service_attack)
-
 When we create an API endpoint
 that allows inbound POST HTTP requests,
 we need to consider _how_ it can (_will_) be _abused_.
@@ -478,7 +478,8 @@ because of the additional HTTP Request,
 we are doing the SNS parsing in our Lambda function
 and securely sending the parsed data back to the Phoenix app.
 
-#### 5.1 Create the Test for _Ingesting_ SNS Data from Lambda
+#### Requirements for `upsert_sent/1` Function
+
 
 We are going to create an `upsert_sent/1` function
 in the `/lib/app/ctx.ex` file
@@ -486,8 +487,39 @@ that will handle any notification data
 received from the Lambda function.
 The point of an
 [`UPSERT`](https://wiki.postgresql.org/wiki/UPSERT) function
-is to **`insert`** or **`update`** a record.
-In our case we need to do _three_ things:
+is to **`insert`** or **`update`** a record. <br />
+The `upsert_sent/1` function needs to do _three_ things: <br />
+
+1. Check if the `payload` sent by the Lambda function
+contains an email address. <br />
+  **a.** `if` the `payload`  includes a `email` key,
+  we attempt to find that email address
+  in the **`people`** table by looking up the **`email_hash`**.
+  `if` the **`person`** record does not exist for the given `email`,
+  _create_ it and retain the `person_id`.
+  With the `person_id`, **`upsert`** the **`sent`** item.
+
+2. If the `payload` includes a `status` key,
+look it up in the `status` table.
+`if` the `status` exists,
+use the `status.id`
+as `status_id` for the `sent` record.
+`if` the `status` does _not_ exist, create it.
+
+3. If the `payload` does _not_ have an `email` key,
+it should have a `message_id` key
+which means this is an SNS notification. <br />
+  **a.** Lookup the `message_id` in the **`sent`** table.
+  `if` there is no record for the `message_id`, `create` it! <br />
+  `if` the `sent` record exists, update it using the revised status.
+
+
+
+
+#### 5.1 Create the Test for _Ingesting_ SNS Data from Lambda
+
+
+
 
 
 
