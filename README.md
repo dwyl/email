@@ -23,21 +23,23 @@ and be more data-driven in our communications.
 An **`email` analytics dashboard** for our App.
 
 ```
-The main App does not do anything with Email as that is is not it's core function.
+The main App does not do any Email as that is is not it's core function.
 It delegates all email sending and monitoring activity to the aws-ses-lambda.
 
-┌─────┐ send  ┌────────────────┐
-| App | ----->| aws-ses-lambda |┐ the Lambda function Sends email
-└─────┘ email └────────────────┘| and handles SNS notifications
-  ┌───────┐    SNS Notification | for bounce events.
-  | Email | <───────────────────┘
+┌─────┐  send   ┌────────────────┐
+| App | ------->| aws-ses-lambda |-┐ The Lambda function Sends email
+└─────┘  email  └────────────────┘ | and handles SNS notifications
+                                   | for bounce events.
+  ┌───────┐    SNS Notification    |
+  | Email | <──────────────────────┘
   | Stats |
-  └───────┘  The Email Stats App aggregates and visualises email stats.
-             This allows us to be more data-driven in our communications.
-             And understand exactly who is engaged with the app.
+  └───────┘  
+  The Email Stats App aggregates and visualises email stats.
+  This allows us to be more data-driven in our communications.
+  And understand exactly who is engaged with the app.
 
-This is not a full on "Microservices Architecture" it's just an attempt to
-make email sending/monitoring separate so our App can focus on core features.
+  This is not a full on  it's just an attempt to make email
+  sending/monitoring separate so our App can focus on core features.
 ```
 
 
