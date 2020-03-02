@@ -108,21 +108,21 @@ defmodule App.Ctx do
     # transform attrs into Map with Atoms as Keys:
     attrs = for {key, val} <- attrs, into: %{},
     do: {String.to_atom(key), val}
-    IO.inspect(attrs, label: "attrs")
+    # IO.inspect(attrs, label: "attrs")
 
     # Step 1: Check if the Person exists by email address:
-    person = case Map.has_key?(attrs, :email) do
+    person_id = case Map.has_key?(attrs, :email) do
       true ->
         case Person.get_person_by_email(attrs.email) do
           nil -> # create a new person record
             # IO.inspect("no person record")
             {:ok, person} = Repo.insert(%Person{email: attrs.email})
             # IO.inspect(person, label: "person")
-            person
+            person.id
 
           person ->
             # IO.inspect(person, label: "sent")
-            person
+            person.id
         end
 
       false ->
@@ -134,30 +134,26 @@ defmodule App.Ctx do
     status_id = case Repo.get_by(Status, text: attrs.status) do
       nil -> # create a new sent record
         # {:error, :resource_not_found}
-        IO.inspect("no status record")
-        record = %{text: attrs.status, person_id: person.id}
+        # IO.inspect("no status record")
+        record = %{text: attrs.status, person_id: person_id}
 
         {:ok, status} =
-          # Status.changeset(Status, record)
-          # |> Ecto.Changeset.put_assoc(:person, person)
-          # |>
           Status.create_status(record)
 
-        IO.inspect(status, label: "status")
+        # IO.inspect(status, label: "status")
         status.id
 
       status ->
-        # IO.inspect(sent, label: "sent")
         status.id
     end
 
     sent = case Repo.get_by(Sent, message_id: attrs.message_id) do
       nil -> # create a new sent record
-        IO.inspect("no sent record")
+        # IO.inspect("no sent record")
         record = %Sent{
           status_id: status_id,
           message_id: attrs.message_id,
-          person_id: person.id
+          person_id: person_id
         }
         {:ok, sent} =
           record
@@ -166,7 +162,7 @@ defmodule App.Ctx do
         sent
 
       sent ->
-        IO.inspect(sent, label: "sent")
+        # IO.inspect(sent, label: "sent")
         # record = %Sent{
         #   status_id: status_id,
         #   message_id: attrs.message_id
@@ -174,11 +170,8 @@ defmodule App.Ctx do
         # {:ok, sent} = update_sent(record)
         sent
     end
+
     sent
-    #
-    # sent
-    # |> Sent.changeset(attrs)
-    # |> Repo.update()
   end
 
 end

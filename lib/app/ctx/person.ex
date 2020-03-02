@@ -156,11 +156,11 @@ defmodule App.Ctx.Person do
 
   def get_person_by_email(email) do
     {:ok, value} = Fields.EmailPlaintext.cast(email)
-    IO.inspect(value, label: "value")
+    # IO.inspect(value, label: "value")
     # email_hash = email_hash(value)
     # IO.inspect(email_hash, label: "email_hash")
-    IO.inspect(__MODULE__, label: "__MODULE__")
+    # IO.inspect(__MODULE__, label: "__MODULE__")
 
-    Repo.get_by(__MODULE__, email_hash: email)
+    Repo.get_by(__MODULE__, email_hash: value)
   end
 end
