@@ -5,8 +5,7 @@ defmodule App.Ctx do
 
   import Ecto.Query, warn: false
   alias App.Repo
-
-  alias App.Ctx.Sent
+  alias App.Ctx.{Sent, Status, Person}
 
   @doc """
   Returns the list of sent.
@@ -111,35 +110,60 @@ defmodule App.Ctx do
     do: {String.to_atom(key), val}
     IO.inspect(attrs, label: "attrs")
 
-    # Step 1: Check if the status exists
-    # status_id = case Repo.get_by(Status, text: attrs.status) do
-    #   nil -> # create a new sent record
-    #     # {:error, :resource_not_found}
-    #     IO.inspect("no sent record")
-    #
-    #   sent ->
-    #     IO.inspect(sent, label: "sent")
-    #     sent
-    # end
+    # Step 1: Check if the Person exists by email address:
+    person_id = case Map.has_key?(attrs, :email) do
+      true ->
+        case Person.get_person_by_email(attrs.email) do
+          nil -> # create a new person record
+            # IO.inspect("no person record")
+            {:ok, person} = Repo.insert(%Person{email: attrs.email})
+            # IO.inspect(person, label: "person")
+            person.id
 
-    # sent = case Repo.get_by(Sent, message_id: attrs.message_id) do
-    #   nil -> # create a new sent record
-    #     # {:error, :resource_not_found}
-    #     IO.inspect("no sent record")
-    #
-    #   sent ->
-    #     IO.inspect(sent, label: "sent")
-    #     sent
-    # end
+          person ->
+            # IO.inspect(person, label: "sent")
+            person.id
+        end
 
+      false ->
+        1
+    end
+
+
+    # Step 2: Check if the status exists
+    status_id = case Repo.get_by(Status, text: attrs.status) do
+      nil -> # create a new sent record
+        # {:error, :resource_not_found}
+        IO.inspect("no status record")
+        record = %{text: attrs.status, person_id: person_id}
+        {:ok, status} = Status.create_status(record)
+        IO.inspect(status, label: "status")
+        status.id
+
+      status ->
+        # IO.inspect(sent, label: "sent")
+        status.id
+    end
 
     sent = case Repo.get_by(Sent, message_id: attrs.message_id) do
       nil -> # create a new sent record
         # {:error, :resource_not_found}
         IO.inspect("no sent record")
+        record = %{
+          status_id: status_id,
+          person_id: person_id,
+          message_id: attrs.message_id,
+        }
+        {:ok, sent} = create_sent(record)
+        sent
 
       sent ->
         IO.inspect(sent, label: "sent")
+        # record = %Sent{
+        #   status_id: status_id,
+        #   message_id: attrs.message_id
+        # }
+        # {:ok, sent} = update_sent(record)
         sent
     end
     sent

@@ -7,6 +7,8 @@
     "lib/app_web.ex",
     "lib/app_web/router.ex",
     "lib/app_web/views/error_helpers.ex",
+    "lib/app/ctx/status.ex",
+    "lib/app/ctx/person.ex",
     "test/"
   ]
 }

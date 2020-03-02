@@ -167,7 +167,8 @@ or https://github.com/dwyl/phoenix-todo-list-tutorial
 In order to speed up our development of the **`email`** App,
 we are _only_ going to create _one_ schema/table; **`sent`** (_see: step 2_).
 Since our app will refer to email addresses,
-we need a **`people`** schema which
+we need a **`people`** schema which in turn refers
+to both `tags` and `status`.
 
 See: [github.com/dwyl/email/commit/bcafb2f](https://github.com/dwyl/email/commit/bcafb2fbd92782b1e166305428c5211690374b2e)
 
@@ -185,6 +186,10 @@ cp ../app-mvp-phoenix/lib/app/ctx/person.ex ./lib/app/ctx/
 cp ../app-mvp-phoenix/lib/app/ctx/status.ex ./lib/app/ctx/
 ```
 
+Commit adding these two files and the `Fields` dependency:
+[email/commit/95f9ade](https://github.com/dwyl/email/commit/95f9ade7be1c262a5f8ec354bc1d2224ed12cebc)
+
+But we are not done yet.
 `person.ex` depends on a couple of functions contained in
 `app-mvp-phoenix/lib/app/ctx.ex`
 _specifically_ `App.Ctx.get_status_verified/0`.

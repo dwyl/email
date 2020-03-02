@@ -76,6 +76,25 @@ defmodule App.CtxTest do
       assert %Ecto.Changeset{} = Ctx.change_sent(sent)
     end
 
+    test "upsert_sent/1 inserts a valid NEW sent record with email" do
+
+      # bounce = get_json("test/fixtures/bounce.json")
+      data = %{
+        "message_id" => "0102017092006798-f0456694-ac24-487b-9467-b79b8ce798f2-000000",
+        "status" => "Sent",
+        "email" => "amaze@gmail.com"
+      }
+      # IO.inspect(data, label: "data")
+      sent = Ctx.upsert_sent(data)
+      # assert json == bounce
+
+      # sent = sent_fixture()
+      IO.inspect(sent, label: "sent")
+      # assert %Ecto.Changeset{} = Ctx.change_sent(sent)
+    end
+
+
+
     test "upsert_sent/1 inserts a valid NEW sent record" do
 
       bounce = get_json("test/fixtures/bounce.json")
@@ -83,7 +102,7 @@ defmodule App.CtxTest do
       #   "message_id" => "0102017092006798-f0456694-ac24-487b-9467-b79b8ce798f2-000000",
       #   "status" => "Bounce Permanent"
       # }
-      IO.inspect(bounce, label: "bounce")
+      # IO.inspect(bounce, label: "bounce")
       sent = Ctx.upsert_sent(bounce)
       # assert json == bounce
 

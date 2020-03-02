@@ -29,22 +29,22 @@ defmodule App.Ctx.Person do
   def changeset(person, attrs) do
     person
     |> cast(attrs, [
-      :username,
+      # :username,
       :email,
-      :givenName,
-      :familyName,
-      :password_hash,
-      :key_id,
-      :locale,
-      :picture
+      # :givenName,
+      # :familyName,
+      # :password_hash,
+      # :key_id,
+      # :locale,
+      # :picture
     ])
     |> validate_required([
-      :username,
+      # :username,
       :email,
-      :givenName,
-      :familyName,
-      :password_hash,
-      :key_id
+      # :givenName,
+      # :familyName,
+      # :password_hash,
+      # :key_id
     ])
     |> put_email_hash()
   end
@@ -148,5 +148,19 @@ defmodule App.Ctx.Person do
       _ ->
         changeset
     end
+  end
+
+  def email_hash(email) do
+    Fields.Helpers.hash(:sha256, email)
+  end
+
+  def get_person_by_email(email) do
+    {:ok, value} = Fields.EmailPlaintext.cast(email)
+    IO.inspect(value, label: "value")
+    # email_hash = email_hash(value)
+    # IO.inspect(email_hash, label: "email_hash")
+    IO.inspect(__MODULE__, label: "__MODULE__")
+
+    Repo.get_by(__MODULE__, email_hash: email)
   end
 end
