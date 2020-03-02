@@ -23,8 +23,10 @@ defmodule App.CtxTest do
     def get_json(filename) do
       # IO.inspect(filename, label: "filename")
       # IO.inspect(File.cwd!, label: "cwd")
-      with {:ok, body} <- File.read(filename),
-           {:ok, json} <- Jason.decode(body), do: json
+      {:ok, body} = File.read(filename)
+      {:ok, json} = Jason.decode(body)
+      # IO.inspect json, label: "json"
+      json
     end
 
     test "list_sent/0 returns all sent" do
@@ -60,6 +62,7 @@ defmodule App.CtxTest do
       sent = sent_fixture()
       assert {:error, %Ecto.Changeset{}} = Ctx.update_sent(sent, @invalid_attrs)
       assert sent == Ctx.get_sent!(sent.id)
+      IO.inspect sent, label: "sent"
     end
 
     test "delete_sent/1 deletes the sent" do
@@ -74,11 +77,19 @@ defmodule App.CtxTest do
     end
 
     test "upsert_sent/1 inserts a valid NEW sent record" do
-      json = get_json("test/fixtures/bounce.json")
-      # IO.inspect(json, label: "json")
-      sent = sent_fixture()
+
+      bounce = get_json("test/fixtures/bounce.json")
+      # bounce = %{
+      #   "message_id" => "0102017092006798-f0456694-ac24-487b-9467-b79b8ce798f2-000000",
+      #   "status" => "Bounce Permanent"
+      # }
+      IO.inspect(bounce, label: "bounce")
+      sent = Ctx.upsert_sent(bounce)
+      # assert json == bounce
+
+      # sent = sent_fixture()
       IO.inspect(sent, label: "sent")
-      assert %Ecto.Changeset{} = Ctx.change_sent(sent)
+      # assert %Ecto.Changeset{} = Ctx.change_sent(sent)
     end
   end
 end

@@ -171,6 +171,23 @@ we need a **`people`** schema which
 
 See: [github.com/dwyl/email/commit/bcafb2f](https://github.com/dwyl/email/commit/bcafb2fbd92782b1e166305428c5211690374b2e)
 
+#### 1.b Copy the `person.ex` and `status.ex` Schemas
+
+In order to have the _schema_ for the `person` and `status`,
+which is required to insert a `sent` record
+because `sent` has fields for `person_id` and `status_id`,
+
+
+In my case given that I had the `app-mvp-phoenix` on my `localhost`,
+I just ran the following commands:
+```
+cp ../app-mvp-phoenix/lib/app/ctx/person.ex ./lib/app/ctx/
+cp ../app-mvp-phoenix/lib/app/ctx/status.ex ./lib/app/ctx/
+```
+
+
+
+
 
 #### _Why reuse_ migrations?
 
@@ -514,11 +531,12 @@ which means this is an SNS notification. <br />
 
 
 
-#### 5.1 Create the First Test for `upsert/1`
+#### 5.1 Create the First Test for `upsert_sent/1`
 
 
 The SNS notification data _ingested_ from `aws-ses-lambda`
-will be inserted/updated in the `sent` table using the `upsert/1` function.
+will be inserted/updated in the `sent` table
+using the `upsert_sent/1` function.
 The function does not _currently_ exist,
 so let's start by creating a test for it.
 

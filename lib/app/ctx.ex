@@ -101,4 +101,52 @@ defmodule App.Ctx do
   def change_sent(%Sent{} = sent) do
     Sent.changeset(sent, %{})
   end
+
+  @doc """
+  UPSERT a sent record
+  """
+  def upsert_sent(attrs) do
+    # transform attrs into Map with Atoms as Keys:
+    attrs = for {key, val} <- attrs, into: %{},
+    do: {String.to_atom(key), val}
+    IO.inspect(attrs, label: "attrs")
+
+    # Step 1: Check if the status exists
+    status_id = case Repo.get_by(Sent, message_id: attrs.message_id) do
+      nil -> # create a new sent record
+        # {:error, :resource_not_found}
+        IO.inspect("no sent record")
+
+      sent ->
+        IO.inspect(sent, label: "sent")
+        sent
+    end
+
+    # sent = case Repo.get_by(Sent, message_id: attrs.message_id) do
+    #   nil -> # create a new sent record
+    #     # {:error, :resource_not_found}
+    #     IO.inspect("no sent record")
+    #
+    #   sent ->
+    #     IO.inspect(sent, label: "sent")
+    #     sent
+    # end
+
+
+    sent = case Repo.get_by(Sent, message_id: attrs.message_id) do
+      nil -> # create a new sent record
+        # {:error, :resource_not_found}
+        IO.inspect("no sent record")
+
+      sent ->
+        IO.inspect(sent, label: "sent")
+        sent
+    end
+    sent
+    #
+    # sent
+    # |> Sent.changeset(attrs)
+    # |> Repo.update()
+  end
+
 end
