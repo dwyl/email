@@ -490,8 +490,8 @@ The `upsert_sent/1` function needs to do _three_ things: <br />
 
 1. Check if the `payload` sent by the Lambda function
 contains an email address. <br />
-  **a.** `if` the `payload`  includes a `email` key,
-  we attempt to find that email address
+  **a.** `if` the `payload`  includes an `email` key,
+  we attempt to find that `email` address
   in the **`people`** table by looking up the **`email_hash`**.
   `if` the **`person`** record does not exist for the given `email`,
   _create_ it and retain the `person_id`.
@@ -521,6 +521,20 @@ The SNS notification data _ingested_ from `aws-ses-lambda`
 will be inserted/updated in the `sent` table using the `upsert/1` function.
 The function does not _currently_ exist,
 so let's start by creating a test for it.
+
+
+
+
+
+
+
+##### 5.1.1 Create Bounce Fixture
+
+
+
+`test/fixtures/bounce.json`
+
+
 
 
 
@@ -572,6 +586,7 @@ we are doing the SNS parsing in our Lambda function
 and securely sending the parsed data back to the Phoenix app.
 
 
+<!--
 
 ### _Required_ Environment Variables
 
@@ -587,21 +602,11 @@ JWT_SECRET=WhatEverYouWant
 ```
 
 
-To start your Phoenix server:
-
-  * Install dependencies with `mix deps.get`
-  * Create and migrate your database with `mix ecto.setup`
-  * Install Node.js dependencies with `cd assets && npm install`
-  * Start Phoenix endpoint with `mix phx.server`
-
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
-
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
-
-
 
 
 
 
 
 ## Troubleshooting
+
+-->
