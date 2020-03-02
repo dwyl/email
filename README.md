@@ -27,12 +27,12 @@ The main App does not do any Email as that is is not it's core function.
 It delegates all email sending and monitoring activity to the aws-ses-lambda.
 
 ┌─────┐  send   ┌────────────────┐
-| App | ------->| aws-ses-lambda |-┐ The Lambda function Sends email
+| App | ───────>| aws-ses-lambda |─┐ The Lambda function Sends email
 └─────┘  email  └────────────────┘ | and handles SNS notifications
                                    | for bounce events.
   ┌───────┐    SNS Notification    |
   | Email | <──────────────────────┘
-  | Stats |
+  |  App  |
   └───────┘  
   The Email Stats App aggregates and visualises email stats.
   This allows us to be more data-driven in our communications.
@@ -475,33 +475,11 @@ In our case the only notifications we are interested in
 are those that relate to the **`email`** messages
 we have sent using AWS Simple Email Service (SES).
 
-We _could_ configure AWS SNS
-to send all SES related notifications
-_directly_ to our **`email`** (_Phoenix_) App,
-however that has a potential downside:
-[DDOS](https://en.wikipedia.org/wiki/Denial-of-service_attack)
-When we create an API endpoint
-that allows inbound POST HTTP requests,
-we need to consider _how_ it can (_will_) be _abused_.
-
-In order to _check_ that an SNS
-payload is _genuine_ we need to
-retrieve a signing certificate from AWS
-and cryptographically check if the **`Signature`** is valid.
-This requires a GET HTTP Request to fetch the certificate
-which takes around **200ms** for the round trip.
-
-So rather than _subscribing_ directly to the notifications
-in our **`email`** (_Phoenix_) App,
-which would open us to DDOS attacks,
-because of the additional HTTP Request,
-we are doing the SNS parsing in our Lambda function
-and securely sending the parsed data back to the Phoenix app.
 
 #### Requirements for `upsert_sent/1` Function
 
 
-We are going to create an `upsert_sent/1` function
+We need to create an `upsert_sent/1` function
 in the `/lib/app/ctx.ex` file
 that will handle any notification data
 received from the Lambda function.
@@ -536,7 +514,16 @@ which means this is an SNS notification. <br />
 
 
 
-#### 5.1 Create the Test for _Ingesting_ SNS Data from Lambda
+#### 5.1 Create the First Test for `upsert/1`
+
+
+The SNS notification data _ingested_ from `aws-ses-lambda`
+will be inserted/updated in the `sent` table using the `upsert/1` function.
+The function does not _currently_ exist,
+so let's start by creating a test for it.
+
+
+
 
 
 
@@ -557,6 +544,32 @@ in `lib/app/ctx.ex` to insert data into the `sent` table.
 
 
 <br /><br /><br /><br />
+
+
+### Why _Not_ Subscribe to the SNS/SES Notifications in Phoenix?
+
+We _could_ configure AWS SNS
+to send all SES related notifications
+_directly_ to our **`email`** (_Phoenix_) App,
+however that has a potential downside:
+[DDOS](https://en.wikipedia.org/wiki/Denial-of-service_attack)
+When we create an API endpoint
+that allows inbound POST HTTP requests,
+we need to consider _how_ it can (_will_) be _abused_.
+
+In order to _check_ that an SNS
+payload is _genuine_ we need to
+retrieve a signing certificate from AWS
+and cryptographically check if the **`Signature`** is valid.
+This requires a GET HTTP Request to fetch the certificate
+which takes around **200ms** for the round trip.
+
+So rather than _subscribing_ directly to the notifications
+in our **`email`** (_Phoenix_) App,
+which would open us to DDOS attacks,
+because of the additional HTTP Request,
+we are doing the SNS parsing in our Lambda function
+and securely sending the parsed data back to the Phoenix app.
 
 
 

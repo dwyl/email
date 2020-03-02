@@ -19,6 +19,14 @@ defmodule App.CtxTest do
       sent
     end
 
+    # open a JSON fixture file and return an Elixir Map
+    def get_json(filename) do
+      # IO.inspect(filename, label: "filename")
+      # IO.inspect(File.cwd!, label: "cwd")
+      with {:ok, body} <- File.read(filename),
+           {:ok, json} <- Jason.decode(body), do: json
+    end
+
     test "list_sent/0 returns all sent" do
       sent = sent_fixture()
       assert Ctx.list_sent() == [sent]
@@ -62,6 +70,14 @@ defmodule App.CtxTest do
 
     test "change_sent/1 returns a sent changeset" do
       sent = sent_fixture()
+      assert %Ecto.Changeset{} = Ctx.change_sent(sent)
+    end
+
+    test "upsert_sent/1 inserts a valid NEW sent record" do
+      json = get_json("test/fixtures/bounce.json")
+      # IO.inspect(json, label: "json")
+      sent = sent_fixture()
+      IO.inspect(sent, label: "sent")
       assert %Ecto.Changeset{} = Ctx.change_sent(sent)
     end
   end
