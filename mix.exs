@@ -47,6 +47,8 @@ defmodule App.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
 
+      {:fields, "~> 2.2"},
+
       # See: github.com/dwyl/elixir-invoke-lambda-example
       {:ex_aws, "~> 2.1.0"},
       {:ex_aws_lambda, "~> 2.0"},
