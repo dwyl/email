@@ -1,6 +1,8 @@
 defmodule App.Ctx.Person do
   use Ecto.Schema
   import Ecto.Changeset
+  alias App.Ctx.Status
+  alias App.Repo
 
   schema "people" do
     field :email, Fields.EmailEncrypted
@@ -17,7 +19,7 @@ defmodule App.Ctx.Person do
     field :tag, :id
     field :key_id, :integer
 
-    has_many :sessions, App.Ctx.Session, on_delete: :delete_all
+    # has_many :sessions, App.Ctx.Session, on_delete: :delete_all
     timestamps()
   end
 
@@ -69,8 +71,12 @@ defmodule App.Ctx.Person do
     end
   end
 
+  defp get_status_verified() do
+    Repo.get_by(Status, text: "verified")
+  end
+
   defp put_email_status_verified(changeset) do
-    status_verified = App.Ctx.get_status_verified()
+    status_verified = get_status_verified()
 
     case changeset do
       %{valid?: true} ->
