@@ -150,17 +150,18 @@ defmodule App.Ctx.Person do
     end
   end
 
-  def email_hash(email) do
-    Fields.Helpers.hash(:sha256, email)
-  end
+  # def email_hash(email) do
+  #   Fields.Helpers.hash(:sha256, email)
+  # end
 
   def get_person_by_email(email) do
     {:ok, value} = Fields.EmailPlaintext.cast(email)
-    # IO.inspect(value, label: "value")
+    IO.inspect(value, label: "value")
     # email_hash = email_hash(value)
     # IO.inspect(email_hash, label: "email_hash")
     # IO.inspect(__MODULE__, label: "__MODULE__")
 
     Repo.get_by(__MODULE__, email_hash: value)
+    |> IO.inspect(label: "Repo.get_by person_by_email")
   end
 end

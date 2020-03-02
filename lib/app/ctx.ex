@@ -67,6 +67,7 @@ defmodule App.Ctx do
 
   """
   def update_sent(%Sent{} = sent, attrs) do
+    # IO.inspect(sent, label: "sent 70")
     sent
     |> Sent.changeset(attrs)
     |> Repo.update()
@@ -113,10 +114,15 @@ defmodule App.Ctx do
     # Step 1: Check if the Person exists by email address:
     person_id = case Map.has_key?(attrs, :email) do
       true ->
+        IO.inspect(attrs.email, label: "attrs.email 116")
         case Person.get_person_by_email(attrs.email) do
           nil -> # create a new person record
             # IO.inspect("no person record")
-            {:ok, person} = Repo.insert(%Person{email: attrs.email})
+            record = %{email: attrs.email}
+            {:ok, person} =
+              %Person{}
+              |> Person.changeset(record)
+              |> Repo.insert()
             # IO.inspect(person, label: "person")
             person.id
 
@@ -140,7 +146,7 @@ defmodule App.Ctx do
         {:ok, status} =
           Status.create_status(record)
 
-        # IO.inspect(status, label: "status")
+          IO.inspect(status, label: "status 143")
         status.id
 
       status ->
@@ -162,12 +168,8 @@ defmodule App.Ctx do
         sent
 
       sent ->
-        # IO.inspect(sent, label: "sent")
-        # record = %Sent{
-        #   status_id: status_id,
-        #   message_id: attrs.message_id
-        # }
-        # {:ok, sent} = update_sent(record)
+        record = %{status_id: status_id}
+        {:ok, sent} = update_sent(%{sent | :status_id => status_id}, record)
         sent
     end
 

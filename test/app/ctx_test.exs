@@ -87,16 +87,48 @@ defmodule App.CtxTest do
       }
       # IO.inspect(data, label: "data")
       sent = Ctx.upsert_sent(data)
-      # assert json == bounce
-
       # sent = sent_fixture()
-      IO.inspect(sent, label: "sent 93")
-      # assert %Ecto.Changeset{} = Ctx.change_sent(sent)
+      # IO.inspect(sent, label: "sent 91")
+
+      data2 = %{
+        "message_id" => "0102017092006798-f0456694-ac24-487b-9467-b79b8ce798f2-000000",
+        "status" => "Bounce"
+      }
+      sent2 = Ctx.upsert_sent(data2)
+      # sent = sent_fixture()
+      # IO.inspect(sent2, label: "sent 101")
+      assert sent.person_id == sent2.person_id
+      assert sent.status_id !== sent2.status_id
     end
 
 
 
-    test "upsert_sent/1 inserts a valid NEW sent record" do
+    test "upsert_sent/1 update status for existing sent record" do
+
+      init = %{
+        "message_id" => "0102017092006798-f0456694-ac24-487b-9467-b79b8ce798f2-000000",
+        "status" => "Sent",
+        "email" => "amaze@gmail.com",
+        "template" => "welcome"
+      }
+      sent = Ctx.upsert_sent(init)
+      # IO.inspect(sent, label: "sent 115")
+
+      # bounce = get_json("test/fixtures/bounce.json")
+      bounce = %{
+        "message_id" => "0102017092006798-f0456694-ac24-487b-9467-b79b8ce798f2-000000",
+        "status" => "Bounce Permanent"
+      }
+      sent2 = Ctx.upsert_sent(bounce)
+      # assert json == bounce
+
+      # sent = sent_fixture()
+      # IO.inspect(sent2, label: "sent 126")
+      assert sent.id == sent2.id
+      assert sent.status_id == sent2.status_id - 1
+    end
+
+    test "upsert_sent/1 insert new sent with same status" do
 
       # bounce = get_json("test/fixtures/bounce.json")
       bounce = %{
@@ -104,11 +136,41 @@ defmodule App.CtxTest do
         "status" => "Bounce Permanent"
       }
       sent = Ctx.upsert_sent(bounce)
-      # assert json == bounce
+      # IO.inspect(sent, label: "sent 139")
 
+      bounce2 = %{
+        "message_id" => "1232017092006798-f0456694-ac24-487b-9467-b79b8ce798f2-000000",
+        "status" => "Bounce Permanent"
+      }
+      sent2 = Ctx.upsert_sent(bounce2)
       # sent = sent_fixture()
-      IO.inspect(sent, label: "sent 110")
-      # assert %Ecto.Changeset{} = Ctx.change_sent(sent)
+      # IO.inspect(sent, label: "sent 147")
+      assert sent.id !== sent2.id
+      assert sent.status_id == sent2.status_id
+    end
+
+
+    test "upsert_sent/1 insert two sent records for the same email" do
+
+      init = %{
+        "message_id" => "1232017092006798-f0456694-ac24-487b-9467-b79b8ce798f2-000000",
+        "status" => "Sent",
+        "email" => "amaze@gmail.com",
+        "template" => "welcome"
+      }
+      sent = Ctx.upsert_sent(init)
+      # IO.inspect(sent, label: "sent 162")
+
+      second = %{
+        "message_id" => "4562017092006798-f0456694-ac24-487b-9467-b79b8ce798f2-000000",
+        "status" => "Sent",
+        "email" => "amaze@gmail.com",
+      }
+      sent2 = Ctx.upsert_sent(second)
+      # sent = sent_fixture()
+      # IO.inspect(sent, label: "sent 171")
+      assert sent.person_id == sent2.person_id
+      assert sent.status_id == sent2.status_id
     end
   end
 end
