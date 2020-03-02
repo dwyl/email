@@ -185,6 +185,31 @@ cp ../app-mvp-phoenix/lib/app/ctx/person.ex ./lib/app/ctx/
 cp ../app-mvp-phoenix/lib/app/ctx/status.ex ./lib/app/ctx/
 ```
 
+`person.ex` depends on a couple of functions contained in
+`app-mvp-phoenix/lib/app/ctx.ex`
+_specifically_ `App.Ctx.get_status_verified/0`.
+Open `../app-mvp-phoenix/lib/app/ctx.ex` in your editor window,
+or web browser:
+[`app-mvp-phoenix/lib/app/ctx.ex`](https://github.com/dwyl/app-mvp-phoenix/blob/d0b43ba3ee95bc292cdf4d79fffab5bfed36198a/lib/app/ctx.ex)
+
+Locate the `get_status_verified/0` function:
+
+```elixir
+def get_status_verified() do
+  Repo.get_by(Status, text: "verified")
+end
+```
+Copy it and paste it into `/lib/app/ctx/person.ex`.
+
+
+
+
+We also need to add the following aliases
+to the top of the `person.ex` file:
+```elixir
+alias App.Ctx.Status
+alias App.Repo
+```
 
 
 

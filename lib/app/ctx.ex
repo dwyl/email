@@ -112,15 +112,15 @@ defmodule App.Ctx do
     IO.inspect(attrs, label: "attrs")
 
     # Step 1: Check if the status exists
-    status_id = case Repo.get_by(Sent, message_id: attrs.message_id) do
-      nil -> # create a new sent record
-        # {:error, :resource_not_found}
-        IO.inspect("no sent record")
-
-      sent ->
-        IO.inspect(sent, label: "sent")
-        sent
-    end
+    # status_id = case Repo.get_by(Status, text: attrs.status) do
+    #   nil -> # create a new sent record
+    #     # {:error, :resource_not_found}
+    #     IO.inspect("no sent record")
+    #
+    #   sent ->
+    #     IO.inspect(sent, label: "sent")
+    #     sent
+    # end
 
     # sent = case Repo.get_by(Sent, message_id: attrs.message_id) do
     #   nil -> # create a new sent record
