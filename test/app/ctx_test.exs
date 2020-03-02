@@ -82,7 +82,8 @@ defmodule App.CtxTest do
       data = %{
         "message_id" => "0102017092006798-f0456694-ac24-487b-9467-b79b8ce798f2-000000",
         "status" => "Sent",
-        "email" => "amaze@gmail.com"
+        "email" => "amaze@gmail.com",
+        "template" => "welcome"
       }
       # IO.inspect(data, label: "data")
       sent = Ctx.upsert_sent(data)
