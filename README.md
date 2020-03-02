@@ -201,9 +201,6 @@ end
 ```
 Copy it and paste it into `/lib/app/ctx/person.ex`.
 
-
-
-
 We also need to add the following aliases
 to the top of the `person.ex` file:
 ```elixir
@@ -211,6 +208,8 @@ alias App.Ctx.Status
 alias App.Repo
 ```
 
+The code for these changes is contained in
+[dwyl/email/commit/81fa2a9](https://github.com/dwyl/email/commit/81fa2a9d79f1685f3362dc1e6debb049fcf9d7f6)
 
 
 
