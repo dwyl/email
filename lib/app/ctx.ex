@@ -109,7 +109,7 @@ defmodule App.Ctx do
     # transform attrs into Map with Atoms as Keys:
     attrs = for {key, val} <- attrs, into: %{},
     do: {String.to_atom(key), val}
-
+    IO.inspect(attrs, label: "attrs 112")
     # Step 1: Check if the Person exists by email address:
     person_id = case Map.has_key?(attrs, :email) do
       true ->

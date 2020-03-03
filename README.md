@@ -587,6 +587,15 @@ Open the `router.ex` file and add the route.
 
 Test it in your terminal!!
 
+localhost:
+```
+curl -X POST "http://localhost:4000/api/"\
+  -H "Content-Type: application/json"\
+  -H "authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJKb2tlbiIsImVtYWlsIjoiYW1hemVAZ21haWwuY29tIiwiZXhwIjoxNTgzMjgzMzEyLCJpYXQiOjE1ODMyNzYxMTIsImlzcyI6Ikpva2VuIiwianRpIjoiMm5zZXFmMzhzcWVqMDk3bjVrMDAwMHQ0IiwibWVzc2FnZV9pZCI6IjEyMzIwMTcwOTIwMDY3OTgtZjA0NTY2OTQtYWMyNC00ODdiLTk0NjctYjc5YjhjZTc5OGYyLTAwMDAwMCIsIm5iZiI6MTU4MzI3NjExMiwic3RhdHVzIjoiU2VudCIsInRlbXBsYXRlIjoid2VsY29tZSJ9.-T-8BdGlbOGacVSja5EXfWhbRaUBon1HUocdJbPaf1Q"
+```
+
+
+heroku:
 ```
 curl -X POST "https://phemail.herokuapp.com/api/"\
   -H "Content-Type: application/json"\
@@ -594,10 +603,15 @@ curl -X POST "https://phemail.herokuapp.com/api/"\
 ```
 
 
+```
 curl "http://localhost:4000/api/hello"\
-  -H "Content-Type: application/json"\
+  -H "Content-Type: application/json"
+```
 
-
+```
+curl "https://phemail.herokuapp.com/api/hello"\
+  -H "Content-Type: application/json"
+```
 
 
 
