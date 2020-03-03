@@ -109,25 +109,21 @@ defmodule App.Ctx do
     # transform attrs into Map with Atoms as Keys:
     attrs = for {key, val} <- attrs, into: %{},
     do: {String.to_atom(key), val}
-    # IO.inspect(attrs, label: "attrs")
 
     # Step 1: Check if the Person exists by email address:
     person_id = case Map.has_key?(attrs, :email) do
       true ->
-        IO.inspect(attrs.email, label: "attrs.email 116")
         case Person.get_person_by_email(attrs.email) do
           nil -> # create a new person record
-            # IO.inspect("no person record")
             record = %{email: attrs.email}
             {:ok, person} =
               %Person{}
               |> Person.changeset(record)
               |> Repo.insert()
-            # IO.inspect(person, label: "person")
+
             person.id
 
           person ->
-            # IO.inspect(person, label: "sent")
             person.id
         end
 
@@ -135,27 +131,20 @@ defmodule App.Ctx do
         nil
     end
 
-
     # Step 2: Check if the status exists
     status_id = case Repo.get_by(Status, text: attrs.status) do
-      nil -> # create a new sent record
-        # {:error, :resource_not_found}
-        # IO.inspect("no status record")
+      nil -> # create a new status record
         record = %{text: attrs.status, person_id: person_id}
-
-        {:ok, status} =
-          Status.create_status(record)
-
-          IO.inspect(status, label: "status 143")
+        {:ok, status} = Status.create_status(record)
         status.id
 
       status ->
         status.id
     end
 
+    # Step 3. Insert or Update (UPSERT) the sent record:
     sent = case Repo.get_by(Sent, message_id: attrs.message_id) do
       nil -> # create a new sent record
-        # IO.inspect("no sent record")
         record = %Sent{
           status_id: status_id,
           message_id: attrs.message_id,
@@ -167,12 +156,12 @@ defmodule App.Ctx do
           |> Repo.insert()
         sent
 
-      sent ->
+      sent -> # update status of existing sent record
         record = %{status_id: status_id}
         {:ok, sent} = update_sent(%{sent | :status_id => status_id}, record)
         sent
     end
-
+    # return the sent record:
     sent
   end
 
