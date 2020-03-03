@@ -560,27 +560,28 @@ which means this is an SNS notification. <br />
 
 
 
-#### 5.1 Create the First Test for `upsert_sent/1`
+#### 5.1 Create the Tests for `upsert_sent/1`
 
 
 The SNS notification data _ingested_ from `aws-ses-lambda`
 will be inserted/updated in the `sent` table
 using the `upsert_sent/1` function.
 The function does not _currently_ exist,
-so let's start by creating a test for it.
+so let's start by creating the tests according to the spec.
+
+Tests:
+[/test/app/ctx_test.exs#L99](https://github.com/dwyl/email/blob/cfd7ca6fedec1aec68e67033d2cdd6e6dc4d04dd/test/app/ctx_test.exs#L99-L154)
 
 
+##### 5.2 Implement the `upsert_sent/2` function
+
+Implement the function according to the spec:
+[/lib/app/ctx.ex#L108](https://github.com/dwyl/email/blob/cfd7ca6fedec1aec68e67033d2cdd6e6dc4d04dd/lib/app/ctx.ex#L108-L166)
 
 
+#### 5.3 Create Endpoint
 
-
-
-##### 5.1.1 Create Bounce Fixture
-
-
-
-`test/fixtures/bounce.json`
-
+Open the 
 
 
 

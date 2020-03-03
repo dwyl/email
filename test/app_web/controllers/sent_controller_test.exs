@@ -85,4 +85,44 @@ defmodule AppWeb.SentControllerTest do
     sent = fixture(:sent)
     {:ok, sent: sent}
   end
+
+  describe "ingress" do
+    test "reject request if no authorization header" do
+      conn = build_conn()
+         |> AppWeb.SentController.process_jwt()
+
+      # IO.inspect(conn, label: "conn")
+      assert conn.status == 401
+    end
+
+    test "reject request if JWT invalid" do
+      jwt = "this.fails"
+      conn = build_conn()
+         |> put_req_header("authorization", "#{jwt}")
+         |> AppWeb.SentController.process_jwt()
+
+      # IO.inspect(conn, label: "conn")
+      assert conn.status == 401
+    end
+
+    test "valid jwt upsert_sent data" do
+      json = %{
+        "message_id" => "1232017092006798-f0456694-ac24-487b-9467-b79b8ce798f2-000000",
+        "status" => "Sent",
+        "email" => "amaze@gmail.com",
+        "template" => "welcome"
+      }
+
+      jwt = App.Token.generate_and_sign!(json)
+      # IO.inspect(jwt, label: "jwt 117")
+      conn = build_conn()
+         |> put_req_header("authorization", "#{jwt}")
+         |> AppWeb.SentController.process_jwt()
+
+      # assert conn.assigns.claims.email == "person@dwyl.com"
+      # IO.inspect(conn, label: "conn")
+      assert conn.status == 200
+    end
+  end
+
 end

@@ -47,7 +47,11 @@ defmodule App.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
 
+      # https://github.com/dwyl/fields
       {:fields, "~> 2.2"},
+
+      # https://hexdocs.pm/joken/introduction.html#usage
+      {:joken, "~> 2.2"},
 
       # See: github.com/dwyl/elixir-invoke-lambda-example
       {:ex_aws, "~> 2.1.0"},

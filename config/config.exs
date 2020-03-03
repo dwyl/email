@@ -44,3 +44,6 @@ config :fields, Fields.AES,
     |> Enum.map(fn key -> :base64.decode(key) end)
 
 config :fields, Fields, secret_key_base: System.get_env("SECRET_KEY_BASE")
+
+# https://hexdocs.pm/joken/introduction.html#usage
+config :joken, default_signer: "secret"
