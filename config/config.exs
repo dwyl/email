@@ -46,4 +46,4 @@ config :fields, Fields.AES,
 config :fields, Fields, secret_key_base: System.get_env("SECRET_KEY_BASE")
 
 # https://hexdocs.pm/joken/introduction.html#usage
-config :joken, default_signer: "secret"
+config :joken, default_signer: System.get_env("SECRET_KEY_BASE")
