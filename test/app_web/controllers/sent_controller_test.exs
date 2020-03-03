@@ -89,7 +89,7 @@ defmodule AppWeb.SentControllerTest do
   describe "ingress" do
     test "reject request if no authorization header" do
       conn = build_conn()
-         |> AppWeb.SentController.process_jwt()
+         |> AppWeb.SentController.process_jwt(nil)
 
       # IO.inspect(conn, label: "conn")
       assert conn.status == 401
@@ -99,7 +99,7 @@ defmodule AppWeb.SentControllerTest do
       jwt = "this.fails"
       conn = build_conn()
          |> put_req_header("authorization", "#{jwt}")
-         |> AppWeb.SentController.process_jwt()
+         |> AppWeb.SentController.process_jwt(nil)
 
       # IO.inspect(conn, label: "conn")
       assert conn.status == 401
@@ -117,7 +117,7 @@ defmodule AppWeb.SentControllerTest do
       IO.inspect(jwt, label: "jwt 117")
       conn = build_conn()
          |> put_req_header("authorization", "#{jwt}")
-         |> AppWeb.SentController.process_jwt()
+         |> AppWeb.SentController.process_jwt(nil)
 
       # assert conn.assigns.claims.email == "person@dwyl.com"
       # IO.inspect(conn, label: "conn")
