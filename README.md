@@ -685,3 +685,9 @@ JWT_SECRET=WhatEverYouWant
 ## Troubleshooting
 
 -->
+
+## Relevant Reading
+
++ JWT intro: https://jwt.io/introduction
++ Learn JWT: https://github.com/dwyl/learn-json-web-tokens
++ JWT with Joken: https://elixirschool.com/blog/jwt-auth-with-joken

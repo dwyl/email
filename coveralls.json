@@ -9,6 +9,7 @@
     "lib/app_web/views/error_helpers.ex",
     "lib/app/ctx/status.ex",
     "lib/app/ctx/person.ex",
+    "lib/app_web/controllers/github_version_controller.ex",
     "test/"
   ]
 }

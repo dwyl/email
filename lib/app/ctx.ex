@@ -103,7 +103,7 @@ defmodule App.Ctx do
   end
 
   @doc """
-  UPSERT a sent record
+  `upsert_sent/1` inserts or updates a sent record.
   """
   def upsert_sent(attrs) do
     # transform attrs into Map with Atoms as Keys:
@@ -139,8 +139,8 @@ defmodule App.Ctx do
         status.id
     end
 
-    # Step 3. Insert or Update (UPSERT) the sent record:
-    sent = case Repo.get_by(Sent, message_id: attrs.message_id) do
+    # Step 3. Insert or Update (UPSERT) then return the sent record:
+    case Repo.get_by(Sent, message_id: attrs.message_id) do
       nil -> # create a new sent record
         record = %Sent{
           status_id: status_id,
@@ -157,7 +157,5 @@ defmodule App.Ctx do
         {:ok, sent} = update_sent(sent, %{status_id: status_id})
         sent
     end
-    # return the sent record:
-    sent
   end
 end

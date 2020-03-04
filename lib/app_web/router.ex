@@ -26,4 +26,8 @@ defmodule AppWeb.Router do
     get "/hello", SentController, :hello
     post "/", SentController, :process_jwt
   end
+
+  scope "/", AppWeb do
+    get "/_version", GithubVersionController, :index # for deployment versioning
+  end
 end
