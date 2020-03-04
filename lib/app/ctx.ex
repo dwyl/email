@@ -109,18 +109,16 @@ defmodule App.Ctx do
     # transform attrs into Map with Atoms as Keys:
     attrs = for {key, val} <- attrs, into: %{},
     do: {String.to_atom(key), val}
-    IO.inspect(attrs, label: "attrs 112")
+    # IO.inspect(attrs, label: "attrs 112")
     # Step 1: Check if the Person exists by email address:
     person_id = case Map.has_key?(attrs, :email) do
       true ->
         case Person.get_person_by_email(attrs.email) do
           nil -> # create a new person record
-            record = %{email: attrs.email}
             {:ok, person} =
               %Person{}
-              |> Person.changeset(record)
+              |> Person.changeset(%{email: attrs.email})
               |> Repo.insert()
-
             person.id
 
           person ->
@@ -157,8 +155,7 @@ defmodule App.Ctx do
         sent
 
       sent -> # update status of existing sent record
-        record = %{status_id: status_id}
-        {:ok, sent} = update_sent(%{sent | :status_id => status_id}, record)
+        {:ok, sent} = update_sent(sent, %{status_id: status_id})
         sent
     end
     # return the sent record:

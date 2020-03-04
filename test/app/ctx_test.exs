@@ -110,9 +110,11 @@ defmodule App.CtxTest do
         "status" => "Bounce Permanent"
       }
       sent2 = Ctx.upsert_sent(bounce)
-
+      # IO.inspect(sent, label: "sent 113")
+      # IO.inspect(sent2, label: "sent2 114")
       assert sent.id == sent2.id
       assert sent.status_id == sent2.status_id - 1
+
     end
 
     test "upsert_sent/1 insert new sent with same status" do

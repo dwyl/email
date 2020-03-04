@@ -613,6 +613,11 @@ curl "https://phemail.herokuapp.com/api/hello"\
   -H "Content-Type: application/json"
 ```
 
+Unauth:
+```
+
+```
+
 
 
 <!--
