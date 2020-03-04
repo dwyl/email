@@ -18,6 +18,7 @@ defmodule AppWeb.Router do
 
     get "/", PageController, :index
     resources "/sent", SentController
+    get "/_version", GithubVersionController, :index # for deployment versioning
   end
 
   # Other scopes may use custom stacks.
@@ -25,9 +26,5 @@ defmodule AppWeb.Router do
     pipe_through :api
     get "/hello", SentController, :hello
     post "/", SentController, :process_jwt
-  end
-
-  scope "/", AppWeb do
-    get "/_version", GithubVersionController, :index # for deployment versioning
   end
 end
