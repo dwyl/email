@@ -615,7 +615,8 @@ curl "https://phemail.herokuapp.com/api/hello"\
 
 Unauth:
 ```
-
+curl "https://phemail.herokuapp.com/api/unauthorized"\
+  -H "Content-Type: application/json"
 ```
 
 

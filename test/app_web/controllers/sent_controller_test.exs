@@ -90,7 +90,7 @@ defmodule AppWeb.SentControllerTest do
     conn = build_conn()
        |> AppWeb.SentController.hello(nil)
 
-    IO.inspect(conn, label: "conn")
+    # IO.inspect(conn, label: "conn")
     assert conn.status == 200
   end
 
@@ -122,7 +122,7 @@ defmodule AppWeb.SentControllerTest do
       }
 
       jwt = App.Token.generate_and_sign!(json)
-      IO.inspect(jwt, label: "jwt 117")
+      # IO.inspect(jwt, label: "jwt 117")
       conn = build_conn()
          |> put_req_header("authorization", "#{jwt}")
          |> AppWeb.SentController.process_jwt(nil)
