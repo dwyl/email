@@ -24,7 +24,6 @@ defmodule AppWeb.Router do
   scope "/api", AppWeb do
     pipe_through :api
     get "/hello", SentController, :hello
-    get "/unauthorized", SentController, :unauthorized
     post "/", SentController, :process_jwt
   end
 end

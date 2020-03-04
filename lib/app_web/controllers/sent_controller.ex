@@ -60,6 +60,7 @@ defmodule AppWeb.SentController do
     |> redirect(to: Routes.sent_path(conn, :index))
   end
 
+  # test handler function I used while getting Heroku working:
   def hello(conn, _params) do
     data = %{"hello" => "world"}
     conn

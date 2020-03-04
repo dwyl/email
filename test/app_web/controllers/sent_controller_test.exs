@@ -86,6 +86,14 @@ defmodule AppWeb.SentControllerTest do
     {:ok, sent: sent}
   end
 
+  test "test hello endpoint (always returns 200)" do
+    conn = build_conn()
+       |> AppWeb.SentController.hello(nil)
+
+    IO.inspect(conn, label: "conn")
+    assert conn.status == 200
+  end
+
   describe "ingress" do
     test "reject request if no authorization header" do
       conn = build_conn()
