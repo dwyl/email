@@ -79,7 +79,7 @@ defmodule AppWeb.SentController do
     jwt = List.first(Plug.Conn.get_req_header(conn, "authorization"))
     if is_nil(jwt) do
       unauthorized(conn, nil)
-    else
+    else # fast check for JWT format validity before slower verify:
       case Enum.count(String.split(jwt, ".")) == 3 do
         true -> # valid JWT proceed to verifying it
           {:ok, claims} = App.Token.verify_and_validate(jwt)
