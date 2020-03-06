@@ -94,12 +94,11 @@ defmodule AppWeb.SentControllerTest do
     assert conn.status == 200
   end
 
-  describe "ingress" do
+  describe "process_jwt" do
     test "reject request if no authorization header" do
       conn = build_conn()
          |> AppWeb.SentController.process_jwt(nil)
 
-      # IO.inspect(conn, label: "conn")
       assert conn.status == 401
     end
 
@@ -109,11 +108,10 @@ defmodule AppWeb.SentControllerTest do
          |> put_req_header("authorization", "#{jwt}")
          |> AppWeb.SentController.process_jwt(nil)
 
-      # IO.inspect(conn, label: "conn")
       assert conn.status == 401
     end
 
-    test "valid jwt upsert_sent data" do
+    test "processes valid jwt upsert_sent data" do
       json = %{
         "message_id" => "1232017092006798-f0456694-ac24-487b-9467-b79b8ce798f2-000000",
         "status" => "Sent",
@@ -122,14 +120,13 @@ defmodule AppWeb.SentControllerTest do
       }
 
       jwt = App.Token.generate_and_sign!(json)
-      # IO.inspect(jwt, label: "jwt 117")
       conn = build_conn()
          |> put_req_header("authorization", "#{jwt}")
          |> AppWeb.SentController.process_jwt(nil)
 
-      # assert conn.assigns.claims.email == "person@dwyl.com"
-      # IO.inspect(conn, label: "conn")
       assert conn.status == 200
+      {:ok, resp} = Jason.decode(conn.resp_body)
+      assert Map.get(resp, "id") > 0 # id increases each time test is run
     end
   end
 
