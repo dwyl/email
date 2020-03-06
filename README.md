@@ -573,21 +573,160 @@ Tests:
 [/test/app/ctx_test.exs#L99](https://github.com/dwyl/email/blob/cfd7ca6fedec1aec68e67033d2cdd6e6dc4d04dd/test/app/ctx_test.exs#L99-L154)
 
 
-##### 5.2 Implement the `upsert_sent/2` function
+#### 5.2 Implement the `upsert_sent/2` function
 
 Implement the function according to the spec:
 [/lib/app/ctx.ex#L108](https://github.com/dwyl/email/blob/cfd7ca6fedec1aec68e67033d2cdd6e6dc4d04dd/lib/app/ctx.ex#L108-L166)
 
 
-#### 5.3 Create Endpoint
+#### 5.3 Create Tests for Processing API Requests
 
-Open the `router.ex` file and add the route.
+We are going to create a function called `process_jwt/2`
+that will handle inbound API requests.
+There are 3 scenarios we want to test:
+1. If `authorization` header is not present, immediately reject the request.
+2. If `authorization` header has invalid `JWT`, reject as `unauthorized`.
+3. If `authorization` header has a _valid_ `JWT`, invoke `upsert_sent/1`.
+
+Add these 3 tests to the
+[`test/app_web/controllers/sent_controller_test.exs`](https://github.com/dwyl/email/blob/ed015ca7eb3b355aede6d640eb78ea0b6696a626/test/app_web/controllers/sent_controller_test.exs#L97-L131)
+file:
+
+```elixir
+describe "process_jwt" do
+  test "reject request if no authorization header" do
+    conn = build_conn()
+       |> AppWeb.SentController.process_jwt(nil)
+
+    assert conn.status == 401
+  end
+
+  test "reject request if JWT invalid" do
+    jwt = "this.fails"
+    conn = build_conn()
+       |> put_req_header("authorization", "#{jwt}")
+       |> AppWeb.SentController.process_jwt(nil)
+
+    assert conn.status == 401
+  end
+
+  test "processes valid jwt upsert_sent data" do
+    json = %{
+      "message_id" => "1232017092006798-f0456694-ac24-487b-9467-b79b8ce798f2-000000",
+      "status" => "Sent",
+      "email" => "amaze@gmail.com",
+      "template" => "welcome"
+    }
+
+    jwt = App.Token.generate_and_sign!(json)
+    conn = build_conn()
+       |> put_req_header("authorization", "#{jwt}")
+       |> AppWeb.SentController.process_jwt(nil)
+
+    assert conn.status == 200
+    {:ok, resp} = Jason.decode(conn.resp_body)
+    assert Map.get(resp, "id") > 0 # id increases each time test is run
+  end
+end
+```
+
+For the complete test code, see:
+[`test/app_web/controllers/sent_controller_test.exs`](https://github.com/dwyl/email/blob/ed015ca7eb3b355aede6d640eb78ea0b6696a626/test/app_web/controllers/sent_controller_test.exs#L97-L131)
+
+To run one of these tests, execute the following command in your terminal:
+```sh
+mix test test/app_web/controllers/sent_controller_test.exs:97
+```
+
+The tests will _fail_ until you implement the function below.
+
+e.g:
+[/lib/app_web/router.ex#L28](https://github.com/dwyl/email/blob/bcfc180f6b3448acf82b19487aa7dc77bf932800/lib/app_web/router.ex#L28)
 
 
+#### 5.4 Implement the `process_jwt` Function
 
-Test it in your terminal!!
+Open the
+[`/lib/app_web/controllers/sent_controller.ex`](https://github.com/dwyl/email/blob/fec197a950fe2414b8e3b5da7fcf986b55df9c37/lib/app_web/controllers/sent_controller.ex#L78-L96)
+file and add the following code:
 
-localhost:
+```elixir
+@doc """
+`unauthorized/2` reusable unauthorized response handler used in process_jwt/2
+"""
+def unauthorized(conn, _params) do
+  conn
+  |> send_resp(401, "unauthorized")
+  |> halt()
+end
+
+@doc """
+`process_jwt/2` processes an API request with a JWT in authorization header.
+"""
+def process_jwt(conn, _params) do
+  jwt = List.first(Plug.Conn.get_req_header(conn, "authorization"))
+  if is_nil(jwt) do
+    unauthorized(conn, nil)
+  else # fast check for JWT format validity before slower verify:
+    case Enum.count(String.split(jwt, ".")) == 3 do
+      true -> # valid JWT proceed to verifying it
+        {:ok, claims} = App.Token.verify_and_validate(jwt)
+        sent = App.Ctx.upsert_sent(claims)
+        data = %{"id" => sent.id}
+        conn
+        |> put_resp_header("content-type", "application/json;")
+        |> send_resp(200, Jason.encode!(data, pretty: true))
+
+      false -> # invalid JWT return 401
+        unauthorized(conn, nil)
+    end
+  end
+end
+```
+
+
+#### 5.5 Create `/api` Endpoint
+
+Open the `/lib/app_web/router.ex` file and add the following route
+to the `scope "/api", AppWeb do` block:
+
+```elixir
+    post "/", SentController, :process_jwt
+```
+
+Before:
+```elixir
+# Other scopes may use custom stacks.
+scope "/api", AppWeb do
+  pipe_through :api
+end
+```
+
+After:
+```elixir
+# Other scopes may use custom stacks.
+scope "/api", AppWeb do
+  pipe_through :api
+  post "/", SentController, :process_jwt
+end
+```
+
+See:
+[`/lib/app_web/controllers/sent_controller.ex#L78-L96`](https://github.com/dwyl/email/blob/fec197a950fe2414b8e3b5da7fcf986b55df9c37/lib/app_web/controllers/sent_controller.ex#L78-L96)
+
+
+#### 5.6 Test `/api` Endpoint Using `curl`
+
+
+Test the `/api` endpoint in terminal using `curl`!!
+
+
+On `localhost` run the app::
+```elixir
+mix phx.server
+```
+
+Execute the following `curl` command:
 ```
 curl -X POST "http://localhost:4000/api/"\
   -H "Content-Type: application/json"\
@@ -595,37 +734,50 @@ curl -X POST "http://localhost:4000/api/"\
 ```
 
 
-heroku:
+Once the app is deployed to Heroku:
 ```
 curl -X POST "https://phemail.herokuapp.com/api/"\
   -H "Content-Type: application/json"\
   -H "authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZXNzYWdlX2lkIjoiMDEwMjAxNzA5MjAwNjc5OC1mMDQ1NjY5NC1hYzI0LTQ4N2ItOTQ2Ny1iNzliOGNlNzk4ZjItMDAwMDAwIiwic3RhdHVzIjoiQm91bmNlIFBlcm1hbmVudCIsImlhdCI6MTU4MzM0NTgyOX0.oSp0gOTcoV-YN7yk-tUtni-HHHuP58cg6AjIEJ0-tDk"
 ```
 
+Expect to see the following result:
+```json
+{
+  "id": 2
+}
+```
 
+
+#### _Optional_
+
+We created a test endpoint `/api/hello`
+in order to have a basic URL we can test on Heroku.
+
+see:
++ [lib/app_web/router.ex#L27](https://github.com/dwyl/email/blob/bcfc180f6b3448acf82b19487aa7dc77bf932800/lib/app_web/router.ex#L27)
++ [/lib/app_web/controllers/sent_controller.ex#L63-L69](https://github.com/dwyl/email/blob/bcfc180f6b3448acf82b19487aa7dc77bf932800/lib/app_web/controllers/sent_controller.ex#L63-L69)
+
+
+On localhost:
 ```
 curl "http://localhost:4000/api/hello"\
   -H "Content-Type: application/json"
 ```
 
+You should expect to see the following response:
+
+```json
+{
+  "hello": "world"
+}
+```
+
+On Heroku the result should be identical:
 ```
 curl "https://phemail.herokuapp.com/api/hello"\
   -H "Content-Type: application/json"
 ```
-
-Unauth:
-```
-curl "https://phemail.herokuapp.com/api/unauthorized"\
-  -H "Content-Type: application/json"
-```
-
-
-
-<!--
-We are going invoke the `create_sent/1` function
-in `lib/app/ctx.ex` to insert data into the `sent` table.
--->
-
 
 
 
