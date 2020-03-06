@@ -68,13 +68,18 @@ defmodule AppWeb.SentController do
     |> send_resp(200, Jason.encode!(data, pretty: true))
   end
 
+  @doc """
+  `unauthorized/2` reusable unauthorized response handler used in process_jwt/2
+  """
   def unauthorized(conn, _params) do
     conn
     |> send_resp(401, "unauthorized")
     |> halt()
   end
 
-
+  @doc """
+  `process_jwt/2` processes an API request with a JWT in authorization header.
+  """
   def process_jwt(conn, _params) do
     jwt = List.first(Plug.Conn.get_req_header(conn, "authorization"))
     if is_nil(jwt) do
