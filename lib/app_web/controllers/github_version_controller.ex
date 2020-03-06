@@ -19,7 +19,7 @@ defmodule AppWeb.GithubVersionController do
     end
 
     {rev, _} = System.cmd("git", ["rev-parse", "HEAD"])
-    # IO.puts(String.replace(rev, "\n", ""))
-    text conn, String.replace(rev, "\n", "")
+    IO.puts(String.replace(rev, "\n", ""))
+    text conn, String.replace(rev,  "\n", "")
   end
 end
