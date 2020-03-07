@@ -707,7 +707,7 @@ After:
 # Other scopes may use custom stacks.
 scope "/api", AppWeb do
   pipe_through :api
-  post "/", SentController, :process_jwt
+  post "/sns", SentController, :process_jwt
 end
 ```
 
