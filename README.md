@@ -691,7 +691,7 @@ Open the `/lib/app_web/router.ex` file and add the following route
 to the `scope "/api", AppWeb do` block:
 
 ```elixir
-    post "/", SentController, :process_jwt
+post "/", SentController, :process_jwt
 ```
 
 Before:
@@ -712,10 +712,11 @@ end
 ```
 
 See:
-[`/lib/app_web/controllers/sent_controller.ex#L78-L96`](https://github.com/dwyl/email/blob/fec197a950fe2414b8e3b5da7fcf986b55df9c37/lib/app_web/controllers/sent_controller.ex#L78-L96)
+[`/lib/app_web/router.ex#L25-L29`](https://github.com/dwyl/email/blob/e6899462c901021dc9e13254d3f8efd0927b8398/lib/app_web/router.ex#L25-L29)
 
+<br />
 
-#### 5.6 Test `/api` Endpoint Using `curl`
+#### 5.6 Test `/api/sns` Endpoint Using `curl`
 
 
 Test the `/api` endpoint in terminal using `curl`!!
@@ -728,7 +729,7 @@ mix phx.server
 
 Execute the following `curl` command:
 ```
-curl -X POST "http://localhost:4000/api/"\
+curl -X POST "http://localhost:4000/api/sns"\
   -H "Content-Type: application/json"\
   -H "authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJKb2tlbiIsImVtYWlsIjoiYW1hemVAZ21haWwuY29tIiwiZXhwIjoxNTgzMjgzMzEyLCJpYXQiOjE1ODMyNzYxMTIsImlzcyI6Ikpva2VuIiwianRpIjoiMm5zZXFmMzhzcWVqMDk3bjVrMDAwMHQ0IiwibWVzc2FnZV9pZCI6IjEyMzIwMTcwOTIwMDY3OTgtZjA0NTY2OTQtYWMyNC00ODdiLTk0NjctYjc5YjhjZTc5OGYyLTAwMDAwMCIsIm5iZiI6MTU4MzI3NjExMiwic3RhdHVzIjoiU2VudCIsInRlbXBsYXRlIjoid2VsY29tZSJ9.-T-8BdGlbOGacVSja5EXfWhbRaUBon1HUocdJbPaf1Q"
 ```
@@ -736,7 +737,7 @@ curl -X POST "http://localhost:4000/api/"\
 
 Once the app is deployed to Heroku:
 ```
-curl -X POST "https://phemail.herokuapp.com/api/"\
+curl -X POST "https://phemail.herokuapp.com/api/sns"\
   -H "Content-Type: application/json"\
   -H "authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZXNzYWdlX2lkIjoiMDEwMjAxNzA5MjAwNjc5OC1mMDQ1NjY5NC1hYzI0LTQ4N2ItOTQ2Ny1iNzliOGNlNzk4ZjItMDAwMDAwIiwic3RhdHVzIjoiQm91bmNlIFBlcm1hbmVudCIsImlhdCI6MTU4MzM0NTgyOX0.oSp0gOTcoV-YN7yk-tUtni-HHHuP58cg6AjIEJ0-tDk"
 ```
