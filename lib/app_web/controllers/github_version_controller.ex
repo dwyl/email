@@ -4,6 +4,7 @@ defmodule AppWeb.GithubVersionController do
   @doc """
   `index/2` returns the current git revision hash.
   This allows us to know exactly which version of the App is running.
+  Note: it does not work on Heroku 😞 but it will work on other IaaS.
   """
   def index(conn, _params) do
     # leaving IO.inspect / puts in for debugging till further notice
