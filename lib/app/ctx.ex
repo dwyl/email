@@ -114,11 +114,10 @@ defmodule App.Ctx do
       true ->
         case Person.get_person_by_email(attrs.email) do
           nil -> # create a new person record
-            {:ok, person} =
-              %Person{}
+            {:ok, person} = %Person{}
               |> Person.changeset(%{email: attrs.email})
               |> Repo.insert()
-            IO.inspect(person, label: "person")
+            # IO.inspect(person, label: "person")
             person.id
 
           person ->
@@ -143,15 +142,11 @@ defmodule App.Ctx do
     # Step 3. Insert or Update (UPSERT) then return the sent record:
     case Repo.get_by(Sent, message_id: attrs.message_id) do
       nil -> # create a new sent record
-        record = %Sent{
-          status_id: status_id,
-          message_id: attrs.message_id,
-          person_id: person_id
-        }
         {:ok, sent} =
-          record
+          %Sent{ status_id: status_id, person_id: person_id }
           |> Sent.changeset(attrs)
           |> Repo.insert()
+          |> IO.inspect(label: "sent")
         sent
 
       sent -> # update status of existing sent record
