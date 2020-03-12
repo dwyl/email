@@ -17,7 +17,8 @@ defmodule AppWeb.Router do
   scope "/", AppWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
+    # get "/", PageController, :index
+    live("/", Dashboard)
     resources "/sent", SentController
     get "/_version", GithubVersionController, :index # for deployment versioning
   end
