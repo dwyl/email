@@ -790,7 +790,9 @@ In this section we are going to use Phoenix
 [LiveView](https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.html)
 to create a realtime dynamic Email status/stats dashboard.
 
-GOTO: https://github.com/dwyl/phoenix-liveview-counter-tutorial/issues/1
+The setup steps for Phoenix LiveView
+are covered in:
+[github.com/dwyl/phoenix-liveview-counter-tutorial](https://github.com/dwyl/phoenix-liveview-counter-tutorial#step-2-add-liveview-to-deps-in-mixexs-file)
 
 
 
