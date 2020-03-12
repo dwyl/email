@@ -17,3 +17,4 @@ env:
   global:
   - MIX_ENV=test
   - AWS_REGION=eu-west-1
+  - LIVEVIEW_SIGNING_SALT=EverythingIsAwesome
