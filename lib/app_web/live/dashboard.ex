@@ -1,26 +1,37 @@
 defmodule AppWeb.Dashboard do
   use Phoenix.LiveView
 
-  def mount(_params, _session, socket) do
-    {:ok, assign(socket, :val, 0),
-      layout: {AppWeb.LayoutView, "live.html"}}
-  end
+    @topic "live"
 
-  def handle_event("inc", _, socket) do
-    {:noreply, update(socket, :val, &(&1 + 1))}
-  end
+    def mount(_session, _params, socket) do
+      AppWeb.Endpoint.subscribe(@topic) # subscribe to the channel
+      {:ok, assign(socket, :val, 0),
+        layout: {AppWeb.LayoutView, "live.html"}}
+    end
 
-  def handle_event("dec", _, socket) do
-    {:noreply, update(socket, :val, &(&1 - 1))}
-  end
+    def handle_event("inc", _value, socket) do
+      new_state = update(socket, :val, &(&1 + 1))
+      AppWeb.Endpoint.broadcast_from(self(), @topic, "inc", new_state.assigns)
+      {:noreply, new_state}
+    end
 
-  def render(assigns) do
-    ~L"""
-    <div>
-      <h1>The count is: <%= @val %></h1>
-      <button phx-click="dec">-</button>
-      <button phx-click="inc">+</button>
-    </div>
-    """
-  end
+    def handle_event("dec", _, socket) do
+      new_state = update(socket, :val, &(&1 - 1))
+      AppWeb.Endpoint.broadcast_from(self(), @topic, "dec", new_state.assigns)
+      {:noreply, new_state}
+    end
+
+    def handle_info(msg, socket) do
+      {:noreply, assign(socket, val: msg.payload.val)}
+    end
+
+    def render(assigns) do
+      ~L"""
+      <div>
+        <h1>The count is: <%= @val %></h1>
+        <button phx-click="dec">-</button>
+        <button phx-click="inc">+</button>
+      </div>
+      """
+    end
 end
