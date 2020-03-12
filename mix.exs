@@ -36,7 +36,7 @@ defmodule App.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.4.13"},
+      {:phoenix, "~> 1.4.15"},
       {:phoenix_pubsub, "~> 1.1"},
       {:phoenix_ecto, "~> 4.0"},
       {:ecto_sql, "~> 3.1"},
@@ -60,7 +60,7 @@ defmodule App.MixProject do
       {:hackney, "~> 1.9"},
 
       # LiveView for Realtime Dashboard! github.com/dwyl/email/issues/23
-      
+      {:phoenix_live_view, "~> 0.9.0"},
 
       # Test Code Coverage:
       {:excoveralls, "~> 0.12.2", only: :test},
