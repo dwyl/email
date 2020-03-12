@@ -7,8 +7,11 @@ defmodule AppWeb.Endpoint do
   @session_options [
     store: :cookie,
     key: "_app_key",
-    signing_salt: "b6V5Ntfg"
+    signing_salt: System.get_env("LIVEVIEW_SIGNING_SALT")
   ]
+
+  socket "/live", Phoenix.LiveView.Socket,
+    websocket: [connect_info: [session: @session_options]]
 
   socket "/socket", AppWeb.UserSocket,
     websocket: true,
