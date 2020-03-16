@@ -6,8 +6,7 @@
       <th>Message</th>
       <th>Request</th>
       <th>Template</th>
-
-      <th></th>
+      <th>Status</th>
     </tr>
   </thead>
   <tbody>
@@ -16,6 +15,7 @@
       <td><%= sent.message_id %></td>
       <td><%= sent.request_id %></td>
       <td><%= sent.template %></td>
+      <td><%= sent.status_id %></td>
 
       <td>
         <span><%= link "Show", to: Routes.sent_path(@conn, :show, sent) %></span>

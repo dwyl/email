@@ -3,3 +3,26 @@
   <button phx-click="dec">-</button>
   <button phx-click="inc">+</button>
 </div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Message</th>
+      <th>Request</th>
+      <th>Template</th>
+      <th>Status</th>
+      <th>Time</th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for sent <- @sent do %>
+    <tr>
+      <td><%= sent.message_id %></td>
+      <td><%= sent.request_id %></td>
+      <td><%= sent.template %></td>
+      <td><%= sent.status_id %></td>
+      <td><%= sent.inserted_at %></td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
