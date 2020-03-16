@@ -22,11 +22,11 @@ defmodule App.Ctx do
 
 
   @doc """
-  Returns the list of sent items with the status.text
+  `list_sent_with_status` Returns the list of sent items with the status.text
   I hand-crafted this SQL query becuase the Ecto queryable wasn't working.
   Feel free to refactor it if you know how.
   """
-  def list_sent_join do
+  def list_sent_with_status do
     query = """
       SELECT s.id, s.message_id, s.inserted_at, s.template,
       st.text as status, s.person_id

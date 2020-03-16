@@ -5,7 +5,7 @@ defmodule AppWeb.Dashboard do
 
     def mount(_session, _params, socket) do
       AppWeb.Endpoint.subscribe(@topic) # subscribe to the channel
-      sent = App.Ctx.list_sent_join()
+      sent = App.Ctx.list_sent_with_status()
       # IO.inspect(sent, label: "sent")
       {:ok, assign(socket, %{val: 0, sent: sent}),
         layout: {AppWeb.LayoutView, "live.html"}}
