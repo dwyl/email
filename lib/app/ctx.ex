@@ -17,26 +17,33 @@ defmodule App.Ctx do
 
   """
   def list_sent do
+    Repo.all(Sent)
+  end
 
+  def list_sent_join do
     query = """
-      SELECT s.id, s.message_id, s.inserted_at, s.template, st.text as status
+      SELECT s.id, s.message_id, s.inserted_at, s.template,
+      st.text as status, s.person_id
       FROM sent s
       JOIN status as st on s.status_id = st.id
-      WHERE s.template IS NOT NULL
       ORDER by s.updated_at DESC
     """
     {:ok, result} = Repo.query(query)
 
-    Enum.map(result.rows, fn([id, mid, iat, t, s]) ->
+    Enum.map(result.rows, fn([id, mid, iat, t, s, pid]) ->
       %{
         id: id,
         message_id: mid,
         inserted_at: iat,
         template: t,
-        status: s
+        status: s,
+        person_id: pid
       }
     end)
+    # |> IO.inspect(label: "rows")
   end
+
+
 
   @doc """
   Gets a single sent.
@@ -126,7 +133,7 @@ defmodule App.Ctx do
   def upsert_sent(attrs) do
     # transform attrs into Map with Atoms as Keys:
     attrs = for {k, v} <- attrs, into: %{}, do: {String.to_atom(k), v}
-    IO.inspect(attrs, label: "attrs")
+    # IO.inspect(attrs, label: "attrs")
     # Step 1: Check if the Person exists by email address:
     person_id = case Map.has_key?(attrs, :email) do
       true ->

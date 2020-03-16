@@ -5,14 +5,14 @@ defmodule AppWeb.Dashboard do
 
     def mount(_session, _params, socket) do
       AppWeb.Endpoint.subscribe(@topic) # subscribe to the channel
-      sent = App.Ctx.list_sent()
+      sent = App.Ctx.list_sent_join()
       # IO.inspect(sent, label: "sent")
       {:ok, assign(socket, %{val: 0, sent: sent}),
         layout: {AppWeb.LayoutView, "live.html"}}
     end
 
     def handle_event("inc", _value, socket) do
-      sent = App.Ctx.list_sent()
+      # sent = App.Ctx.list_sent()
 
       IO.inspect(socket, label: "socket")
       new_state = update(socket, :val, &(&1 + 1))
