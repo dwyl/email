@@ -30,7 +30,7 @@ config :app, AppWeb.Endpoint,
   ],
   secret_key_base: secret_key_base,
   url: [scheme: "https", host: "phemail.herokuapp.com", port: 443],
-  force_ssl: [rewrite_on: [:x_forwarded_proto]],
+  force_ssl: [rewrite_on: [:x_forwarded_proto]]
 
 # ## Using releases (Elixir v1.9+)
 #
