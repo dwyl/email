@@ -17,7 +17,9 @@ defmodule App.Ctx do
 
   """
   def list_sent do
-    Repo.all(Sent)
+    Sent
+    |> order_by(desc: :inserted_at)
+    |> Repo.all()
   end
 
   @doc """
