@@ -8,7 +8,6 @@
   <thead>
     <tr>
       <th>Message</th>
-      <th>Request</th>
       <th>Template</th>
       <th>Status</th>
       <th>Time</th>
@@ -18,9 +17,8 @@
 <%= for sent <- @sent do %>
     <tr>
       <td><%= sent.message_id %></td>
-      <td><%= sent.request_id %></td>
       <td><%= sent.template %></td>
-      <td><%= sent.status_id %></td>
+      <td><%= sent.status %></td>
       <td><%= sent.inserted_at %></td>
     </tr>
 <% end %>

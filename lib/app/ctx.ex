@@ -17,9 +17,25 @@ defmodule App.Ctx do
 
   """
   def list_sent do
-    Sent
-    |> order_by(desc: :inserted_at)
-    |> Repo.all()
+
+    query = """
+      SELECT s.id, s.message_id, s.inserted_at, s.template, st.text as status
+      FROM sent s
+      JOIN status as st on s.status_id = st.id
+      WHERE s.template IS NOT NULL
+      ORDER by s.updated_at DESC
+    """
+    {:ok, result} = Repo.query(query)
+
+    Enum.map(result.rows, fn([id, mid, iat, t, s]) ->
+      %{
+        id: id,
+        message_id: mid,
+        inserted_at: iat,
+        template: t,
+        status: s
+      }
+    end)
   end
 
   @doc """

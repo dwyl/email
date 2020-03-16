@@ -792,9 +792,12 @@ to create a realtime dynamic Email status/stats dashboard.
 
 The setup steps for Phoenix LiveView
 are covered in:
-[github.com/dwyl/phoenix-liveview-counter-tutorial](https://github.com/dwyl/phoenix-liveview-counter-tutorial#step-2-add-liveview-to-deps-in-mixexs-file)
+[github.com/dwyl/**phoenix-liveview-counter-tutorial**](https://github.com/dwyl/phoenix-liveview-counter-tutorial#step-2-add-liveview-to-deps-in-mixexs-file)
 
 
+
+
+pg_restore --verbose --clean --no-acl --no-owner -h localhost -d app_dev production.dump
 
 
 <br /><br /><br /><br />
