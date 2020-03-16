@@ -20,6 +20,12 @@ defmodule App.Ctx do
     Repo.all(Sent)
   end
 
+
+  @doc """
+  Returns the list of sent items with the status.text
+  I hand-crafted this SQL query becuase the Ecto queryable wasn't working.
+  Feel free to refactor it if you know how.
+  """
   def list_sent_join do
     query = """
       SELECT s.id, s.message_id, s.inserted_at, s.template,
@@ -40,9 +46,7 @@ defmodule App.Ctx do
         person_id: pid
       }
     end)
-    # |> IO.inspect(label: "rows")
   end
-
 
 
   @doc """
