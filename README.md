@@ -157,8 +157,8 @@ At this point the **`email`** App
 is just a basic "hello world" Phoenix App. <br />
 It should be familiar to you
 if you have followed any of the Phoenix tutorials, <br />
-e.g: https://github.com/dwyl/phoenix-chat-example
-or https://github.com/dwyl/phoenix-todo-list-tutorial
+e.g: https://github.com/dwyl/phoenix-chat-exa mple
+or https://github.com/dwyl/phoenix-liveview-counter-tutorial
 
 
 
@@ -797,7 +797,24 @@ are covered in:
 
 
 
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJKb2tlbiIsImVtYWlsIjoiYW1hemVAZ21haWwuY29tIiwiZXhwIjoxNTg0NDA5ODkyLCJpYXQiOjE1ODQ0MDI2OTIsImlzcyI6Ikpva2VuIiwianRpIjoiMm51ZXJtbDJvMzExaGhpZjg4MDAwMnEyIiwibWVzc2FnZV9pZCI6IjEyMzIwMTcwOTIwMDY3OTgtZjA0NTY2OTQtYWMyNC00ODdiLTk0NjctYjc5YjhjZTc5OGYyLTAwMDAwMCIsIm5iZiI6MTU4NDQwMjY5Miwic3RhdHVzIjoiU2VudCIsInRlbXBsYXRlIjoid2VsY29tZSJ9.dwBDKUuVf2dBO4zbEZMyBjAku_0PwFeXK2Nh9r0mKJY
+
+
+
+#### Download Test Data from Heroku
+
 pg_restore --verbose --clean --no-acl --no-owner -h localhost -d app_dev production.dump
+
+
+
+### 7. Track Email Read Status
+
+
+
+```
+curl "http://localhost:4000/read/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTg0NzEzOTk1fQ.OzgxrvzrRmVas0yJcKGIeLOSznNisenC0zSQ80knX60"
+```
 
 
 <br /><br /><br /><br />
