@@ -16,8 +16,6 @@ defmodule AppWeb.Router do
 
   scope "/", AppWeb do
     pipe_through :browser
-
-    # get "/", PageController, :index
     live("/", Dashboard)
 
     resources "/sent", SentController
