@@ -22,7 +22,7 @@ defmodule App.Ctx do
 
 
   @doc """
-  `list_sent_with_status` Returns the list of sent items with the status.text
+  `list_sent_with_status/0` Returns the list of sent items with the status.text
   I hand-crafted this SQL query becuase the Ecto queryable wasn't working.
   Feel free to refactor it if you know how.
   """

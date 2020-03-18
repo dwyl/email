@@ -19,7 +19,9 @@ defmodule AppWeb.Router do
 
     # get "/", PageController, :index
     live("/", Dashboard)
+
     resources "/sent", SentController
+    get "/read/:jwt", SentController, :read_id
     get "/_version", GithubVersionController, :index # for deployment versioning
   end
 
