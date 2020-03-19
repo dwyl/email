@@ -31,8 +31,8 @@ defmodule App.CtxTest do
 
     test "list_sent/0 returns all sent" do
       sent = sent_fixture()
-      IO.inspect(sent, label: "sent 34")
-      IO.inspect(Ctx.list_sent(), label: "list_sent() 35")
+      # IO.inspect(sent, label: "sent 34")
+      # IO.inspect(Ctx.list_sent(), label: "list_sent() 35")
       assert Ctx.list_sent() == [sent]
     end
 

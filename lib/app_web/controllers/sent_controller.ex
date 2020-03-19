@@ -104,15 +104,13 @@ defmodule AppWeb.SentController do
   @image "\x47\x49\x46\x38\x39\x61\x1\x0\x1\x0\x80\x0\x0\xff\xff\xff\x0\x0\x0\x21\xf9\x4\x1\x0\x0\x0\x0\x2c\x0\x0\x0\x0\x1\x0\x1\x0\x0\x2\x2\x44\x1\x0\x3b"
 
   def read_id(conn, %{"jwt" => jwt} = params) do
-    # IO.inspect(conn, lable: "conn")
-    IO.inspect(params, label: "params")
     if is_nil(jwt) do
       unauthorized(conn, nil)
     else # fast check for JWT format validity before slower verify:
       case Enum.count(String.split(jwt, ".")) == 3 do
         true -> # valid JWT proceed to verifying it
           {:ok, claims} = App.Token.verify_and_validate(jwt)
-          IO.inspect(claims, label: "claims")
+          # IO.inspect(claims, label: "claims")
           # sent = App.Ctx.upsert_sent(claims)
           # data = %{"id" => sent.id}
           conn # instruct browser not to cache the image

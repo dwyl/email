@@ -9,14 +9,14 @@ defmodule AppWeb.GithubVersionController do
   def index(conn, _params) do
     # leaving IO.inspect / puts in for debugging till further notice
     # IO.inspect(System.cmd("pwd", []))
-    {ls, _} = IO.inspect(System.cmd("ls", ["-a"]))
+    {ls, _} = System.cmd("ls", ["-a"])
     # IO.inspect ls
     ls = String.split(ls, "\n")
     # IO.inspect ls
 
     unless Enum.member?(ls, ".git") do
       File.cd("./builds")
-      IO.inspect(System.cmd("pwd", []))
+      # IO.inspect(System.cmd("pwd", []))
     end
 
     {rev, _} = System.cmd("git", ["rev-parse", "HEAD"])

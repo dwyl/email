@@ -14,9 +14,9 @@ defmodule AppWeb.Dashboard do
     def handle_event("inc", _value, socket) do
       # sent = App.Ctx.list_sent()
 
-      IO.inspect(socket, label: "socket")
+      # IO.inspect(socket, label: "socket")
       new_state = update(socket, :val, &(&1 + 1))
-      IO.inspect(socket, label: "socket")
+      # IO.inspect(socket, label: "socket")
       # new_state = update(socket, :sent, sent)
       AppWeb.Endpoint.broadcast_from(self(), @topic, "inc", new_state.assigns)
       {:noreply, new_state}

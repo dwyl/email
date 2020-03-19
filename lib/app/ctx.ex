@@ -175,7 +175,7 @@ defmodule App.Ctx do
           %Sent{ status_id: status_id, person_id: person_id }
           |> Sent.changeset(attrs)
           |> Repo.insert()
-          |> IO.inspect(label: "sent")
+          # |> IO.inspect(label: "sent")
         sent
 
       sent -> # update status of existing sent record

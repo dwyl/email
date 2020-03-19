@@ -133,17 +133,17 @@ defmodule AppWeb.SentControllerTest do
   end
 
   describe "read_id/2" do
-    test "processes valid request to /read/:jwt" do
+    test "processes valid request to /read/:jwt", %{conn: conn} do
       json = %{
         "id" => "1",
         "jti" => "1"
       }
 
       jwt = App.Token.generate_and_sign!(json)
-      IO.inspect(jwt, label: "jwt")
+      # IO.inspect(jwt, label: "jwt")
       url = "/read/" <> jwt
       conn = get(conn, url)
-      IO.inspect(conn.resp_body, label: "conn.resp_body")
+      # IO.inspect(conn.resp_body, label: "conn.resp_body")
       assert conn.status == 200
       # assert_receive
       # assert html_response(conn, 200) =~ "The count is"
