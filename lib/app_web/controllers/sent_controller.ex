@@ -103,7 +103,7 @@ defmodule AppWeb.SentController do
   # stackoverflow.com/questions/4665960/most-efficient-way-to-display-a-1x1-gif
   @image "\x47\x49\x46\x38\x39\x61\x1\x0\x1\x0\x80\x0\x0\xff\xff\xff\x0\x0\x0\x21\xf9\x4\x1\x0\x0\x0\x0\x2c\x0\x0\x0\x0\x1\x0\x1\x0\x0\x2\x2\x44\x1\x0\x3b"
 
-  def read_id(conn, %{"jwt" => jwt} = params) do
+  def read_id(conn, %{"jwt" => jwt}) do
     if is_nil(jwt) do
       unauthorized(conn, nil)
     else # fast check for JWT format validity before slower verify:
