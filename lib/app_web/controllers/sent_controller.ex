@@ -100,9 +100,14 @@ defmodule AppWeb.SentController do
     end
   end
 
+  # This is the Base64 encoding for a 1x1 transparent pixel GIF for issue#1
   # stackoverflow.com/questions/4665960/most-efficient-way-to-display-a-1x1-gif
   @image "\x47\x49\x46\x38\x39\x61\x1\x0\x1\x0\x80\x0\x0\xff\xff\xff\x0\x0\x0\x21\xf9\x4\x1\x0\x0\x0\x0\x2c\x0\x0\x0\x0\x1\x0\x1\x0\x0\x2\x2\x44\x1\x0\x3b"
 
+  @doc """
+  `read_id/2` extracts the id of a sent item from a JWT in the URL
+  and if the JWT is valid, updates the status to "Opened" and returns the pixel.
+  """
   def read_id(conn, %{"jwt" => jwt}) do
     if is_nil(jwt) do
       unauthorized(conn, nil)
@@ -122,8 +127,6 @@ defmodule AppWeb.SentController do
           unauthorized(conn, nil)
       end
     end
-
-    # text conn, "hello " <> token
   end
 
 end
