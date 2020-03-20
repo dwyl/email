@@ -200,6 +200,5 @@ defmodule App.Ctx do
     App.Ctx.get_sent!(id)
     |> Sent.changeset(attrs)
     |> Repo.update()
-    |> IO.inspect()
   end
 end

@@ -1,12 +1,15 @@
+<!--
 <div>
   <h1>The count is: <%= @val %></h1>
   <button phx-click="dec">-</button>
   <button phx-click="inc">+</button>
 </div>
+-->
 
 <table>
   <thead>
     <tr>
+      <th>id</th>
       <th>Message</th>
       <th>Template</th>
       <th>Status</th>
@@ -17,6 +20,7 @@
   <tbody>
 <%= for sent <- @sent do %>
     <tr>
+      <td><%= sent.id %></td>
       <td><%= sent.message_id %></td>
       <td><%= sent.template %></td>
       <td><%= sent.status %></td>
