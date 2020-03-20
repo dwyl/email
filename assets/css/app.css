@@ -2,3 +2,21 @@
 
 @import "./phoenix.css";
 @import "../../deps/phoenix_live_view/assets/css/live_view.css";
+
+.Opened	{
+  color: #fff;
+  background-color: #2ecc71;
+  border-color: #27ae60;
+}
+
+.Bounce {
+  color: #fff;
+  background-color: #e74c3c;
+  border-color: #c0392b;
+}
+
+.Sent {
+color: #fff;
+background-color: #337ab7;
+border-color: #2e6da4;
+}

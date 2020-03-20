@@ -8,7 +8,7 @@
 
 <table>
   <thead>
-    <tr>
+    <tr class="tl">
       <th>id</th>
       <th>Message</th>
       <th>Template</th>
@@ -18,12 +18,13 @@
     </tr>
   </thead>
   <tbody>
-<%= for sent <- @sent do %>
-    <tr>
+<%= for {sent, idx} <- Enum.with_index(@sent) do %>
+    <tr class="hover-bg-light-gray
+      <%= if rem(idx,2) == 0 do %> bb b--moon-gray bg-light-gray <% end %>">
       <td><%= sent.id %></td>
       <td><%= sent.message_id %></td>
       <td><%= sent.template %></td>
-      <td><%= sent.status %></td>
+      <td class="<%= sent.status %>"><%= sent.status %></td>
       <td><%= sent.inserted_at %></td>
       <td><%= sent.person_id %></td>
     </tr>
