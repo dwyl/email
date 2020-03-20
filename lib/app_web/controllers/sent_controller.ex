@@ -111,9 +111,7 @@ defmodule AppWeb.SentController do
         true -> # valid JWT proceed to verifying it
           {:ok, claims} = App.Token.verify_and_validate(jwt)
           App.Ctx.email_opened(Map.get(claims, "id"))
-          # IO.inspect(claims, label: "claims")
-          # sent = App.Ctx.upsert_sent(claims)
-          # data = %{"id" => sent.id}
+
           conn # instruct browser not to cache the image
           |> put_resp_header("cache-control", "no-store, private")
           |> put_resp_header("pragma", "no-cache")
