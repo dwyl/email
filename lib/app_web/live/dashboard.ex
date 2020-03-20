@@ -20,7 +20,7 @@ defmodule AppWeb.Dashboard do
       {:noreply, new_state}
     end
 
-    def handle_info(msg, socket) do
+    def handle_info(_msg, socket) do
       {:noreply, assign(socket, sent: App.Ctx.list_sent_with_status())}
     end
 
