@@ -109,7 +109,8 @@ defmodule AppWeb.SentController do
     else # fast check for JWT format validity before slower verify:
       case Enum.count(String.split(jwt, ".")) == 3 do
         true -> # valid JWT proceed to verifying it
-          # {:ok, claims} = App.Token.verify_and_validate(jwt)
+          {:ok, claims} = App.Token.verify_and_validate(jwt)
+          App.Ctx.email_opened(Map.get(claims, "id"))
           # IO.inspect(claims, label: "claims")
           # sent = App.Ctx.upsert_sent(claims)
           # data = %{"id" => sent.id}

@@ -183,4 +183,23 @@ defmodule App.Ctx do
         sent
     end
   end
+
+  def email_opened(id) do
+    status_id = case Repo.get_by(Status, text: "Opened") do
+      nil -> # create a new status record
+        record = %{text: "Opened"}
+        {:ok, status} = Status.create_status(record)
+        status.id
+
+      status ->
+        status.id
+    end
+    # IO.inspect(status_id, label: "status_id 197")
+    attrs = %{ id: id, status_id: status_id }
+    # IO.inspect(attrs, label: "attrs 199")
+    App.Ctx.get_sent!(id)
+    |> Sent.changeset(attrs)
+    |> Repo.update()
+    |> IO.inspect()
+  end
 end

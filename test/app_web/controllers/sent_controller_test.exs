@@ -134,9 +134,10 @@ defmodule AppWeb.SentControllerTest do
 
   describe "read_id/2" do
     test "processes valid request to /read/:jwt", %{conn: conn} do
+      sent = fixture(:sent)
+      IO.inspect(sent, label: "sent 138")
       json = %{
-        "id" => "1",
-        "jti" => "1"
+        "id" => sent.id
       }
 
       jwt = App.Token.generate_and_sign!(json)
@@ -145,6 +146,10 @@ defmodule AppWeb.SentControllerTest do
       conn = get(conn, url)
       # IO.inspect(conn.resp_body, label: "conn.resp_body")
       assert conn.status == 200
+
+      sent2 = App.Ctx.get_sent!(sent.id)
+      IO.inspect(sent2, label: "sent2 152")
+
       # assert_receive
       # assert html_response(conn, 200) =~ "The count is"
       #
