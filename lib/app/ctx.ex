@@ -184,6 +184,8 @@ defmodule App.Ctx do
     end
   end
 
+  @topic "live"
+
   def email_opened(id) do
     status_id = case Repo.get_by(Status, text: "Opened") do
       nil -> # create a new status record
@@ -200,5 +202,10 @@ defmodule App.Ctx do
     App.Ctx.get_sent!(id)
     |> Sent.changeset(attrs)
     |> Repo.update()
+    assigns = %{
+      flash: %{},
+      val: 1
+    }
+    AppWeb.Endpoint.broadcast_from(self(), @topic, "sent", assigns)
   end
 end

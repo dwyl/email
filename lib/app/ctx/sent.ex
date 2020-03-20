@@ -16,6 +16,6 @@ defmodule App.Ctx.Sent do
   def changeset(sent, attrs) do
     sent
     |> cast(attrs, [:message_id, :request_id, :template, :status_id])
-    # |> validate_required([:message_i])
+    # |> validate_required([:message_id])
   end
 end

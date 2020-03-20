@@ -11,27 +11,17 @@ defmodule AppWeb.Dashboard do
         layout: {AppWeb.LayoutView, "live.html"}}
     end
 
-    def handle_event("inc", _value, socket) do
-      # sent = App.Ctx.list_sent()
-
+    def handle_event("sent", _value, socket) do
       # IO.inspect(socket, label: "socket")
-      new_state = update(socket, :val, &(&1 + 1))
+      new_state = update(socket, :sent, App.Ctx.list_sent_with_status())
       # IO.inspect(socket, label: "socket")
       # new_state = update(socket, :sent, sent)
-      AppWeb.Endpoint.broadcast_from(self(), @topic, "inc", new_state.assigns)
-      {:noreply, new_state}
-    end
-
-    def handle_event("dec", _, socket) do
-      # sent = App.Ctx.list_sent()
-
-      new_state = update(socket, :val, &(&1 - 1))
-      AppWeb.Endpoint.broadcast_from(self(), @topic, "dec", new_state.assigns)
+      AppWeb.Endpoint.broadcast_from(self(), @topic, "sent", new_state.assigns)
       {:noreply, new_state}
     end
 
     def handle_info(msg, socket) do
-      {:noreply, assign(socket, val: msg.payload.val)}
+      {:noreply, assign(socket, sent: App.Ctx.list_sent_with_status())}
     end
 
     def render(assigns) do
