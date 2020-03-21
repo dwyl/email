@@ -81,7 +81,7 @@ defmodule App.CtxTest do
     test "upsert_sent/1 inserts a valid NEW sent record with email" do
 
       data = %{
-        "message_id" => "0102017092006798-f0456694-ac24-487b-9467-b79b8ce798f2-000000",
+        "message_id" => "0102017092006798-f0456694-ac24-487b-9467-b79b8ce798f2",
         "status" => "Sent",
         "email" => "amaze@gmail.com",
         "template" => "welcome"
@@ -89,7 +89,7 @@ defmodule App.CtxTest do
       sent = Ctx.upsert_sent(data)
 
       data2 = %{ # same message_id update the status
-        "message_id" => "0102017092006798-f0456694-ac24-487b-9467-b79b8ce798f2-000000",
+        "message_id" => "0102017092006798-f0456694-ac24-487b-9467-b79b8ce798f2",
         "status" => "Bounce"
       }
       sent2 = Ctx.upsert_sent(data2)
@@ -100,7 +100,7 @@ defmodule App.CtxTest do
 
     test "upsert_sent/1 update status for existing sent record" do
       init = %{
-        "message_id" => "0102017092006798-f0456694-ac24-487b-9467-b79b8ce798f2-000000",
+        "message_id" => "0102017092006798-f0456694-ac24-487b-9467-b79b8ce798f2",
         "status" => "Sent",
         "email" => "amaze@gmail.com",
         "template" => "welcome"
@@ -108,7 +108,7 @@ defmodule App.CtxTest do
       sent = Ctx.upsert_sent(init)
 
       bounce = %{
-        "message_id" => "0102017092006798-f0456694-ac24-487b-9467-b79b8ce798f2-000000",
+        "message_id" => "0102017092006798-f0456694-ac24-487b-9467-b79b8ce798f2",
         "status" => "Bounce Permanent"
       }
       sent2 = Ctx.upsert_sent(bounce)
@@ -122,13 +122,13 @@ defmodule App.CtxTest do
     test "upsert_sent/1 insert new sent with same status" do
 
       bounce = %{
-        "message_id" => "0102017092006798-f0456694-ac24-487b-9467-b79b8ce798f2-000000",
+        "message_id" => "0102017092006798-f0456694-ac24-487b-9467-b79b8ce798f2",
         "status" => "Bounce Permanent"
       }
       sent = Ctx.upsert_sent(bounce)
 
       bounce2 = %{
-        "message_id" => "1232017092006798-f0456694-ac24-487b-9467-b79b8ce798f2-000000",
+        "message_id" => "1232017092006798-f0456694-ac24-487b-9467-b79b8ce798f2",
         "status" => "Bounce Permanent"
       }
       sent2 = Ctx.upsert_sent(bounce2)
@@ -140,7 +140,7 @@ defmodule App.CtxTest do
     test "upsert_sent/1 insert two sent records for the same email" do
 
       init = %{
-        "message_id" => "1232017092006798-f0456694-ac24-487b-9467-b79b8ce798f2-000000",
+        "message_id" => "1232017092006798-f0456694-ac24-487b-9467-b79b8ce798f2",
         "status" => "Sent",
         "email" => "amaze@gmail.com",
         "template" => "welcome"
@@ -148,7 +148,7 @@ defmodule App.CtxTest do
       sent = Ctx.upsert_sent(init)
 
       second = %{
-        "message_id" => "4562017092006798-f0456694-ac24-487b-9467-b79b8ce798f2-000000",
+        "message_id" => "4562017092006798-f0456694-ac24-487b-9467-b79b8ce798f2",
         "status" => "Sent",
         "email" => "amaze@gmail.com",
       }
@@ -157,6 +157,30 @@ defmodule App.CtxTest do
       assert sent.status_id == sent2.status_id
     end
 
+    test "list_sent_with_status/0 returns list of maps" do
+      item = %{
+        "message_id" => "1232017092006798-f0456694-ac24-487b-9467-b79b8ce798f2",
+        "status" => "Sent",
+        "email" => "amaze@gmail.com",
+        "template" => "welcome"
+      }
+      Ctx.upsert_sent(item)
+      list = Ctx.list_sent_with_status()
+      first = Enum.at(list, 0)
+      assert first.status == "Sent"
+    end
 
+    test "email_opened/1 updates the status_id of a sent item to Opened" do
+
+      {:ok, sent} = Ctx.create_sent(%{"message_id" => "123"})
+      assert sent.status_id == nil
+
+      updated = Ctx.email_opened(sent.id)
+
+      {:ok, sent2} = Ctx.create_sent(%{"message_id" => "1234"})
+      updated2 = Ctx.email_opened(sent2.id)
+
+      assert updated.status_id == updated2.status_id
+    end
   end
 end

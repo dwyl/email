@@ -196,16 +196,14 @@ defmodule App.Ctx do
       status ->
         status.id
     end
-    # IO.inspect(status_id, label: "status_id 197")
-    attrs = %{ id: id, status_id: status_id }
-    # IO.inspect(attrs, label: "attrs 199")
-    App.Ctx.get_sent!(id)
-    |> Sent.changeset(attrs)
+
+    {:ok, sent} =
+    Sent.changeset(App.Ctx.get_sent!(id), %{ status_id: status_id })
     |> Repo.update()
-    assigns = %{
-      flash: %{},
-      val: 1
-    }
-    AppWeb.Endpoint.broadcast_from(self(), @topic, "sent", assigns)
+
+    # broadcast that status of a given sent item needs to be udpated
+    AppWeb.Endpoint.broadcast_from(self(), @topic, "sent", %{flash: %{}})
+
+    sent
   end
 end
