@@ -181,13 +181,18 @@ defmodule App.Ctx do
         end
 
       false -> # SNS notifications only have the message_id
-        case Repo.get_by(Sent, message_id: attrs.message_id) do
-          nil -> # create a new sent record
-            create_sent(attrs, person_id, status_id)
+        case Map.has_key?(attrs, :message_id) do
+          true ->
+            case Repo.get_by(Sent, message_id: attrs.message_id) do
+              nil -> # create a new sent record
+                create_sent(attrs, person_id, status_id)
 
-          sent -> # update status of existing sent record
-            {:ok, sent} = update_sent(sent, %{status_id: status_id})
-            sent
+              sent -> # update status of existing sent record
+                {:ok, sent} = update_sent(sent, %{status_id: status_id})
+                sent
+            end
+          false ->
+            create_sent(attrs, person_id, status_id)
         end
     end
   end

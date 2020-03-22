@@ -21,8 +21,8 @@ defmodule AppWeb.SentController do
     send_email(attrs)
 
     conn
-      |> put_flash(:info, "💌 Email sent to: " <> Map.get(attrs, "email"))
-      |> render("new.html", changeset: Ctx.change_sent(%Sent{}))
+      # |> put_flash(:info, "💌 Email sent to: " <> Map.get(attrs, "email"))
+      |> redirect(to: "/")
   end
 
   def send_email(attrs) do
