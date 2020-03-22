@@ -169,24 +169,18 @@ defmodule App.Ctx do
     end
 
     # Step 3. Insert or Update (UPSERT) then return the sent record:
-    case Map.has_key?(attrs, :message_id) do
-      false -> # if message_id is nil lookup the sent by id:
-        case Map.has_key?(attrs, :id) do
-          false ->
+    case Map.has_key?(attrs, :id) do
+      true ->
+        case Repo.get_by(Sent, id: attrs.id) do
+          nil -> # create a new sent record
             create_sent(attrs, person_id, status_id)
 
-          true ->
-            case Repo.get_by(Sent, id: attrs.id) do
-              nil -> # create a new sent record
-                create_sent(attrs, person_id, status_id)
-
-              sent -> # update status of existing sent record
-                {:ok, sent} = update_sent(sent, %{status_id: status_id})
-                sent
-            end
+          sent -> # update status of existing sent record
+            {:ok, sent} = update_sent(sent, %{status_id: status_id})
+            sent
         end
 
-      true -> # otherwise lookup by message_id
+      false -> # SNS notifications only have the message_id
         case Repo.get_by(Sent, message_id: attrs.message_id) do
           nil -> # create a new sent record
             create_sent(attrs, person_id, status_id)
