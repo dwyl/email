@@ -1,4 +1,4 @@
-<h1>New Sent</h1>
+<h1>Send a Test Email</h1>
 
 <%= render "form.html", Map.put(assigns, :action, Routes.sent_path(@conn, :create)) %>
 

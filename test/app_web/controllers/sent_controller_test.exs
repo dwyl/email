@@ -22,7 +22,7 @@ defmodule AppWeb.SentControllerTest do
   describe "new sent" do
     test "renders form", %{conn: conn} do
       conn = get(conn, Routes.sent_path(conn, :new))
-      assert html_response(conn, 200) =~ "New Sent"
+      assert html_response(conn, 200) =~ "Send a Test Email"
     end
   end
 
@@ -80,7 +80,7 @@ defmodule AppWeb.SentControllerTest do
   #     end
   #   end
   # end
-  # 
+  #
   # defp create_sent(_) do
   #   sent = fixture(:sent)
   #   {:ok, sent: sent}

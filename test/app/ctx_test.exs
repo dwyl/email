@@ -157,6 +157,19 @@ defmodule App.CtxTest do
       assert sent.status_id == sent2.status_id
     end
 
+    test "upsert_sent/1 insert record with blank message_id" do
+
+      init = %{
+        "status" => "Sent",
+        "email" => "amaze@gmail.com",
+        "template" => "welcome",
+        "id" => 1
+      }
+      sent = Ctx.upsert_sent(init)
+      assert sent.message_id == nil
+      # IO.inspect(sent, label: "sent")
+    end
+
     test "list_sent_with_status/0 returns list of maps" do
       item = %{
         "message_id" => "1232017092006798-f0456694-ac24-487b-9467-b79b8ce798f2",

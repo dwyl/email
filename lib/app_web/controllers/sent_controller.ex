@@ -14,17 +14,27 @@ defmodule AppWeb.SentController do
     render(conn, "new.html", changeset: changeset)
   end
 
-  # def create(conn, %{"sent" => sent_params}) do
-  #   case Ctx.create_sent(sent_params) do
-  #     {:ok, sent} ->
-  #       conn
-  #       |> put_flash(:info, "Sent created successfully.")
-  #       |> redirect(to: Routes.sent_path(conn, :show, sent))
-  #
-  #     {:error, %Ecto.Changeset{} = changeset} ->
-  #       render(conn, "new.html", changeset: changeset)
-  #   end
-  # end
+  def create(conn, params) do
+    # IO.inspect(params, label: "params")
+    attrs = Map.merge(Map.get(params, "sent"), %{"status" => "Pending"})
+    # IO.inspect(attrs, label: "attrs")
+    send_email(attrs)
+
+    conn
+      |> put_flash(:info, "💌 Email sent to: " <> Map.get(attrs, "email"))
+      |> render("new.html", changeset: Ctx.change_sent(%Sent{}))
+  end
+
+  def send_email(attrs) do
+    sent = Ctx.upsert_sent(attrs)
+    IO.inspect(sent, label: "sent")
+    payload = Map.merge(attrs, %{"id" => sent.id})
+    # see: https://github.com/dwyl/elixir-invoke-lambda-example
+    ExAws.Lambda.invoke("aws-ses-lambda-v1", payload, "no_context")
+    |> ExAws.request(region: System.get_env("AWS_REGION"))
+
+    sent
+  end
 
   # def show(conn, %{"id" => id}) do
   #   sent = Ctx.get_sent!(id)

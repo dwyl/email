@@ -169,20 +169,43 @@ defmodule App.Ctx do
     end
 
     # Step 3. Insert or Update (UPSERT) then return the sent record:
-    case Repo.get_by(Sent, message_id: attrs.message_id) do
-      nil -> # create a new sent record
-        {:ok, sent} =
-          %Sent{ status_id: status_id, person_id: person_id }
-          |> Sent.changeset(attrs)
-          |> Repo.insert()
-          # |> IO.inspect(label: "sent")
-        sent
+    case Map.has_key?(attrs, :message_id) do
+      false -> # if message_id is nil lookup the sent by id:
+        case Map.has_key?(attrs, :id) do
+          false ->
+            create_sent(attrs, person_id, status_id)
 
-      sent -> # update status of existing sent record
-        {:ok, sent} = update_sent(sent, %{status_id: status_id})
-        sent
+          true ->
+            case Repo.get_by(Sent, id: attrs.id) do
+              nil -> # create a new sent record
+                create_sent(attrs, person_id, status_id)
+
+              sent -> # update status of existing sent record
+                {:ok, sent} = update_sent(sent, %{status_id: status_id})
+                sent
+            end
+        end
+
+      true -> # otherwise lookup by message_id
+        case Repo.get_by(Sent, message_id: attrs.message_id) do
+          nil -> # create a new sent record
+            create_sent(attrs, person_id, status_id)
+
+          sent -> # update status of existing sent record
+            {:ok, sent} = update_sent(sent, %{status_id: status_id})
+            sent
+        end
     end
   end
+
+  defp create_sent(attrs, person_id, status_id) do
+    {:ok, sent} =
+      %Sent{ status_id: status_id, person_id: person_id }
+      |> Sent.changeset(attrs)
+      |> Repo.insert()
+    sent
+  end
+
 
   @topic "live"
 
