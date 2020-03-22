@@ -5,13 +5,13 @@ defmodule AppWeb.Dashboard do
   def mount(_session, _params, socket) do
     AppWeb.Endpoint.subscribe(@topic) # subscribe to the channel
     sent = App.Ctx.list_sent_with_status()
-    {:ok, assign(socket, %{val: 0, sent: sent}),
+    {:ok, assign(socket, %{sent: sent}),
       layout: {AppWeb.LayoutView, "live.html"}}
   end
 
-  def handle_event("sent", _value, socket) do
+  def handle_event("refresh", _value, socket) do
     new_state = update(socket, :sent, App.Ctx.list_sent_with_status())
-    AppWeb.Endpoint.broadcast_from(self(), @topic, "sent", new_state.assigns)
+    AppWeb.Endpoint.broadcast_from(self(), @topic, "refresh", new_state.assigns)
     {:noreply, new_state}
   end
 

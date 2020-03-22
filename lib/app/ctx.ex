@@ -202,7 +202,7 @@ defmodule App.Ctx do
     |> Repo.update()
 
     # broadcast that status of a given sent item needs to be udpated
-    AppWeb.Endpoint.broadcast_from(self(), @topic, "sent", %{flash: %{}})
+    AppWeb.Endpoint.broadcast_from(self(), @topic, "refresh", %{flash: %{}})
 
     sent
   end
