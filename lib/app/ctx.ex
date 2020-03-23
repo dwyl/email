@@ -176,7 +176,9 @@ defmodule App.Ctx do
             create_sent(attrs, person_id, status_id)
 
           sent -> # update status of existing sent record
-            {:ok, sent} = update_sent(sent, %{status_id: status_id})
+            {:ok, sent} =
+              attrs = Map.merge(attrs, %{status_id: status_id})
+              update_sent(sent, attrs)
             sent
         end
 
