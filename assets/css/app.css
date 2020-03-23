@@ -4,7 +4,9 @@
 @import "../../deps/phoenix_live_view/assets/css/live_view.css";
 
 .Pending {
-  
+  color: #7f8c8d;
+  background-color: #f1c40f;
+  border-color: #7f8c8d;
 }
 
 .Opened	{
