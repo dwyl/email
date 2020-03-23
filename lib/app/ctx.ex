@@ -28,7 +28,7 @@ defmodule App.Ctx do
   """
   def list_sent_with_status do
     query = """
-      SELECT s.id, s.message_id, s.inserted_at, s.template,
+      SELECT s.id, s.message_id, s.updated_at, s.template,
       st.text as status, s.person_id
       FROM sent s
       JOIN status as st on s.status_id = st.id
@@ -36,11 +36,12 @@ defmodule App.Ctx do
     """
     {:ok, result} = Repo.query(query)
 
+    # create List of Maps from the result.rows:
     Enum.map(result.rows, fn([id, mid, iat, t, s, pid]) ->
       %{
         id: id,
         message_id: mid,
-        inserted_at: iat,
+        inserted_at: NaiveDateTime.truncate(iat, :second),
         template: t,
         status: s,
         person_id: pid
