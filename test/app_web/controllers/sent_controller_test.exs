@@ -30,8 +30,8 @@ defmodule AppWeb.SentControllerTest do
     test "redirects to dashboard when data is valid", %{conn: conn} do
       params = %{
         "sent" => %{
-          "email" => "nelson@dwyl.com",
-          "name" => "Nelson",
+          "email" => "success@simulator.amazonses.com",
+          "name" => "Success",
           "template" => "welcome"
         }
       }
