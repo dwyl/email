@@ -26,22 +26,19 @@ defmodule AppWeb.SentControllerTest do
     end
   end
 
-  # describe "create sent" do
-  #   test "redirects to show when data is valid", %{conn: conn} do
-  #     conn = post(conn, Routes.sent_path(conn, :create), sent: @create_attrs)
-  #
-  #     assert %{id: id} = redirected_params(conn)
-  #     assert redirected_to(conn) == Routes.sent_path(conn, :show, id)
-  #
-  #     conn = get(conn, Routes.sent_path(conn, :show, id))
-  #     assert html_response(conn, 200) =~ "Show Sent"
-  #   end
-  #
-  #   # test "renders errors when data is invalid", %{conn: conn} do
-  #   #   conn = post(conn, Routes.sent_path(conn, :create), sent: @invalid_attrs)
-  #   #   assert html_response(conn, 200) =~ "New Sent"
-  #   # end
-  # end
+  describe "create sent" do
+    test "redirects to dashboard when data is valid", %{conn: conn} do
+      params = %{
+        "sent" => %{
+          "email" => "nelson@dwyl.com",
+          "name" => "Nelson",
+          "template" => "welcome"
+        }
+      }
+      conn = post(conn, Routes.sent_path(conn, :create), sent: params)
+      assert html_response(conn, 302) =~ "redirected"
+    end
+  end
 
   # describe "edit sent" do
   #   setup [:create_sent]

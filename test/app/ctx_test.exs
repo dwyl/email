@@ -157,17 +157,22 @@ defmodule App.CtxTest do
       assert sent.status_id == sent2.status_id
     end
 
-    test "upsert_sent/1 insert record with blank message_id" do
+    test "upsert_sent/1 insert record with blank message_id then update it!" do
 
       init = %{
         "status" => "Sent",
         "email" => "amaze@gmail.com",
-        "template" => "welcome",
-        "id" => 1
+        "template" => "welcome"
       }
       sent = Ctx.upsert_sent(init)
+      IO.inspect(sent, label: "sent")
       assert sent.message_id == nil
-      # IO.inspect(sent, label: "sent")
+      update = Map.merge(init, %{"status" => "Updated", "id" => sent.id})
+      # IO.inspect(update, label: "update")
+      sent2 = Ctx.upsert_sent(update)
+      IO.inspect(sent2, label: "sent2")
+      # when the status is updated the status_id is the next status.id
+      assert sent.status_id == sent2.status_id - 1
     end
 
     test "list_sent_with_status/0 returns list of maps" do

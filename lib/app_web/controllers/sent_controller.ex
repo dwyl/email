@@ -27,7 +27,7 @@ defmodule AppWeb.SentController do
 
   def send_email(attrs) do
     sent = Ctx.upsert_sent(attrs)
-    IO.inspect(sent, label: "sent")
+    # IO.inspect(sent, label: "sent")
     payload = Map.merge(attrs, %{"id" => sent.id})
     # see: https://github.com/dwyl/elixir-invoke-lambda-example
     ExAws.Lambda.invoke("aws-ses-lambda-v1", payload, "no_context")
