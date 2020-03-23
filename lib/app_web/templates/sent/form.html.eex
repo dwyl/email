@@ -17,7 +17,7 @@
   <%= text_input f, :template %>
   <%= error_tag f, :template %>
 
-  <div>
-    <%= submit "Save" %>
+  <div class="pt3">
+    <%= submit "Send", class: "hover-bg-green" %>
   </div>
 <% end %>

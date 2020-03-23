@@ -1,5 +1,6 @@
-<h1>Send a Test Email</h1>
+<p class="pt4">
+  <span class="f-headline lh-solid">Send a Test Email </span>
+  <span><a href="/">Back to Dashboard</a></span>
+</p>
 
 <%= render "form.html", Map.put(assigns, :action, Routes.sent_path(@conn, :create)) %>
-
-<span><%= link "Back", to: Routes.sent_path(@conn, :index) %></span>
