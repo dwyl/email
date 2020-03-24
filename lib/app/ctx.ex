@@ -173,7 +173,8 @@ defmodule App.Ctx do
     case Map.has_key?(attrs, :id) do
       true ->
         sent = Repo.get_by(Sent, id: attrs.id)
-        {:ok, sent} = update_sent(sent, %{status_id: status_id})
+        attrs = Map.merge(attrs, %{status_id: status_id})
+        {:ok, sent} = update_sent(sent, attrs)
         sent
 
       false -> # SNS notifications only have the message_id
