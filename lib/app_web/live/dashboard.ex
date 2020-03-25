@@ -9,11 +9,12 @@ defmodule AppWeb.Dashboard do
       layout: {AppWeb.LayoutView, "live.html"}}
   end
 
-  def handle_event("refresh", _value, socket) do
-    new_state = update(socket, :sent, App.Ctx.list_sent_with_status())
-    AppWeb.Endpoint.broadcast_from(self(), @topic, "refresh", new_state.assigns)
-    {:noreply, new_state}
-  end
+  # def handle_event("refresh", _value, socket) do
+  #   new_state = update(socket, :sent, App.Ctx.list_sent_with_status())
+  #   IO.inspect(new_state, label: "new_state")
+  #   AppWeb.Endpoint.broadcast_from(self(), @topic, "refresh", new_state.assigns)
+  #   {:noreply, new_state}
+  # end
 
   def handle_info(_msg, socket) do
     {:noreply, assign(socket, sent: App.Ctx.list_sent_with_status())}

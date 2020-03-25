@@ -25,6 +25,8 @@ and analytics dashboard** for our App.
 
 The main App does not do any Email as that is is not it's core function.
 It delegates all email sending and monitoring activity to the `email` service.
+This means we have an independently tested/maintained/documented function
+for sending and tracking email that we never have to think about or setup again.
 
 ![dwyl-app-services-diagram](https://user-images.githubusercontent.com/194400/77526292-41628180-6e82-11ea-8044-dacbc57ba895.png)
 
