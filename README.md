@@ -30,7 +30,7 @@ for sending and tracking email that we never have to think about or setup again.
 
 ![dwyl-app-services-diagram](https://user-images.githubusercontent.com/194400/77526292-41628180-6e82-11ea-8044-dacbc57ba895.png)
 
-[Edit this diagram](https://docs.google.com/presentation/d/1PUKzbRQOEgHaOmaEheU7T3AHQhRT8mhGuqVKotEJkM0/edit?usp=sharing)
+[Edit this diagram](https://docs.google.com/presentation/d/1PUKzbRQOEgHaOmaEheU7T3AHQhRT8mhGuqVKotEJkM0/edit#slide=id.g71eb641cbd_0_0)
 
 The Email app provides a simplified interface for sending emails
 that ensures our main App can focus on it's core functionality.
@@ -40,11 +40,18 @@ that ensures our main App can focus on it's core functionality.
 
 ## Who? 👤
 
-We are building this App
+We built the `email` App
 for our own (_internal_) use
-[`@dwyl`](https://github.com/dwyl/app/issues/267). <br />
-As with ***everything*** we do,
-it's **Open Source** and **_extensively_ documented**
+[`@dwyl`](https://github.com/dwyl/app/issues/267).
+It handles all `email` related functionality
+so that our _main_ App does not have to.
+It can be considered a
+["microservice"](https://en.wikipedia.org/wiki/Microservices)
+with a REST API.
+We have not built this as a reusable module
+as it is very specific to our needs.
+However, as with ***everything*** we do,
+it's **Open Source** and **_extensively_ documented/tested**
 so others can _learn_ from it.
 
 If you find this interesting or useful,
@@ -79,8 +86,11 @@ cd assets && npm install && cd ..
 ### Environment Variables
 
 Ensure you have the environment variables defined
-for the Phoenix App, specifically the
-`DATABASE_URL` and `SECRET_KEY_BASE`
+for the Phoenix App.
+All the required environment variables
+are listed in the
+[`.env_sample`](https://github.com/dwyl/email/blob/master/.env_sample)
+file.
 
 In our case we are reusing the `SECRET_KEY_BASE`
 to verify JWTs.
