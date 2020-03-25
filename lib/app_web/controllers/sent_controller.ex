@@ -15,9 +15,7 @@ defmodule AppWeb.SentController do
   end
 
   def create(conn, params) do
-    # IO.inspect(params, label: "params")
     attrs = Map.merge(Map.get(params, "sent"), %{"status" => "Pending"})
-    # IO.inspect(attrs, label: "attrs")
     send_email(attrs)
 
     conn
@@ -27,7 +25,6 @@ defmodule AppWeb.SentController do
 
   def send_email(attrs) do
     sent = Ctx.upsert_sent(attrs)
-    # IO.inspect(sent, label: "sent")
     payload = Map.merge(attrs, %{"id" => sent.id})
     # see: https://github.com/dwyl/elixir-invoke-lambda-example
     ExAws.Lambda.invoke("aws-ses-lambda-v1", payload, "no_context")
@@ -35,40 +32,6 @@ defmodule AppWeb.SentController do
 
     sent
   end
-
-  # def show(conn, %{"id" => id}) do
-  #   sent = Ctx.get_sent!(id)
-  #   render(conn, "show.html", sent: sent)
-  # end
-
-  # def edit(conn, %{"id" => id}) do
-  #   sent = Ctx.get_sent!(id)
-  #   changeset = Ctx.change_sent(sent)
-  #   render(conn, "edit.html", sent: sent, changeset: changeset)
-  # end
-
-  # def update(conn, %{"id" => id, "sent" => sent_params}) do
-  #   sent = Ctx.get_sent!(id)
-  #
-  #   case Ctx.update_sent(sent, sent_params) do
-  #     {:ok, sent} ->
-  #       conn
-  #       |> put_flash(:info, "Sent updated successfully.")
-  #       |> redirect(to: Routes.sent_path(conn, :show, sent))
-  #
-  #     {:error, %Ecto.Changeset{} = changeset} ->
-  #       render(conn, "edit.html", sent: sent, changeset: changeset)
-  #   end
-  # end
-
-  # def delete(conn, %{"id" => id}) do
-  #   sent = Ctx.get_sent!(id)
-  #   {:ok, _sent} = Ctx.delete_sent(sent)
-  #
-  #   conn
-  #   |> put_flash(:info, "Sent deleted successfully.")
-  #   |> redirect(to: Routes.sent_path(conn, :index))
-  # end
 
   # test handler function I used while getting Heroku working:
   def hello(conn, _params) do
