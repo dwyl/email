@@ -8,7 +8,7 @@
 
 ## Why? 🤷‍
 
-We needed a way to keep track of **`email`** in our App. <br />
+We needed a way to send and keep track of **`email`** in our App. <br />
 We want to know precise stats for deliverability,
 click-through and bounce rates for the emails we send
 in real-time. <br />
@@ -20,11 +20,25 @@ and be more data-driven in our communications.
 
 ## What? 💭
 
-An **`email` analytics dashboard** for our App.
+An **`email` API
+and analytics dashboard** for our App.
+
+The main App does not do any Email as that is is not it's core function.
+It delegates all email sending and monitoring activity to the `email` service.
+
+![dwyl-app-services-diagram](https://user-images.githubusercontent.com/194400/77526292-41628180-6e82-11ea-8044-dacbc57ba895.png)
+
+[Edit this diagram](https://docs.google.com/presentation/d/1PUKzbRQOEgHaOmaEheU7T3AHQhRT8mhGuqVKotEJkM0/edit?usp=sharing)
+
+The Email app provides a simplified interface for sending emails
+that ensures our main App can focus on it's core functionality.
+
+
+
+
 
 ```
-The main App does not do any Email as that is is not it's core function.
-It delegates all email sending and monitoring activity to the aws-ses-lambda.
+
 
 ┌─────┐  send   ┌────────────────┐
 | App | ───────>| aws-ses-lambda |─┐ The Lambda function Sends email
