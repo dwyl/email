@@ -36,27 +36,6 @@ that ensures our main App can focus on it's core functionality.
 
 
 
-
-```
-
-
-┌─────┐  send   ┌────────────────┐
-| App | ───────>| aws-ses-lambda |─┐ The Lambda function Sends email
-└─────┘  email  └────────────────┘ | and handles SNS notifications
-                                   | for bounce events.
-  ┌───────┐    SNS Notification    |
-  | Email | <──────────────────────┘
-  |  App  |
-  └───────┘  
-  The Email Stats App aggregates and visualises email stats.
-  This allows us to be more data-driven in our communications.
-  And understand exactly who is engaged with the app.
-
-  This is not a full on  it's just an attempt to make email
-  sending/monitoring separate so our App can focus on core features.
-```
-
-
 ## Who? 👤
 
 We are building this App
