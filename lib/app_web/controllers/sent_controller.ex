@@ -33,13 +33,8 @@ defmodule AppWeb.SentController do
     sent
   end
 
-  # test handler function I used while getting Heroku working:
-  def hello(conn, _params) do
-    data = %{"hello" => "world"}
-    conn
-    |> put_resp_header("content-type", "application/json;")
-    |> send_resp(200, Jason.encode!(data, pretty: true))
-  end
+
+
 
   @doc """
   `unauthorized/2` reusable unauthorized response handler used in process_jwt/2
@@ -51,9 +46,9 @@ defmodule AppWeb.SentController do
   end
 
   @doc """
-  `process_jwt/2` processes an API request with a JWT in authorization header.
+  `process_sns/2` processes an API request with a JWT in authorization header.
   """
-  def process_jwt(conn, _params) do
+  def process_sns(conn, _params) do
     jwt = List.first(Plug.Conn.get_req_header(conn, "authorization"))
     if is_nil(jwt) do
       unauthorized(conn, nil)
@@ -107,4 +102,11 @@ defmodule AppWeb.SentController do
     end
   end
 
+
+  # GET /ping https://github.com/dwyl/email/issues/30
+  def ping(conn, _params) do
+    conn
+    |> put_resp_header("content-type", "application/json;")
+    |> send_resp(200, Jason.encode!(Quotes.random(), pretty: true))
+  end
 end

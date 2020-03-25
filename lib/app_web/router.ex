@@ -26,7 +26,7 @@ defmodule AppWeb.Router do
   # Other scopes may use custom stacks.
   scope "/api", AppWeb do
     pipe_through :api
-    get "/hello", SentController, :hello
-    post "/sns", SentController, :process_jwt
+    get "/ping", SentController, :ping
+    post "/sns", SentController, :process_sns
   end
 end

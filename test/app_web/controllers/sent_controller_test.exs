@@ -39,18 +39,17 @@ defmodule AppWeb.SentControllerTest do
   end
 
 
-  test "test hello endpoint (always returns 200)" do
-    conn = build_conn()
-       |> AppWeb.SentController.hello(nil)
+  test "test /ping endpoint (always returns 200)", %{conn: conn} do
+    conn = get(conn, "/api/ping")
 
     # IO.inspect(conn, label: "conn")
     assert conn.status == 200
   end
 
-  describe "process_jwt" do
+  describe "process_sns" do
     test "reject request if no authorization header" do
       conn = build_conn()
-         |> AppWeb.SentController.process_jwt(nil)
+         |> AppWeb.SentController.process_sns(nil)
 
       assert conn.status == 401
     end
@@ -59,7 +58,7 @@ defmodule AppWeb.SentControllerTest do
       jwt = "this.fails"
       conn = build_conn()
          |> put_req_header("authorization", "#{jwt}")
-         |> AppWeb.SentController.process_jwt(nil)
+         |> AppWeb.SentController.process_sns(nil)
 
       assert conn.status == 401
     end
@@ -77,7 +76,7 @@ defmodule AppWeb.SentControllerTest do
 
       conn = build_conn()
          |> put_req_header("authorization", "#{jwt}")
-         |> AppWeb.SentController.process_jwt(nil)
+         |> AppWeb.SentController.process_sns(nil)
 
       assert conn.status == 200
       {:ok, resp} = Jason.decode(conn.resp_body)

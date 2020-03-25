@@ -59,6 +59,9 @@ defmodule App.MixProject do
       {:poison, "~> 3.0"},
       {:hackney, "~> 1.9"},
 
+      # https://github.com/dwyl/quotes
+      {:quotes, "~> 1.0.4"},
+
       # LiveView for Realtime Dashboard! github.com/dwyl/email/issues/23
       {:phoenix_live_view, "~> 0.10.0"},
       {:floki, ">= 0.0.0", only: :test},
