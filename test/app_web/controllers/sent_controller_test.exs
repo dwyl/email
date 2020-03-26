@@ -112,4 +112,34 @@ defmodule AppWeb.SentControllerTest do
       assert sent.status_id !== sent2.status_id
     end
   end
+
+  describe "/api/send" do
+    test "request to /send with invalid JWT", %{conn: conn} do
+      jwt = "this.fails"
+      conn = conn
+         |> put_req_header("authorization", "#{jwt}")
+         |> post("/api/send")
+
+      assert conn.status == 401
+    end
+
+    test "send an email via /api/send", %{conn: conn} do
+      payload = %{
+        "email" => "success@simulator.amazonses.com",
+        "name" => "Super Successful",
+        "template" => "welcome"
+      }
+      jwt = App.Token.generate_and_sign!(payload)
+      IO.inspect(jwt)
+      conn = conn
+         |> put_req_header("authorization", "#{jwt}")
+         |> post("/api/send")
+
+      assert conn.status == 200
+      json = Jason.decode!(conn.resp_body)
+      assert Map.get(json, "id") > 0
+      assert Map.get(json, "email") == Map.get(payload, "email")
+
+    end
+  end
 end

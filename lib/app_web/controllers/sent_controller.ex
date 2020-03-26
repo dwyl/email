@@ -33,6 +33,19 @@ defmodule AppWeb.SentController do
     sent
   end
 
+  def send_email_check_auth_header(conn, params) do
+    case check_jwt_auth_header(conn) do
+      {:error, _} ->
+        unauthorized(conn, params)
+      {:ok, claims} ->
+        claims = Map.merge(claims, %{"status" => "Pending"})
+        sent = send_email(claims)
+        data = Map.merge(claims, %{"id" => sent.id})
+        conn
+        |> put_resp_header("content-type", "application/json;")
+        |> send_resp(200, Jason.encode!(data, pretty: true))
+    end
+  end
 
   defp check_jwt_auth_header(conn) do
     jwt = List.first(Plug.Conn.get_req_header(conn, "authorization"))
@@ -75,10 +88,10 @@ defmodule AppWeb.SentController do
   @doc """
   `process_sns/2` processes an API request with a JWT in authorization header.
   """
-  def process_sns(conn, _params) do
+  def process_sns(conn, params) do
     case check_jwt_auth_header(conn) do
       {:error, _} ->
-        unauthorized(conn, _params)
+        unauthorized(conn, params)
       {:ok, claims} ->
         # IO.inspect(claims)
         sent = App.Ctx.upsert_sent(claims)

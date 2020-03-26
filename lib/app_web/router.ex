@@ -27,7 +27,7 @@ defmodule AppWeb.Router do
   scope "/api", AppWeb do
     pipe_through :api
     get "/ping", SentController, :ping
-    # post "/send", SentController,
+    post "/send", SentController, :send_email_check_auth_header
     post "/sns", SentController, :process_sns
   end
 end
