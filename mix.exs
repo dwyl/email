@@ -60,7 +60,7 @@ defmodule App.MixProject do
       {:hackney, "~> 1.9"},
 
       # https://github.com/dwyl/quotes
-      {:quotes, "~> 1.0.4"},
+      {:quotes, "~> 1.0.5"},
 
       # LiveView for Realtime Dashboard! github.com/dwyl/email/issues/23
       {:phoenix_live_view, "~> 0.10.0"},
