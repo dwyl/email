@@ -130,8 +130,23 @@ please [open an issue](https://github.com/dwyl/aws-ses-lambda/issues).
 
 ### Sending Email!
 
+In order to send an email - e.g: from the `Auth` app -
+use the `POST /api/send` where the `"authorization"` header
+is a `JWT` signed using the shared `JWT_SECRET`.
 
+The JWT should contain the keys `email`, `name` and `template`
+e.g:
 
+```json
+{
+  "email": "alex@protonmail.com",
+  "name": "Alex",
+  "template": "welcome"
+}
+```
+
+Please see the test for clarity:
+[`sent_controller_test.exs#L126-L143`](https://github.com/dwyl/email/blob/991435059303d053c11437ee55dc2785fc5ae26a/test/app_web/controllers/sent_controller_test.exs#L126-L143)
 
 
 
