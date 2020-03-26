@@ -799,17 +799,21 @@ The setup steps for Phoenix LiveView
 are covered in:
 [github.com/dwyl/**phoenix-liveview-counter-tutorial**](https://github.com/dwyl/phoenix-liveview-counter-tutorial#step-2-add-liveview-to-deps-in-mixexs-file)
 
+The dashboard is available on [localhost:4000/](http://localhost:4000)
+or
 
 
+Made a quick video of the dashboard and sending a test email:
+https://youtu.be/yflPSotYd9Y
+
+![send-email-dashboard-test](https://user-images.githubusercontent.com/194400/77336873-0d6f4b00-6d20-11ea-8cb1-510d22a69385.gif)
 
 
-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJKb2tlbiIsImVtYWlsIjoiYW1hemVAZ21haWwuY29tIiwiZXhwIjoxNTg0NDA5ODkyLCJpYXQiOjE1ODQ0MDI2OTIsImlzcyI6Ikpva2VuIiwianRpIjoiMm51ZXJtbDJvMzExaGhpZjg4MDAwMnEyIiwibWVzc2FnZV9pZCI6IjEyMzIwMTcwOTIwMDY3OTgtZjA0NTY2OTQtYWMyNC00ODdiLTk0NjctYjc5YjhjZTc5OGYyLTAwMDAwMCIsIm5iZiI6MTU4NDQwMjY5Miwic3RhdHVzIjoiU2VudCIsInRlbXBsYXRlIjoid2VsY29tZSJ9.dwBDKUuVf2dBO4zbEZMyBjAku_0PwFeXK2Nh9r0mKJY
+#### Download Data from Heroku
 
-
-
-#### Download Test Data from Heroku
-
-pg_restore --verbose --clean --no-acl --no-owner -h localhost -d app_dev production.dump
+If you want to demo the dashboard on your localhost with real data,
+followe these instructions:
+[dev-guide.md#using-real-data](https://github.com/club-soda/club-soda-guide/blob/master/dev-guide.md#using-real-data)
 
 
 
