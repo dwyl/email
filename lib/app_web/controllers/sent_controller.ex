@@ -34,7 +34,34 @@ defmodule AppWeb.SentController do
   end
 
 
+  defp check_jwt_auth_header(conn) do
+    jwt = List.first(Plug.Conn.get_req_header(conn, "authorization"))
+    if is_nil(jwt) do
+      {:error, nil}
 
+    else # fast check for JWT format validity before slower verify:
+      case Enum.count(String.split(jwt, ".")) == 3 do
+        false ->
+          {:error, nil}
+
+        true -> # valid JWT proceed to verifying it
+          App.Token.verify_and_validate(jwt)
+      end
+    end
+  end
+
+  defp check_jwt_url_params(%{"jwt" => jwt}) do
+    if is_nil(jwt) do
+      {:error, nil}
+    else # fast check for JWT format validity before slower verify:
+      case Enum.count(String.split(jwt, ".")) == 3 do
+        false -> # invalid JWT return 401
+          {:error, :invalid}
+        true -> # valid JWT proceed to verifying it
+          App.Token.verify_and_validate(jwt)
+      end
+    end
+  end
 
   @doc """
   `unauthorized/2` reusable unauthorized response handler used in process_jwt/2
@@ -49,22 +76,16 @@ defmodule AppWeb.SentController do
   `process_sns/2` processes an API request with a JWT in authorization header.
   """
   def process_sns(conn, _params) do
-    jwt = List.first(Plug.Conn.get_req_header(conn, "authorization"))
-    if is_nil(jwt) do
-      unauthorized(conn, nil)
-    else # fast check for JWT format validity before slower verify:
-      case Enum.count(String.split(jwt, ".")) == 3 do
-        true -> # valid JWT proceed to verifying it
-          {:ok, claims} = App.Token.verify_and_validate(jwt)
-          sent = App.Ctx.upsert_sent(claims)
-          data = %{"id" => sent.id}
-          conn
-          |> put_resp_header("content-type", "application/json;")
-          |> send_resp(200, Jason.encode!(data, pretty: true))
-
-        false -> # invalid JWT return 401
-          unauthorized(conn, nil)
-      end
+    case check_jwt_auth_header(conn) do
+      {:error, _} ->
+        unauthorized(conn, _params)
+      {:ok, claims} ->
+        # IO.inspect(claims)
+        sent = App.Ctx.upsert_sent(claims)
+        data = %{"id" => sent.id}
+        conn
+        |> put_resp_header("content-type", "application/json;")
+        |> send_resp(200, Jason.encode!(data, pretty: true))
     end
   end
 
@@ -73,32 +94,22 @@ defmodule AppWeb.SentController do
   @image "\x47\x49\x46\x38\x39\x61\x1\x0\x1\x0\x80\x0\x0\xff\xff\xff\x0\x0\x0\x21\xf9\x4\x1\x0\x0\x0\x0\x2c\x0\x0\x0\x0\x1\x0\x1\x0\x0\x2\x2\x44\x1\x0\x3b"
 
   @doc """
-  `read_id/2` extracts the id of a sent item from a JWT in the URL
+  `render_pixel/2` extracts the id of a sent item from a JWT in the URL
   and if the JWT is valid, updates the status to "Opened" and returns the pixel.
   """
-  def read_id(conn, %{"jwt" => jwt}) do
-    if is_nil(jwt) do
-      unauthorized(conn, nil)
-    else # fast check for JWT format validity before slower verify:
-      case Enum.count(String.split(jwt, ".")) == 3 do
-        false -> # invalid JWT return 401
-          unauthorized(conn, nil)
+  def render_pixel(conn, params) do
+    case check_jwt_url_params(params) do
+      {:error, _} ->
+        unauthorized(conn, nil)
 
-        true -> # valid JWT proceed to verifying it
-          case App.Token.verify_and_validate(jwt) do
-            {:error, :signature_error} ->
-              unauthorized(conn, nil)
+      {:ok, claims} ->
+        App.Ctx.email_opened(Map.get(claims, "id"))
 
-            {:ok, claims} ->
-              App.Ctx.email_opened(Map.get(claims, "id"))
-
-              conn # instruct browser not to cache the image
-              |> put_resp_header("cache-control", "no-store, private")
-              |> put_resp_header("pragma", "no-cache")
-              |> put_resp_content_type("image/gif")
-              |> send_resp(200, @image)
-          end
-      end
+        conn # instruct browser not to cache the image
+        |> put_resp_header("cache-control", "no-store, private")
+        |> put_resp_header("pragma", "no-cache")
+        |> put_resp_content_type("image/gif")
+        |> send_resp(200, @image)
     end
   end
 

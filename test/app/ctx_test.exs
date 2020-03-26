@@ -165,12 +165,12 @@ defmodule App.CtxTest do
         "template" => "welcome"
       }
       sent = Ctx.upsert_sent(init)
-      IO.inspect(sent, label: "sent")
+      # IO.inspect(sent, label: "sent")
       assert sent.message_id == nil
       update = Map.merge(init, %{"status" => "Updated", "id" => sent.id})
       # IO.inspect(update, label: "update")
       sent2 = Ctx.upsert_sent(update)
-      IO.inspect(sent2, label: "sent2")
+      # IO.inspect(sent2, label: "sent2")
       # when the status is updated the status_id is the next status.id
       assert sent.status_id == sent2.status_id - 1
     end

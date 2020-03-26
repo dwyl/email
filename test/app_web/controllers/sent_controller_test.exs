@@ -86,7 +86,7 @@ defmodule AppWeb.SentControllerTest do
 
   describe "read_id/2" do
     test "request to /read/:jwt where jwt is nil", %{conn: conn} do
-      conn = AppWeb.SentController.read_id(conn, %{"jwt" => nil})
+      conn = AppWeb.SentController.render_pixel(conn, %{"jwt" => nil})
       assert conn.status == 401
     end
 

@@ -18,8 +18,8 @@ defmodule AppWeb.Router do
     pipe_through :browser
     live("/", Dashboard)
 
-    resources "/sent", SentController
-    get "/read/:jwt", SentController, :read_id
+    resources "/send", SentController
+    get "/read/:jwt", SentController, :render_pixel
     get "/_version", GithubVersionController, :index # for deployment versioning
   end
 
@@ -27,6 +27,7 @@ defmodule AppWeb.Router do
   scope "/api", AppWeb do
     pipe_through :api
     get "/ping", SentController, :ping
+    # post "/send", SentController,
     post "/sns", SentController, :process_sns
   end
 end
