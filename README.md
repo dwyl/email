@@ -128,6 +128,11 @@ or have any questions/suggestions,
 please [open an issue](https://github.com/dwyl/aws-ses-lambda/issues).
 
 
+### Sending Email!
+
+
+
+
 
 
 
@@ -819,11 +824,55 @@ followe these instructions:
 
 ### 7. Track Email Read Status
 
+Keeping track of email read status is nothing new.
+All email newsletter platforms have this feature
+e.g. mailchimp https://mailchimp.com/help/about-open-tracking
+
+> We could use one of the 3rd party email services,
+but we _really_ don't want them tracking the users of our App
+and selling that data to others!
+
+We simply include a 1x1px image
+in the email template.
+Which makes an HTTP GET request
+to the `/read/:jwt` endpoint
+when the email is viewed.
 
 
+The code is very simple.
+
+```elixir
+@doc """
+`render_pixel/2` extracts the id of a sent item from a JWT in the URL
+and if the JWT is valid, updates the status to "Opened" and returns the pixel.
+"""
+def render_pixel(conn, params) do
+  case check_jwt_url_params(params) do
+    {:error, _} ->
+      unauthorized(conn, nil)
+
+    {:ok, claims} ->
+      App.Ctx.email_opened(Map.get(claims, "id"))
+
+      conn # instruct browser not to cache the image
+      |> put_resp_header("cache-control", "no-store, private")
+      |> put_resp_header("pragma", "no-cache")
+      |> put_resp_content_type("image/gif")
+      |> send_resp(200, @image)
+  end
+end
+```
+
+See:
+[`sent_controller.ex#L105-L127`](https://github.com/dwyl/email/blob/991435059303d053c11437ee55dc2785fc5ae26a/lib/app_web/controllers/sent_controller.ex#L105-L127)
+
+Test it on Localhost with the following `curl` command:
 ```
 curl "http://localhost:4000/read/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTg0NzEzOTk1fQ.OzgxrvzrRmVas0yJcKGIeLOSznNisenC0zSQ80knX60"
 ```
+
+The effect is we can see when people open an email message.
+
 
 
 <br /><br /><br /><br />
