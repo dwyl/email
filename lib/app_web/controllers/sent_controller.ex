@@ -27,7 +27,8 @@ defmodule AppWeb.SentController do
     sent = Ctx.upsert_sent(attrs)
     payload = Map.merge(attrs, %{"id" => sent.id})
     # see: https://github.com/dwyl/elixir-invoke-lambda-example
-    ExAws.Lambda.invoke("aws-ses-lambda-v1", payload, "no_context")
+    lambda = System.get_env("AWS_LAMBDA_FUNCTION")
+    ExAws.Lambda.invoke(lambda, payload, "no_context")
     |> ExAws.request(region: System.get_env("AWS_REGION"))
 
     sent
@@ -128,9 +129,23 @@ defmodule AppWeb.SentController do
 
 
   # GET /ping https://github.com/dwyl/email/issues/30
-  def ping(conn, _params) do
-    conn
-    |> put_resp_header("content-type", "application/json;")
-    |> send_resp(200, Jason.encode!(Quotes.random(), pretty: true))
+  def ping(conn, params) do
+    case check_jwt_auth_header(conn) do
+      {:error, _} ->
+        unauthorized(conn, params)
+      {:ok, _claims} ->
+
+        # warm up the lambda function so emails are sent instantly!
+        payload = %{"ping" => :os.system_time(:millisecond)}
+        # see: https://github.com/dwyl/elixir-invoke-lambda-example
+        lambda = System.get_env("AWS_LAMBDA_FUNCTION")
+        res = ExAws.Lambda.invoke(lambda, payload, "no_context")
+        |> ExAws.request(region: System.get_env("AWS_REGION"))
+
+        time = :os.system_time(:millisecond) - Map.get(payload, "ping")
+        conn
+        |> put_resp_header("content-type", "application/json;")
+        |> send_resp(200, Jason.encode!(%{response_time: time}, pretty: true))
+      end
   end
 end

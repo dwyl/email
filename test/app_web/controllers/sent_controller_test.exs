@@ -38,12 +38,22 @@ defmodule AppWeb.SentControllerTest do
     end
   end
 
+  describe "/api/ping" do
+    test "test /ping endpoint returns 401 with invalid JWT", %{conn: conn} do
+      conn = get(conn, "/api/ping")
+      assert conn.status == 401
+    end
 
-  test "test /ping endpoint (always returns 200)", %{conn: conn} do
-    conn = get(conn, "/api/ping")
 
-    # IO.inspect(conn, label: "conn")
-    assert conn.status == 200
+    test "test /ping endpoint returns 200 with valid JWT", %{conn: conn} do
+      jwt = App.Token.generate_and_sign!(%{}) # no params required
+      conn = conn
+         |> put_req_header("authorization", "#{jwt}")
+         |> get("/api/ping")
+
+      assert Map.get(Jason.decode!(conn.resp_body), "response_time") > 100
+      assert conn.status == 200
+    end
   end
 
   describe "process_sns" do
