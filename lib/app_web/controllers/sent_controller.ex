@@ -101,7 +101,9 @@ defmodule AppWeb.SentController do
       {:ok, claims} ->
         IO.inspect(claims, label: "claims process_sns/2:102")
         sent = App.Ctx.upsert_sent(claims)
-        data = %{"id" => Map.get(sent, "id")}
+        IO.inspect(sent, label: "sent process_sns/2:104")
+        # Convert Struct to Map: https://stackoverflow.com/a/40025484/1148249
+        data = Map.delete(sent, :__meta__) |> Map.from_struct()
         conn
         |> put_resp_header("content-type", "application/json;")
         |> send_resp(200, Jason.encode!(data, pretty: true))
@@ -142,11 +144,12 @@ defmodule AppWeb.SentController do
 
         # warm up the lambda function so emails are sent instantly!
         payload = %{"ping" => :os.system_time(:millisecond), "key": "ping"}
+        IO.inspect(payload, label: "payload ping/2:145")
         # see: https://github.com/dwyl/elixir-invoke-lambda-example
         lambda = System.get_env("AWS_LAMBDA_FUNCTION")
         res = ExAws.Lambda.invoke(lambda, payload, "no_context")
         |> ExAws.request(region: System.get_env("AWS_REGION"))
-        IO.inspect(res, label: "lambda response ping/2:149")
+        IO.inspect(res, label: "lambda response ping/2:150")
         time = :os.system_time(:millisecond) - Map.get(payload, "ping")
         conn
         |> put_resp_header("content-type", "application/json;")
