@@ -99,7 +99,7 @@ defmodule AppWeb.SentController do
       {:error, _} ->
         unauthorized(conn, params)
       {:ok, claims} ->
-        # IO.inspect(claims)
+        IO.inspect(claims, label: "claims process_sns/2:102")
         sent = App.Ctx.upsert_sent(claims)
         data = %{"id" => sent.id}
         conn
