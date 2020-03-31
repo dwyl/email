@@ -27,7 +27,7 @@ defmodule AppWeb.SentController do
   def send_email(attrs) do
     IO.inspect(attrs, label: "attrs send_email/1:28")
     sent = Ctx.upsert_sent(attrs)
-    payload = Map.merge(attrs, %{"id" => sent.id})
+    payload = Map.merge(attrs, %{"id" => Map.get(sent, "id")})
     IO.inspect(payload, label: "payload send_email/1:31")
     # see: https://github.com/dwyl/elixir-invoke-lambda-example
     lambda = System.get_env("AWS_LAMBDA_FUNCTION")
@@ -46,7 +46,7 @@ defmodule AppWeb.SentController do
         claims = Map.merge(claims, %{"status" => "Pending"})
 
         sent = send_email(claims)
-        data = Map.merge(claims, %{"id" => sent.id})
+        data = Map.merge(claims, %{"id" => Map.get(sent, "id")})
         conn
         |> put_resp_header("content-type", "application/json;")
         |> send_resp(200, Jason.encode!(data, pretty: true))
@@ -101,7 +101,7 @@ defmodule AppWeb.SentController do
       {:ok, claims} ->
         IO.inspect(claims, label: "claims process_sns/2:102")
         sent = App.Ctx.upsert_sent(claims)
-        data = %{"id" => sent.id}
+        data = %{"id" => Map.get(sent, "id")}
         conn
         |> put_resp_header("content-type", "application/json;")
         |> send_resp(200, Jason.encode!(data, pretty: true))
