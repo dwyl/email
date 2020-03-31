@@ -143,7 +143,7 @@ defmodule AppWeb.SentController do
       {:ok, _claims} ->
 
         # warm up the lambda function so emails are sent instantly!
-        payload = %{"ping" => :os.system_time(:millisecond), "key": "ping"}
+        payload = %{"ping" => :os.system_time(:millisecond), key: "ping"}
         IO.inspect(payload, label: "payload ping/2:151")
         # see: https://github.com/dwyl/elixir-invoke-lambda-example
         lambda = System.get_env("AWS_LAMBDA_FUNCTION")
