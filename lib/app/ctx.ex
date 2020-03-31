@@ -170,7 +170,7 @@ defmodule App.Ctx do
     end
 
     # Step 3. Insert or Update (UPSERT) then return the sent record:
-    case Map.has_key?(attrs, :id) do
+    case Map.has_key?(attrs, :id) and not is_nil(Map.get(attrs, :id)) do
       true ->
         sent = Repo.get_by(Sent, id: attrs.id)
         attrs = Map.merge(attrs, %{status_id: status_id})
