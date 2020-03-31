@@ -138,7 +138,7 @@ defmodule App.Ctx do
   def upsert_sent(attrs) do
     # transform attrs into Map with Atoms as Keys:
     attrs = for {k, v} <- attrs, into: %{}, do: {String.to_atom(k), v}
-    # IO.inspect(attrs, label: "attrs")
+    IO.inspect(attrs, label: "attrs upsert_sent/1:141")
     # Step 1: Check if the Person exists by email address:
     person_id = case Map.has_key?(attrs, :email) do
       true ->

@@ -16,6 +16,7 @@ defmodule AppWeb.SentController do
 
   def create(conn, params) do
     attrs = Map.merge(Map.get(params, "sent"), %{"status" => "Pending"})
+    IO.inspect(attrs, label: "attrs create/2:19")
     send_email(attrs)
 
     conn
@@ -24,14 +25,16 @@ defmodule AppWeb.SentController do
   end
 
   def send_email(attrs) do
+    IO.inspect(attrs, label: "attrs send_email/1:28")
     sent = Ctx.upsert_sent(attrs)
     payload = Map.merge(attrs, %{"id" => sent.id})
+    IO.inspect(payload, label: "payload send_email/1:31")
     # see: https://github.com/dwyl/elixir-invoke-lambda-example
     lambda = System.get_env("AWS_LAMBDA_FUNCTION")
-    ExAws.Lambda.invoke(lambda, payload, "no_context")
+    {:ok, res} = ExAws.Lambda.invoke(lambda, payload, "no_context")
     |> ExAws.request(region: System.get_env("AWS_REGION"))
-
-    sent
+    IO.inspect(res, label: "res send_email/1:36")
+    res
   end
 
   def send_email_check_auth_header(conn, params) do
@@ -39,7 +42,9 @@ defmodule AppWeb.SentController do
       {:error, _} ->
         unauthorized(conn, params)
       {:ok, claims} ->
+        IO.inspect(claims, label: "claims send_email_check_auth_header/2:45")
         claims = Map.merge(claims, %{"status" => "Pending"})
+
         sent = send_email(claims)
         data = Map.merge(claims, %{"id" => sent.id})
         conn
@@ -136,12 +141,12 @@ defmodule AppWeb.SentController do
       {:ok, _claims} ->
 
         # warm up the lambda function so emails are sent instantly!
-        payload = %{"ping" => :os.system_time(:millisecond)}
+        payload = %{"ping" => :os.system_time(:millisecond), "key": "ping"}
         # see: https://github.com/dwyl/elixir-invoke-lambda-example
         lambda = System.get_env("AWS_LAMBDA_FUNCTION")
         res = ExAws.Lambda.invoke(lambda, payload, "no_context")
         |> ExAws.request(region: System.get_env("AWS_REGION"))
-
+        IO.inspect(res, label: "lambda response ping/2:149")
         time = :os.system_time(:millisecond) - Map.get(payload, "ping")
         conn
         |> put_resp_header("content-type", "application/json;")

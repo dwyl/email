@@ -150,7 +150,7 @@ defmodule App.CtxTest do
       second = %{
         "message_id" => "4562017092006798-f0456694-ac24-487b-9467-b79b8ce798f2",
         "status" => "Sent",
-        "email" => "amaze@gmail.com",
+        "email" => "amaze@gmail.com"
       }
       sent2 = Ctx.upsert_sent(second)
       assert sent.person_id == sent2.person_id

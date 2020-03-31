@@ -27,11 +27,9 @@ defmodule AppWeb.SentControllerTest do
   describe "create sent" do
     test "redirects to dashboard when data is valid", %{conn: conn} do
       params = %{
-        "sent" => %{
-          "email" => "success@simulator.amazonses.com",
-          "name" => "Success",
-          "template" => "welcome"
-        }
+        "email" => "success@simulator.amazonses.com",
+        "name" => "Success",
+        "template" => "welcome"
       }
       conn = post(conn, Routes.sent_path(conn, :create), sent: params)
       assert html_response(conn, 302) =~ "redirected"
@@ -136,17 +134,18 @@ defmodule AppWeb.SentControllerTest do
     test "send an email via /api/send", %{conn: conn} do
       payload = %{
         "email" => "success@simulator.amazonses.com",
-        "name" => "Super Successful",
+        "name" => "Super Successful /api/send test",
         "template" => "welcome"
       }
       jwt = App.Token.generate_and_sign!(payload)
-      IO.inspect(jwt)
+      # IO.inspect(jwt)
       conn = conn
          |> put_req_header("authorization", "#{jwt}")
          |> post("/api/send")
 
       assert conn.status == 200
       json = Jason.decode!(conn.resp_body)
+      IO.inspect(json, label: "json test:150")
       assert Map.get(json, "id") > 0
       assert Map.get(json, "email") == Map.get(payload, "email")
 

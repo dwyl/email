@@ -65,7 +65,6 @@ defmodule App.MixProject do
 
       # Test Code Coverage:
       {:excoveralls, "~> 0.12.2", only: :test},
-
     ]
   end
 
