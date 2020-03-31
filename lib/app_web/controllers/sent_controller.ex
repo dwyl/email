@@ -27,13 +27,14 @@ defmodule AppWeb.SentController do
   def send_email(attrs) do
     IO.inspect(attrs, label: "attrs send_email/1:28")
     sent = Ctx.upsert_sent(attrs)
+    IO.inspect(sent, label: "sent send_email/1:30")
     payload = Map.merge(attrs, %{"id" => Map.get(sent, "id")})
-    IO.inspect(payload, label: "payload send_email/1:31")
+    IO.inspect(payload, label: "payload send_email/1:32")
     # see: https://github.com/dwyl/elixir-invoke-lambda-example
     lambda = System.get_env("AWS_LAMBDA_FUNCTION")
     {:ok, res} = ExAws.Lambda.invoke(lambda, payload, "no_context")
     |> ExAws.request(region: System.get_env("AWS_REGION"))
-    IO.inspect(res, label: "res send_email/1:36")
+    IO.inspect(res, label: "res send_email/1:37")
     res
   end
 
@@ -42,14 +43,14 @@ defmodule AppWeb.SentController do
       {:error, _} ->
         unauthorized(conn, params)
       {:ok, claims} ->
-        IO.inspect(claims, label: "claims send_email_check_auth_header/2:45")
+        IO.inspect(claims, label: "claims send_email_check_auth_header/2:46")
         claims = Map.merge(claims, %{"status" => "Pending"})
 
         sent = send_email(claims)
-        IO.inspect(sent, label: "sent send_email_check_auth_header/2:49")
+        IO.inspect(sent, label: "sent send_email_check_auth_header/2:50")
         # Convert Struct to Map: https://stackoverflow.com/a/40025484/1148249
         data = Map.delete(sent, :__meta__) |> Map.from_struct()
-        IO.inspect(data, label: "data send_email_check_auth_header/2:52")
+        IO.inspect(data, label: "data send_email_check_auth_header/2:53")
         conn
         |> put_resp_header("content-type", "application/json;")
         |> send_resp(200, Jason.encode!(data, pretty: true))
@@ -102,9 +103,9 @@ defmodule AppWeb.SentController do
       {:error, _} ->
         unauthorized(conn, params)
       {:ok, claims} ->
-        IO.inspect(claims, label: "claims process_sns/2:105")
+        IO.inspect(claims, label: "claims process_sns/2:106")
         sent = App.Ctx.upsert_sent(claims)
-        IO.inspect(sent, label: "sent process_sns/2:107")
+        IO.inspect(sent, label: "sent process_sns/2:108")
         # Convert Struct to Map: https://stackoverflow.com/a/40025484/1148249
         data = Map.delete(sent, :__meta__) |> Map.from_struct()
         conn
@@ -147,12 +148,12 @@ defmodule AppWeb.SentController do
 
         # warm up the lambda function so emails are sent instantly!
         payload = %{"ping" => :os.system_time(:millisecond), "key": "ping"}
-        IO.inspect(payload, label: "payload ping/2:150")
+        IO.inspect(payload, label: "payload ping/2:151")
         # see: https://github.com/dwyl/elixir-invoke-lambda-example
         lambda = System.get_env("AWS_LAMBDA_FUNCTION")
         res = ExAws.Lambda.invoke(lambda, payload, "no_context")
         |> ExAws.request(region: System.get_env("AWS_REGION"))
-        IO.inspect(res, label: "lambda response ping/2:155")
+        IO.inspect(res, label: "lambda response ping/2:156")
         time = :os.system_time(:millisecond) - Map.get(payload, "ping")
         conn
         |> put_resp_header("content-type", "application/json;")
