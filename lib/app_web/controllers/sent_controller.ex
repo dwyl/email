@@ -44,16 +44,12 @@ defmodule AppWeb.SentController do
         unauthorized(conn, params)
       {:ok, claims} ->
         IO.inspect(claims, label: "claims send_email_check_auth_header/2:46")
-        claims = Map.merge(claims, %{"status" => "Pending"})
-
-        sent = send_email(claims)
+        sent = send_email(Map.merge(claims, %{"status" => "Pending"}))
         IO.inspect(sent, label: "sent send_email_check_auth_header/2:50")
-        # Convert Struct to Map: https://stackoverflow.com/a/40025484/1148249
-        data = Map.delete(sent, :__meta__) |> Map.from_struct()
-        IO.inspect(data, label: "data send_email_check_auth_header/2:53")
+
         conn
         |> put_resp_header("content-type", "application/json;")
-        |> send_resp(200, Jason.encode!(data, pretty: true))
+        |> send_resp(200, Jason.encode!(sent, pretty: true))
     end
   end
 
