@@ -46,7 +46,10 @@ defmodule AppWeb.SentController do
         claims = Map.merge(claims, %{"status" => "Pending"})
 
         sent = send_email(claims)
-        data = Map.merge(claims, %{"id" => Map.get(sent, "id")})
+        IO.inspect(sent, label: "sent send_email_check_auth_header/2:49")
+        # Convert Struct to Map: https://stackoverflow.com/a/40025484/1148249
+        data = Map.delete(sent, :__meta__) |> Map.from_struct()
+        IO.inspect(data, label: "data send_email_check_auth_header/2:52")
         conn
         |> put_resp_header("content-type", "application/json;")
         |> send_resp(200, Jason.encode!(data, pretty: true))
@@ -99,9 +102,9 @@ defmodule AppWeb.SentController do
       {:error, _} ->
         unauthorized(conn, params)
       {:ok, claims} ->
-        IO.inspect(claims, label: "claims process_sns/2:102")
+        IO.inspect(claims, label: "claims process_sns/2:105")
         sent = App.Ctx.upsert_sent(claims)
-        IO.inspect(sent, label: "sent process_sns/2:104")
+        IO.inspect(sent, label: "sent process_sns/2:107")
         # Convert Struct to Map: https://stackoverflow.com/a/40025484/1148249
         data = Map.delete(sent, :__meta__) |> Map.from_struct()
         conn
@@ -144,12 +147,12 @@ defmodule AppWeb.SentController do
 
         # warm up the lambda function so emails are sent instantly!
         payload = %{"ping" => :os.system_time(:millisecond), "key": "ping"}
-        IO.inspect(payload, label: "payload ping/2:145")
+        IO.inspect(payload, label: "payload ping/2:150")
         # see: https://github.com/dwyl/elixir-invoke-lambda-example
         lambda = System.get_env("AWS_LAMBDA_FUNCTION")
         res = ExAws.Lambda.invoke(lambda, payload, "no_context")
         |> ExAws.request(region: System.get_env("AWS_REGION"))
-        IO.inspect(res, label: "lambda response ping/2:150")
+        IO.inspect(res, label: "lambda response ping/2:155")
         time = :os.system_time(:millisecond) - Map.get(payload, "ping")
         conn
         |> put_resp_header("content-type", "application/json;")
