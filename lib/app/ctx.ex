@@ -47,14 +47,14 @@ defmodule App.Ctx do
       %{
         id: id,
         message_id: mid,
-        inserted_at: NaiveDateTime.truncate(iat, :second),
+        updated_at: NaiveDateTime.truncate(iat, :second),
         template: t,
         status: s,
         person_id: pid,
         email: e
       }
     end)
-    # |>
+    |> Enum.sort_by(&Map.fetch(&1, :updated_at), :desc)
   end
 
 
