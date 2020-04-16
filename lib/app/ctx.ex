@@ -54,7 +54,7 @@ defmodule App.Ctx do
         email: e
       }
     end)
-    |> Enum.sort_by(&Map.fetch(&1, :id), :desc)
+    |> Enum.sort(&(&1.id > &2.id))
   end
 
 
