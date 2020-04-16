@@ -39,7 +39,11 @@ defmodule App.Ctx do
 
     # create List of Maps from the result.rows:
     Enum.map(result.rows, fn([id, mid, iat, t, s, pid, e]) ->
-      e = Fields.AES.decrypt(e) # |> String.split("@") |> List.first
+      e = Fields.AES.decrypt(e) #
+      e = case e =~ "@" do
+        true -> e |> String.split("@") |> List.first
+        false -> e
+      end
       %{
         id: id,
         message_id: mid,
