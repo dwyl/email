@@ -29,22 +29,24 @@ defmodule App.Ctx do
   def list_sent_with_status do
     query = """
       SELECT s.id, s.message_id, s.updated_at, s.template,
-      st.text as status, s.person_id
+      st.text as status, s.person_id, p.email
       FROM sent s
       JOIN status as st on s.status_id = st.id
-      ORDER by s.updated_at DESC
+      JOIN people as p on s.person_id = p.id
+      ORDER BY s.updated_at DESC
     """
     {:ok, result} = Repo.query(query)
 
     # create List of Maps from the result.rows:
-    Enum.map(result.rows, fn([id, mid, iat, t, s, pid]) ->
+    Enum.map(result.rows, fn([id, mid, iat, t, s, pid, e]) ->
       %{
         id: id,
         message_id: mid,
         inserted_at: NaiveDateTime.truncate(iat, :second),
         template: t,
         status: s,
-        person_id: pid
+        person_id: pid,
+        email: Fields.AES.decrypt(e)
       }
     end)
   end
