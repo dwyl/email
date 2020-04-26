@@ -21,6 +21,7 @@ defmodule AppWeb.Router do
     resources "/send", SentController
     get "/read/:jwt", SentController, :render_pixel
     get "/_version", GithubVersionController, :index # for deployment versioning
+    get "/pixel", SentController, :pixel
   end
 
   # Other scopes may use custom stacks.

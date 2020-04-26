@@ -151,4 +151,9 @@ defmodule AppWeb.SentControllerTest do
 
     end
   end
+
+  test "test /pixel endpoint returns 200", %{conn: conn} do
+    conn = get(conn, "/pixel")
+    assert conn.status == 200
+  end
 end

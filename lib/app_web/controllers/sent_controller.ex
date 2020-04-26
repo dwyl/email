@@ -125,13 +125,16 @@ defmodule AppWeb.SentController do
 
       {:ok, claims} ->
         App.Ctx.email_opened(Map.get(claims, "id"))
-
-        conn # instruct browser not to cache the image
-        |> put_resp_header("cache-control", "no-store, private")
-        |> put_resp_header("pragma", "no-cache")
-        |> put_resp_content_type("image/gif")
-        |> send_resp(200, @image)
+        pixel(conn, params)
     end
+  end
+
+  def pixel(conn, _params) do
+    conn # instruct browser not to cache the image
+    |> put_resp_header("cache-control", "no-store, private")
+    |> put_resp_header("pragma", "no-cache")
+    |> put_resp_content_type("image/gif")
+    |> send_resp(200, @image)
   end
 
 

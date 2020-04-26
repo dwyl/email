@@ -38,12 +38,12 @@ defmodule App.Ctx do
     {:ok, result} = Repo.query(query)
 
     # create List of Maps from the result.rows:
-    Enum.map(result.rows, fn([id, mid, iat, t, s, pid, e]) ->
-      e = Fields.AES.decrypt(e)
-      e = case e !== :error and e =~ "@" do
-        true -> e |> String.split("@") |> List.first
-        false -> e
-      end
+    Enum.map(result.rows, fn([id, mid, iat, t, s, pid, _e]) ->
+      # e = Fields.AES.decrypt(e)
+      # e = case e !== :error and e =~ "@" do
+      #   true -> e |> String.split("@") |> List.first
+      #   false -> e
+      # end
       %{
         id: id,
         message_id: mid,
@@ -51,7 +51,7 @@ defmodule App.Ctx do
         template: t,
         status: s,
         person_id: pid,
-        email: e
+        # email: e
       }
     end)
     |> Enum.sort(&(&1.id > &2.id))
