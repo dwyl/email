@@ -29,16 +29,15 @@ defmodule App.Ctx do
   def list_sent_with_status do
     query = """
     SELECT DISTINCT ON (s.status_id, s.person_id) s.id, s.message_id,
-    s.updated_at, s.template, st.text as status, s.person_id, p.email
+    s.updated_at, s.template, st.text as status, s.person_id
     FROM sent s
     JOIN status as st on s.status_id = st.id
-    JOIN people as p on s.person_id = p.id
     WHERE s.message_id IS NOT NULL
     """
     {:ok, result} = Repo.query(query)
 
     # create List of Maps from the result.rows:
-    Enum.map(result.rows, fn([id, mid, iat, t, s, pid, _e]) ->
+    Enum.map(result.rows, fn([id, mid, iat, t, s, pid]) ->
       # e = Fields.AES.decrypt(e)
       # e = case e !== :error and e =~ "@" do
       #   true -> e |> String.split("@") |> List.first
@@ -51,7 +50,7 @@ defmodule App.Ctx do
         template: t,
         status: s,
         person_id: pid,
-        # email: e
+        email: ""
       }
     end)
     |> Enum.sort(&(&1.id > &2.id))
