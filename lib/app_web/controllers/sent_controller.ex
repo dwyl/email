@@ -130,6 +130,15 @@ defmodule AppWeb.SentController do
   end
 
   def pixel(conn, _params) do
+    # warm up the lambda function so emails are sent instantly!
+    payload = %{"ping" => :os.system_time(:millisecond), key: "ping"}
+    # IO.inspect(payload, label: "payload ping/2:151")
+    # see: https://github.com/dwyl/elixir-invoke-lambda-example
+    lambda = System.get_env("AWS_LAMBDA_FUNCTION")
+    ExAws.Lambda.invoke(lambda, payload, "no_context")
+    |> ExAws.request(region: System.get_env("AWS_REGION"))
+    |> IO.inspect(label: "ExAws.Lambda ping response")
+
     conn # instruct browser not to cache the image
     |> put_resp_header("cache-control", "no-store, private")
     |> put_resp_header("pragma", "no-cache")
