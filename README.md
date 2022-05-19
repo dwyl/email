@@ -1,9 +1,9 @@
 # `email` 💌
 
 [![Build Status](https://img.shields.io/travis/dwyl/email/master.svg?style=flat-square)](https://travis-ci.org/dwyl/email)
-[![codecov.io](https://img.shields.io/codecov/c/github/dwyl/email/master.svg?style=flat-square)](http://codecov.io/github/dwyl/email?branch=master)
+[![codecov.io](https://img.shields.io/codecov/c/github/dwyl/email/master.svg?style=flat-square)](https://codecov.io/github/dwyl/email?branch=master)
 <!--
-[![HitCount](http://hits.dwyl.com/dwyl/email.svg)](http://hits.dwyl.com/dwyl/email)
+[![HitCount](https://hits.dwyl.com/dwyl/email.svg)](https://hits.dwyl.com/dwyl/email)
 -->
 
 ## Why? 🤷‍
