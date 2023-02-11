@@ -13,21 +13,37 @@
 
 # 2023 Update: Project Retired
 
+This project was working perfectly well for us:
+
+![email-working](https://user-images.githubusercontent.com/194400/198866976-598add90-163f-43f2-9fea-8b472602c6f5.png)
+
 Sadly, a _lot_ has changed in the 2 years 
-since we built & deployed the `email` project.
-Heroku decided they would no longer have a "Free Tier" 
-so these _ultra-low_ overhead / volume apps (less than `2h` per month)
+since we built & deployed it to `Heroku`.
+`Heroku` decided to eliminate their "Free Tier" 
+so these _ultra-low_ overhead / volume apps 
+(less than `2h` per month)
 are no longer viable on `Heroku`. 
-We would _gladly_ have paid the **`$16/month`** (minimum) 
+We would _gladly_ have paid the 
+[**`$16/month`**](https://github.com/dwyl/email/issues/61#issuecomment-1426679676) 
+(minimum) 
 to keep it running, 
-but they deleted our data 
-and deprecated our stack.
+but they deleted our database 
+(that only had a couple of MBs):
+
+![heroku-deleted-db](https://user-images.githubusercontent.com/194400/218252368-5a3dd560-423e-40d6-a548-5bccaba5734f.png)
+
+and deprecated our stack:
+
+![heroku-stack-depracated](https://user-images.githubusercontent.com/194400/218253546-1ecfb4fa-8782-4282-a25e-e10f6375c70f.png)
+
 So they are _forcing_ us to update _everything_. 
 This is super lame in software that was _working_ fine.
 
-For the time being we are pausing development on this project.
+So, for the time being we are pausing development on this project.
 If we find a use for it again in the future, 
 we will re-build it.
+
+Thanks for your interest! ❤️
 
 <hr />
 
