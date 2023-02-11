@@ -1,3 +1,5 @@
+<div align="center">
+
 # `email` 💌
 
 [![Build Status](https://img.shields.io/travis/dwyl/email/master.svg?style=flat-square)](https://travis-ci.org/dwyl/email)
@@ -5,6 +7,29 @@
 [![HitCount](https://hits.dwyl.com/dwyl/email.svg)](https://hits.dwyl.com/dwyl/email)
 
 
+</div>
+
+<hr />
+
+# 2023 Update: Project Retired
+
+Sadly, a _lot_ has changed in the 2 years 
+since we built & deployed the `email` project.
+Heroku decided they would no longer have a "Free Tier" 
+so these _ultra-low_ overhead / volume apps (less than `2h` per month)
+are no longer viable on `Heroku`. 
+We would _gladly_ have paid the **`$16/month`** (minimum) 
+to keep it running, 
+but they deleted our data 
+and deprecated our stack.
+So they are _forcing_ us to update _everything_. 
+This is super lame in software that was _working_ fine.
+
+For the time being we are pausing development on this project.
+If we find a use for it again in the future, 
+we will re-build it.
+
+<hr />
 
 ## Why? 🤷‍
 
