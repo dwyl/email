@@ -48,7 +48,7 @@ defmodule App.MixProject do
       {:plug_cowboy, "~> 2.0"},
 
       # https://github.com/dwyl/fields
-      {:fields, "~> 2.3.1"},
+      {:fields, "~> 2.10.3"},
 
       # https://hexdocs.pm/joken/introduction.html#usage
       {:joken, "~> 2.2"},
