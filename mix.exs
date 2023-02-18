@@ -60,7 +60,7 @@ defmodule App.MixProject do
       {:hackney, "~> 1.9"},
 
       # LiveView for Realtime Dashboard! github.com/dwyl/email/issues/23
-      {:phoenix_live_view, "~> 0.10.0"},
+      {:phoenix_live_view, "~> 0.14.0"},
       {:floki, ">= 0.0.0", only: :test},
 
       # Test Code Coverage:
