@@ -54,7 +54,7 @@ defmodule App.MixProject do
       {:joken, "~> 2.2"},
 
       # See: github.com/dwyl/elixir-invoke-lambda-example
-      {:ex_aws, "~> 2.1.0"},
+      {:ex_aws, "~> 2.4.1"},
       {:ex_aws_lambda, "~> 2.0"},
       {:poison, "~> 5.0"},
       {:hackney, "~> 1.9"},
