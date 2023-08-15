@@ -64,7 +64,7 @@ defmodule App.MixProject do
       {:floki, ">= 0.0.0", only: :test},
 
       # Test Code Coverage:
-      {:excoveralls, "~> 0.16.0", only: :test},
+      {:excoveralls, "~> 0.17.0", only: :test},
     ]
   end
 
