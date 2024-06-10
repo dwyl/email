@@ -56,7 +56,7 @@ defmodule App.MixProject do
       # See: github.com/dwyl/elixir-invoke-lambda-example
       {:ex_aws, "~> 2.5.0"},
       {:ex_aws_lambda, "~> 2.0"},
-      {:poison, "~> 5.0"},
+      {:poison, "~> 6.0"},
       {:hackney, "~> 1.9"},
 
       # LiveView for Realtime Dashboard! github.com/dwyl/email/issues/23
